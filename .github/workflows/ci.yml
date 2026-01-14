@@ -10,9 +10,12 @@ jobs:
   secret-detection:
     name: Secret Detection
     if: github.event_name == 'pull_request'
-    uses: jae-labs/.github/.github/workflows/security/secret_detection.yml@main
+    uses: jae-labs/.github/.github/workflows/secret_detection.yml@main
     secrets: inherit
-
+  code-scanning:
+    name: Code Scanning
+    if: github.event_name == 'pull_request'
+    uses: jae-labs/.github/.github/workflows/code_scanning.yml@main
   algolia:
     name: Algolia Index
     if: github.ref == 'refs/heads/main'
