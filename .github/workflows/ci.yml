@@ -7,6 +7,12 @@ on:
     branches: [main]
 
 jobs:
+  secret-detection:
+    name: Secret Detection
+    if: github.event_name == 'pull_request'
+    uses: jae-labs/.github/.github/workflows/security/secret_detection.yml@main
+    secrets: inherit
+
   algolia:
     name: Algolia Index
     if: github.ref == 'refs/heads/main'
