@@ -4,8 +4,8 @@ A comprehensive cheatsheet website for DevOps, SysAdmin, SRE, and Engineering to
 
 ## Prerequisites
 
-- Node.js (version 18 or higher)
-- npm or yarn
+- Node.js (version 25 or higher)
+- yarn
 
 ## Installation
 
