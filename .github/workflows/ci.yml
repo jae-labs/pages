@@ -33,7 +33,31 @@ jobs:
     env:
       APPLICATION_ID: ${{ secrets.APPLICATION_ID }}
       API_KEY: ${{ secrets.API_KEY }}
-      CONFIG: '{"index_name":"jae","start_urls":["https://justanother.engineer/"],"stop_urls":[],"selectors":{"lvl0":"main h1, article h1","lvl1":"main h2, article h2","lvl2":"main h3, article h3","lvl3":"main h4, article h4","lvl4":"main h5, article h5","lvl5":"main h6, article h6","text":"main p, main li, article p, article li"}}'
+      CONFIG: >-
+        {
+          "index_name": "jae",
+          "start_urls": [
+            "https://justanother.engineer/",
+            "https://justanother.engineer/docs/",
+            "https://justanother.engineer/sitemap.xml"
+          ],
+          "sitemap_urls": [
+            "https://justanother.engineer/sitemap.xml"
+          ],
+          "stop_urls": [],
+          "selectors": {
+            "lvl0": "header nav .navbar__title, main h1, article h1",
+            "lvl1": "main h2, article h2",
+            "lvl2": "main h3, article h3",
+            "lvl3": "main h4, article h4",
+            "lvl4": "main h5, article h5",
+            "lvl5": "main h6, article h6",
+            "text": "main p, main li, article p, article li, .theme-doc-markdown p, .theme-doc-markdown li"
+          },
+          "custom_settings": {
+            "attributesForFaceting": ["type", "lang"]
+          }
+        }
 
     steps:
       - name: Run Algolia Index
