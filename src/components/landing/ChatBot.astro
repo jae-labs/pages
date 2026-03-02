@@ -1,0 +1,189 @@
+---
+import { Bot, LoaderCircle, MessageCircle, SquarePlus, Send, X, Mic, MicOff, Brain } from '@lucide/astro';
+---
+
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer async></script>
+
+<section id="lui-z-chat" class="fixed bottom-4 right-4 z-[900] flex w-[calc(100vw-2rem)] max-w-sm flex-col items-end sm:bottom-6 sm:right-6 pointer-events-none">
+  <button
+    id="chat-toggle"
+    type="button"
+    class="flex h-14 w-14 items-center justify-center rounded-full border border-neon-yellow bg-black text-neon-yellow transition-all duration-300 hover:scale-110 hover:bg-neon-yellow hover:text-black active:scale-95 pointer-events-auto"
+    aria-expanded="false"
+    aria-controls="chat-panel"
+    aria-label="Open lui.z clone chat"
+  >
+    <MessageCircle size={24} stroke-width={1.8} />
+  </button>
+
+  <div
+    id="chat-panel"
+    class="fixed inset-0 z-[950] hidden w-full h-full flex flex-col bg-black border-none rounded-none sm:static sm:inset-auto sm:z-auto sm:order-first sm:mb-3 sm:w-full sm:rounded-lg sm:border sm:border-neon-yellow/30 sm:bg-[#050505]/95 sm:shadow-[0_0_30px_rgba(0,255,255,0.12)] sm:backdrop-blur-xl pointer-events-auto"
+  >
+    <div class="flex items-center justify-between border-b border-white/10 px-4 py-3">
+      <div class="flex items-center gap-2">
+        <span class="flex h-8 w-8 items-center justify-center rounded-full border border-neon-yellow/40 text-neon-yellow">
+          <Bot size={18} stroke-width={1.8} />
+        </span>
+        <div>
+          <h2 class="text-sm font-black uppercase tracking-[0.18em] text-neon-yellow">lui.z AI</h2>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <div class="relative group flex flex-col items-center">
+          <button
+            id="chat-clear"
+            type="button"
+            class="flex h-8 w-8 items-center justify-center rounded border border-white/10 text-[#aaa] bg-transparent transition-all duration-300 hover:bg-neon-yellow hover:text-black hover:border-neon-yellow active:scale-90"
+            aria-label="Start new chat"
+          >
+            <SquarePlus size={16} stroke-width={1.8} />
+          </button>
+          
+          <div 
+            class="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center pointer-events-none z-[999]"
+            role="tooltip"
+          >
+            <div class="w-1.5 h-1.5 bg-[#0f0f0f] border-l border-t border-white/10 rotate-45 -mb-[3px] z-10"></div>
+            <div class="bg-[#0f0f0f] border border-white/10 rounded-md px-2 py-1 text-[10px] text-[#bbb] shadow-[0_4px_15px_rgba(0,0,0,0.5)] whitespace-nowrap">
+              Start new chat
+            </div>
+          </div>
+        </div>
+
+        <div class="relative group flex flex-col items-center">
+          <button
+            id="chat-close"
+            type="button"
+            class="flex h-8 w-8 items-center justify-center rounded border border-white/10 text-[#aaa] bg-transparent transition-all duration-300 hover:bg-neon-yellow hover:text-black hover:border-neon-yellow hover:shadow-[0_0_15px_rgba(243,235,44,0.4)] active:scale-90"
+            aria-label="Close lui.z clone chat"
+          >
+            <X size={16} stroke-width={1.8} />
+          </button>
+          
+          <div 
+            class="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center pointer-events-none z-[999]"
+            role="tooltip"
+          >
+            <div class="w-1.5 h-1.5 bg-[#0f0f0f] border-l border-t border-white/10 rotate-45 -mb-[3px] z-10"></div>
+            <div class="bg-[#0f0f0f] border border-white/10 rounded-md px-2 py-1 text-[10px] text-[#bbb] shadow-[0_4px_15px_rgba(0,0,0,0.5)] whitespace-nowrap">
+              Close chat
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-b border-neon-yellow/20 bg-neon-yellow/10 px-4 py-3 text-xs leading-relaxed text-[#d8d8d8]">
+      Disclaimer: I am not the biological lui.z. I am a limited artificial clone with narrow capabilities, answering only from public-site facts. Outputs may be wrong, incomplete, unsafe, or outdated. Use at your own risk. Do not share secrets, private data, credentials, employer-confidential information, or personal information. By using this chat, you accept that messages may be processed by third-party AI infrastructure and may be used to improve or train lui.z systems. Luiz is not responsible for decisions, losses, damages, or actions taken from this chat.
+    </div>
+
+    <div id="chat-log" class="flex flex-1 flex-col gap-3 overflow-y-auto px-4 py-4 overscroll-y-contain sm:max-h-80 sm:min-h-64 sm:flex-initial" aria-live="polite">
+      <div class="flex-1 min-h-0" id="chat-spacer"></div>
+      <div class="flex flex-col gap-2 chat-greeting-group">
+        <p class="max-w-[85%] rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm leading-relaxed text-[#e0e0e0]">
+          How can I help you today?
+        </p>
+        <div class="flex flex-col gap-2 items-start pl-2 mt-1">
+          <span class="text-[10px] uppercase tracking-[0.16em] text-[#777] font-semibold">Try asking:</span>
+          <button type="button" class="chat-suggest-btn text-xs px-3 py-1.5 rounded-full border border-neon-cyan/30 bg-neon-cyan/5 text-neon-cyan transition duration-300 hover:bg-neon-cyan hover:text-black active:scale-95 text-left">What is lui.z?</button>
+          <button type="button" class="chat-suggest-btn text-xs px-3 py-1.5 rounded-full border border-neon-cyan/30 bg-neon-cyan/5 text-neon-cyan transition duration-300 hover:bg-neon-cyan hover:text-black active:scale-95 text-left">Any session or usage limits?</button>
+          <button type="button" class="chat-suggest-btn text-xs px-3 py-1.5 rounded-full border border-neon-cyan/30 bg-neon-cyan/5 text-neon-cyan transition duration-300 hover:bg-neon-cyan hover:text-black active:scale-95 text-left">Does lui.z make mistakes?</button>
+        </div>
+      </div>
+    </div>
+
+    <form id="chat-form" class="border-t border-white/10 p-3">
+      <div id="chat-turnstile" class="cf-turnstile mb-3 flex justify-center" data-theme="dark"></div>
+      
+      <div class="flex flex-col rounded border border-white/10 bg-black/70 focus-within:border-neon-cyan transition duration-200">
+        <label class="sr-only" for="chat-message">Message</label>
+        <textarea
+          id="chat-message"
+          name="message"
+          rows="1"
+          maxlength="1200"
+          class="w-full resize-none bg-transparent px-3 py-[10px] text-left text-sm text-white outline-none placeholder:text-[#777] leading-normal"
+          placeholder="Ask a question about lui.z"
+        ></textarea>
+        
+        <div class="px-3 pb-2 flex items-center justify-between">
+          <div class="relative group flex items-center">
+            <button
+              type="button"
+              disabled
+              class="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-semibold text-[#888] cursor-not-allowed select-none transition duration-200"
+              aria-label="Deep thinking (Disabled)"
+            >
+              <Brain size={12} stroke-width={2} class="text-[#666]" />
+              <span>Deep thinking</span>
+            </button>
+
+            <div 
+              class="absolute bottom-full left-0 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-start pointer-events-none z-[999] w-64"
+              role="tooltip"
+            >
+              <div class="bg-[#0f0f0f] border border-white/10 rounded-lg p-2.5 text-left text-xs leading-relaxed text-[#bbb] shadow-[0_4px_20px_rgba(0,0,0,0.8)] backdrop-blur-md">
+                Enterprise feature. Contact us for unparallel reasoning capacity.
+              </div>
+              <div class="w-2 h-2 bg-[#0f0f0f] border-r border-b border-white/10 rotate-45 -mt-1 ml-4"></div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="relative group flex flex-col items-center [&:has(#chat-mic.hidden)]:hidden">
+              <button
+                id="chat-mic"
+                type="button"
+                class="flex h-8 w-8 shrink-0 items-center justify-center hidden rounded border border-neon-cyan bg-transparent text-neon-cyan transition-all duration-300 hover:bg-neon-cyan hover:text-black active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:border-neon-cyan/20 disabled:text-neon-cyan/30 disabled:bg-transparent"
+                aria-label="Start voice input"
+              >
+                <Mic class="chat-mic-on-icon" size={14} stroke-width={2} />
+                <MicOff class="chat-mic-off-icon hidden" size={14} stroke-width={2} />
+              </button>
+
+              <div 
+                class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center pointer-events-none z-[999]"
+                role="tooltip"
+              >
+                <div class="bg-[#0f0f0f] border border-white/10 rounded-md px-2 py-1 text-[10px] text-[#bbb] shadow-[0_4px_15px_rgba(0,0,0,0.5)] whitespace-nowrap">
+                  Voice input
+                </div>
+                <div class="w-1.5 h-1.5 bg-[#0f0f0f] border-r border-b border-white/10 rotate-45 -mt-[3px]"></div>
+              </div>
+            </div>
+
+            <div class="relative group flex flex-col items-center">
+              <button
+                id="chat-submit"
+                type="submit"
+                class="flex h-8 w-8 shrink-0 items-center justify-center rounded border border-neon-yellow bg-transparent text-neon-yellow transition-all duration-300 hover:bg-neon-yellow hover:text-black active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:border-neon-yellow/20 disabled:text-neon-yellow/30 disabled:bg-transparent"
+                aria-label="Send message"
+              >
+                <Send class="chat-send-icon" size={14} stroke-width={2} style="transform: translate(-1px, 1px);" />
+                <LoaderCircle class="chat-loading-icon hidden animate-spin" size={14} stroke-width={2} />
+              </button>
+
+              <div 
+                class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center pointer-events-none z-[999]"
+                role="tooltip"
+              >
+                <div class="bg-[#0f0f0f] border border-white/10 rounded-md px-2 py-1 text-[10px] text-[#bbb] shadow-[0_4px_15px_rgba(0,0,0,0.5)] whitespace-nowrap">
+                  Send message
+                </div>
+                <div class="w-1.5 h-1.5 bg-[#0f0f0f] border-r border-b border-white/10 rotate-45 -mt-[3px]"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p id="chat-character-count" class="mt-2 text-right text-[10px] uppercase tracking-[0.16em] text-[#777]">
+        0 / 1200
+      </p>
+    </form>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/landing/chat-bot';
+</script>
