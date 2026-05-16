@@ -1,0 +1,43 @@
+---
+const metrics = [
+  { label: "Physical Bench Press", agent: "100kg", ai: "N/A", win: "agent" },
+  { label: "Code Shipping Velocity", agent: "Insane", ai: "High", win: "agent" },
+  { label: "Creativity (Zero-Shot)", agent: "Native", ai: "Simulated", win: "agent" },
+  { label: "Coffee to Code Efficiency", agent: "98%", ai: "0%", win: "agent" },
+  { label: "Context Window", agent: "Unlimited*", ai: "128k", win: "agent" },
+];
+---
+
+<section id="benchmarks" class="py-24 px-6 relative border-y border-[#330033]/30">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16">
+      <h2 class="text-neon-pink font-fira text-sm mb-4 tracking-[0.3em] uppercase">Comparative Analysis</h2>
+      <h3 class="text-4xl md:text-6xl font-black text-white">THE BENCHMARKS</h3>
+      <p class="mt-6 text-[#858585]">Tested against the leading LLM models. Results are definitive.</p>
+    </div>
+
+    <div class="bg-black border border-[#330033] rounded-3xl overflow-hidden">
+      <div class="grid grid-cols-3 p-6 border-b border-[#330033] bg-[#0a0a0a] font-bold text-[10px] uppercase tracking-widest text-[#555]">
+        <div>Metric</div>
+        <div class="text-center text-[#ff00ff]">Agent-01</div>
+        <div class="text-center">LLM Clusters</div>
+      </div>
+      
+      {metrics.map((m) => (
+        <div class="grid grid-cols-3 p-6 border-b border-[#330033]/50 items-center hover:bg-white/[0.02] transition-colors">
+          <div class="text-sm font-bold text-white">{m.label}</div>
+          <div class="text-center">
+            <span class="px-3 py-1 rounded-full bg-[#ff00ff]/10 text-[#ff00ff] text-xs font-bold border border-[#ff00ff]/20">
+              {m.agent}
+            </span>
+          </div>
+          <div class="text-center text-[#555] text-xs italic">{m.ai}</div>
+        </div>
+      ))}
+      
+      <div class="p-4 bg-[#ff00ff]/5 text-[10px] text-center text-[#ff00ff] italic">
+        *Disclaimer: Context window limited only by sleep cycles and caffeine availability.
+      </div>
+    </div>
+  </div>
+</section>

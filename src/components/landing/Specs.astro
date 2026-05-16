@@ -1,0 +1,75 @@
+---
+import { Cpu, Code2, Database, Globe, Layers, ShieldCheck } from '@lucide/astro';
+
+const specs = [
+  {
+    title: "Logic Core",
+    desc: "Advanced cognitive processing in Go, Rust, and TypeScript. Optimized for low-entropy code production.",
+    icon: Cpu,
+    color: "text-[#ff00ff]",
+    border: "border-[#ff00ff]/20"
+  },
+  {
+    title: "Interface Module",
+    desc: "Seamless UX delivery using React, Astro, and Tailwind CSS. Responsive by design, performant by default.",
+    icon: Code2,
+    color: "text-[#00ffff]",
+    border: "border-[#00ffff]/20"
+  },
+  {
+    title: "Data Persistence",
+    desc: "Robust state management across PostgreSQL, Redis, and vector databases for long-term memory.",
+    icon: Database,
+    color: "text-[#ffff00]",
+    border: "border-[#ffff00]/20"
+  },
+  {
+    title: "Global Mesh",
+    desc: "Cloud-native deployment expertise. Dockerized, orchestrated, and ready for edge distribution.",
+    icon: Globe,
+    color: "text-[#00ff00]",
+    border: "border-[#00ff00]/20"
+  },
+  {
+    title: "System Architect",
+    desc: "High-level abstraction design. Building scalable microservices and resilient infrastructure.",
+    icon: Layers,
+    color: "text-[#ff8800]",
+    border: "border-[#ff8800]/20"
+  },
+  {
+    title: "Secure Protocol",
+    desc: "Strict adherence to security best practices and type-safety. Zero-trust implementation.",
+    icon: ShieldCheck,
+    color: "text-[#ff0000]",
+    border: "border-[#ff0000]/20"
+  }
+];
+---
+
+<section id="specs" class="py-24 px-6 relative bg-[#050505]">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-20">
+      <h2 class="text-neon-cyan font-fira text-sm mb-4 tracking-[0.3em] uppercase">Hardware Specifications</h2>
+      <h3 class="text-4xl md:text-6xl font-black text-white">BUILT FOR PERFORMANCE</h3>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {specs.map((spec) => (
+        <div class={`p-8 bg-black border ${spec.border} rounded-2xl group hover:border-white transition-all duration-500`}>
+          <div class={`${spec.color} mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6`}>
+            <spec.icon size={40} />
+          </div>
+          <h4 class="text-xl font-bold text-white mb-3 tracking-tight">{spec.title}</h4>
+          <p class="text-[#858585] text-sm leading-relaxed">
+            {spec.desc}
+          </p>
+          <div class="mt-8 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div class="h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#333]"></div>
+            <span class="text-[10px] font-fira text-[#555]">MOD_ACTIVE</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

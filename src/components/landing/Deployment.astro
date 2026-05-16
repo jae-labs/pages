@@ -1,0 +1,70 @@
+---
+const deployments = [
+  {
+    id: "LOG_01",
+    status: "COMPLETED",
+    org: "Tech Innovators Inc.",
+    role: "Senior System Integrator",
+    date: "2023 - 2026",
+    logs: [
+      "Optimized legacy core clusters.",
+      "Reduced infrastructure overhead by 40%.",
+      "Managed biological subnetworks (Junior Devs)."
+    ]
+  },
+  {
+    id: "LOG_02",
+    status: "ARCHIVED",
+    org: "Startup Alpha",
+    role: "Full Stack Unit",
+    date: "2020 - 2023",
+    logs: [
+      "Zero-to-one product provisioning.",
+      "Implemented financial ledger protocols (Stripe).",
+      "Orchestrated AWS environments."
+    ]
+  }
+];
+---
+
+<section id="deployment" class="py-24 px-6 bg-[#050505]">
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-16">
+      <h2 class="text-[#00ff00] font-fira text-sm mb-4 tracking-[0.3em] uppercase">Audit Trail</h2>
+      <h3 class="text-4xl md:text-6xl font-black text-white">DEPLOYMENT HISTORY</h3>
+    </div>
+
+    <div class="space-y-12">
+      {deployments.map((d) => (
+        <div class="relative pl-8 border-l border-[#330033]">
+          {/* Timeline Dot */}
+          <div class="absolute -left-1.5 top-0 w-3 h-3 bg-[#00ff00] rounded-full shadow-[0_0_10px_#00ff00]"></div>
+          
+          <div class="flex items-center gap-4 mb-4">
+            <span class="font-fira text-[10px] text-[#555]">{d.id}</span>
+            <span class={`text-[10px] font-bold px-2 py-0.5 rounded border ${d.status === 'COMPLETED' ? 'border-[#00ff00]/30 text-[#00ff00] bg-[#00ff00]/5' : 'border-[#858585]/30 text-[#858585] bg-[#858585]/5'}`}>
+              {d.status}
+            </span>
+            <span class="text-[10px] text-[#555] font-fira">{d.date}</span>
+          </div>
+
+          <h4 class="text-2xl font-bold text-white mb-1">{d.org}</h4>
+          <p class="text-[#00ffff] font-medium mb-6">{d.role}</p>
+          
+          <div class="bg-black/50 border border-[#330033]/50 rounded-xl p-6 font-fira text-xs">
+            {d.logs.map((log) => (
+              <div class="flex gap-4 mb-2">
+                <span class="text-[#555] shrink-0">[INIT]</span>
+                <span class="text-[#858585]">{log}</span>
+              </div>
+            ))}
+            <div class="mt-4 flex gap-4">
+              <span class="text-[#00ff00] shrink-0">[DONE]</span>
+              <span class="text-[#e0e0e0]">Block successfully merged.</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
