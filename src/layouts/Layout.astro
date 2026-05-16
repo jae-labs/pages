@@ -1,0 +1,88 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import ActivityBar from '../components/ide/ActivityBar.astro';
+import Sidebar from '../components/ide/Sidebar.astro';
+import TabBar from '../components/ide/TabBar.astro';
+import StatusBar from '../components/ide/StatusBar.astro';
+import { Terminal, FileType2, FileJson } from 'lucide-astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  language?: string;
+  currentFile: string;
+}
+
+const { title, language = 'Markdown', currentFile } = Astro.props;
+
+// Mock open tabs
+const openTabs = [
+  { name: 'README.md', path: '/', icon: Terminal, color: 'text-green-400' },
+  { name: 'about.me', path: '/about', icon: FileType2, color: 'text-blue-400' },
+  { name: 'experience.ts', path: '/experience', icon: FileType2, color: 'text-blue-500' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Personal Portfolio" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} | Portfolio</title>
+    <ClientRouter />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-[#0d1117] text-[#cccccc] font-inter h-screen w-screen overflow-hidden flex flex-col m-0 p-0">
+    <div class="flex-1 flex overflow-hidden">
+      <ActivityBar />
+      <Sidebar />
+      
+      <div class="flex-1 flex flex-col overflow-hidden bg-[#1e1e1e]">
+        <TabBar tabs={openTabs} />
+        
+        {/* Breadcrumbs */}
+        <div class="h-7 bg-[#1e1e1e] border-b border-[#2b2b2b] flex items-center px-4 text-xs text-[#858585] gap-1 shrink-0">
+          <span>src</span>
+          <span class="text-[#cccccc] mx-1">&gt;</span>
+          <span class="text-[#cccccc]">{currentFile}</span>
+        </div>
+
+        {/* Editor Area */}
+        <main class="flex-1 overflow-y-auto bg-[#0d1117] p-8 font-fira">
+          <slot />
+        </main>
+      </div>
+    </div>
+    
+    <StatusBar language={language} />
+  </body>
+</html>
+
+<style is:global>
+  .font-fira {
+    font-family: 'Fira Code', monospace;
+  }
+  .font-inter {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  /* Custom Scrollbar for IDE feel */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #1e1e1e;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #424242;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4f4f4f;
+  }
+</style>

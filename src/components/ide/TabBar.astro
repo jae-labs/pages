@@ -1,0 +1,21 @@
+---
+import { X } from 'lucide-astro';
+
+const { tabs } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<div class="h-9 bg-[#1e1e1e] border-b border-[#2b2b2b] flex overflow-x-auto">
+  {tabs.map((tab) => {
+    const isActive = tab.path === currentPath;
+    return (
+      <a href={tab.path} class={`flex items-center h-full px-3 gap-2 border-r border-[#2b2b2b] min-w-[120px] max-w-[200px] cursor-pointer group ${isActive ? 'bg-[#1e1e1e] text-white border-t-2 border-t-blue-500' : 'bg-[#2d2d2d] text-[#858585] hover:bg-[#1e1e1e]'}`}>
+        <tab.icon size={14} class={tab.color} />
+        <span class="text-sm truncate flex-1">{tab.name}</span>
+        <button class={`p-0.5 rounded-md opacity-0 group-hover:opacity-100 hover:bg-[#333333] ${isActive ? 'opacity-100' : ''}`}>
+          <X size={14} />
+        </button>
+      </a>
+    )
+  })}
+</div>

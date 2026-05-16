@@ -1,0 +1,25 @@
+---
+import { Files, Search, Github as GitHubIcon, Linkedin, Mail } from 'lucide-astro';
+---
+
+<div class="w-12 h-full bg-[#181818] border-r border-[#2b2b2b] flex flex-col items-center py-4 flex-shrink-0">
+  <div class="flex flex-col gap-6">
+    <a href="/" class="text-[#858585] hover:text-white transition-colors relative group">
+      <Files size={24} strokeWidth={1.5} />
+      {/* Active Indicator */}
+      <div class="absolute -left-3 top-0 w-1 h-full bg-blue-500 rounded-r-md"></div>
+    </a>
+    <button class="text-[#858585] hover:text-white transition-colors">
+      <Search size={24} strokeWidth={1.5} />
+    </button>
+  </div>
+
+  <div class="mt-auto flex flex-col gap-6">
+    <a href="https://github.com" target="_blank" class="text-[#858585] hover:text-white transition-colors">
+      <GitHubIcon size={24} strokeWidth={1.5} />
+    </a>
+    <a href="https://linkedin.com" target="_blank" class="text-[#858585] hover:text-white transition-colors">
+      <Linkedin size={24} strokeWidth={1.5} />
+    </a>
+  </div>
+</div>
