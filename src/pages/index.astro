@@ -17,38 +17,13 @@ interface Props {
 <Layout title="Meet LuizFCM 3.6">
   <Navbar />
   <main class="relative">
-    <div id="hero" class="relative py-24"><Hero /></div>
-    
-    <div id="specs" class="relative border-y border-white/5 py-16">
-      <div class="hud-corner-tl !left-4 !top-4"></div>
-      <div class="hud-corner-tr !right-4 !top-4"></div>
-      <Specs />
-    </div>
-
-    <div id="benchmarks" class="relative border-y border-white/5 py-16">
-      <Benchmarks />
-    </div>
-
-    <div id="reliability" class="relative border-y border-white/5 py-16">
-      <div class="hud-corner-bl !left-4 !bottom-4"></div>
-      <div class="hud-corner-br !right-4 !bottom-4"></div>
-      <Reliability />
-    </div>
-
-    <div id="sponsor" class="relative border-y border-white/5 py-16">
-      <Sponsor />
-    </div>
-
-    <div id="deployment" class="relative border-y border-white/5 py-16">
-       <div class="absolute top-4 left-4 text-[8px] font-fira text-white/20 uppercase tracking-widest z-20">
-          Version_Log_Buffer // Read_Only
-       </div>
-      <div class="px-4 sm:px-12"><Deployment /></div>
-    </div>
-
-    <div id="pricing" class="relative border-y border-white/5 py-16 bg-[#050505]/50">
-      <Pricing />
-    </div>
+    <Hero />
+    <Specs />
+    <Benchmarks />
+    <Reliability />
+    <Sponsor />
+    <Deployment />
+    <Pricing />
   </main>
   
   <footer class="py-12 border-t border-[#330033] bg-[#050505] px-6">
