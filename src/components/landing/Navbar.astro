@@ -1,5 +1,17 @@
 ---
 import { Cpu, Zap, Activity, X, Coffee } from '@lucide/astro';
+
+const menuItems = [
+  { id: "specs", name: "Features", num: "01", color: "text-neon-yellow" },
+  { id: "how-it-works", name: "How it works", num: "02", color: "text-neon-cyan" },
+  { id: "benchmarks", name: "Benchmarks", num: "03", color: "text-neon-yellow" },
+  { id: "reliability", name: "Subagents", num: "04", color: "text-neon-cyan" },
+  { id: "sponsor", name: "Sponsor", num: "05", color: "text-neon-yellow" },
+  { id: "reviews", name: "Reviews", num: "06", color: "text-neon-cyan" },
+  { id: "deployment", name: "Changelog", num: "07", color: "text-neon-yellow" },
+  { id: "faq", name: "FAQ", num: "08", color: "text-neon-cyan" },
+  { id: "pricing", name: "Plans", num: "09", color: "text-[#ffff00]" },
+];
 ---
 
 <nav id="main-nav" class="fixed top-0 w-full z-[300] bg-black/80 backdrop-blur-xl border-b border-[#ffff00]/20 px-6 py-3 transition-colors duration-300">
@@ -23,14 +35,11 @@ import { Cpu, Zap, Activity, X, Coffee } from '@lucide/astro';
          
          <div class="absolute top-full right-0 mt-2 w-56 bg-black border border-white/10 rounded-xl overflow-hidden shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover/dropdown:opacity-100 group-hover/dropdown:translate-y-0 group-hover/dropdown:pointer-events-auto transition-all duration-300 backdrop-blur-2xl">
             <div class="p-2 flex flex-col">
-               <a href="#specs" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-yellow/10 hover:text-neon-yellow rounded-lg transition-all">01_Features</a>
-               <a href="#how-it-works" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-cyan/10 hover:text-neon-cyan rounded-lg transition-all">02_How it works</a>
-               <a href="#benchmarks" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-yellow/10 hover:text-neon-yellow rounded-lg transition-all">03_Benchmarks</a>
-               <a href="#reliability" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-cyan/10 hover:text-neon-cyan rounded-lg transition-all">04_Subagents</a>
-               <a href="#sponsor" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-yellow/10 hover:text-neon-yellow rounded-lg transition-all">05_Sponsor</a>
-               <a href="#reviews" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-cyan/10 hover:text-neon-cyan rounded-lg transition-all">06_Reviews</a>
-               <a href="#deployment" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-yellow/10 hover:text-neon-yellow rounded-lg transition-all">07_Changelog</a>
-               <a href="#faq" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-cyan/10 hover:text-neon-cyan rounded-lg transition-all">08_FAQ</a>
+               {menuItems.map((item) => (
+                 <a href={`#${item.id}`} class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-yellow/10 hover:text-neon-yellow rounded-lg transition-all">
+                   {item.num}_{item.name}
+                 </a>
+               ))}
             </div>
          </div>
       </div>
@@ -49,7 +58,7 @@ import { Cpu, Zap, Activity, X, Coffee } from '@lucide/astro';
 
       {/* Sandwich Menu Toggle - Mobile Only */}
       <button id="menu-toggle" class="md:hidden relative w-10 h-10 flex items-center justify-center text-white hover:text-neon-yellow transition-colors group">
-         <div class="space-y-1.5">
+         <div class="space-y-1.5 pointer-events-none">
             <div class="w-6 h-0.5 bg-current transition-all group-[.open]:rotate-45 group-[.open]:translate-y-2"></div>
             <div class="w-6 h-0.5 bg-current transition-all group-[.open]:opacity-0"></div>
             <div class="w-6 h-0.5 bg-current transition-all group-[.open]:-rotate-45 group-[.open]:-translate-y-2"></div>
@@ -57,51 +66,23 @@ import { Cpu, Zap, Activity, X, Coffee } from '@lucide/astro';
       </button>
     </div>
   </div>
+</nav>
 
-  {/* Fullscreen Mobile Menu - Centered & Solid Black */}
-  <div id="nav-menu" class="md:hidden fixed inset-0 bg-black z-[400] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col items-center justify-start overflow-y-auto p-6 pt-32">
-    <div class="absolute inset-0 cyber-grid opacity-20 pointer-events-none"></div>
-    
-    <div class="flex flex-col items-center gap-6 text-center text-2xl font-black uppercase tracking-[0.2em] text-[#858585] relative z-10 w-full mb-16">
-      <a href="#specs" class="nav-link hover:text-neon-yellow transition-all flex flex-col items-center group">
-         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 mb-1">01</span> 
-         <span>Features</span>
-      </a>
-      <a href="#how-it-works" class="nav-link hover:text-neon-cyan transition-all flex flex-col items-center group">
-         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 mb-1">02</span> 
-         <span>How it works</span>
-      </a>
-      <a href="#benchmarks" class="nav-link hover:text-neon-yellow transition-all flex flex-col items-center group">
-         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 mb-1">03</span> 
-         <span>Benchmarks</span>
-      </a>
-      <a href="#reliability" class="nav-link hover:text-neon-cyan transition-all flex flex-col items-center group">
-         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 mb-1">04</span> 
-         <span>Subagents</span>
-      </a>
-      <a href="#sponsor" class="nav-link hover:text-neon-yellow transition-all flex flex-col items-center group">
-         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 mb-1">05</span> 
-         <span>Sponsor</span>
-      </a>
-      <a href="#reviews" class="nav-link hover:text-neon-cyan transition-all flex flex-col items-center group">
-         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 mb-1">06</span> 
-         <span>Reviews</span>
-      </a>
-      <a href="#deployment" class="nav-link hover:text-neon-yellow transition-all flex flex-col items-center group">
-         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 mb-1">07</span> 
-         <span>Changelog</span>
-      </a>
-      <a href="#faq" class="nav-link hover:text-neon-cyan transition-all flex flex-col items-center group">
-         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 mb-1">08</span> 
-         <span>FAQ</span>
-      </a>
-      <a href="#pricing" class="nav-link hover:text-[#ffff00] transition-all flex flex-col items-center group">
-         <span class="text-[10px] text-[#ffff00] opacity-40 group-hover:opacity-100 mb-1">09</span> 
-         <span>Plans</span>
-      </a>
+{/* Fullscreen Mobile Menu - Optimized Centering & Spacing */}
+<div id="nav-menu" class="md:hidden fixed inset-0 bg-black z-[400] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-y-auto">
+  <div class="absolute inset-0 cyber-grid opacity-20 pointer-events-none"></div>
+  
+  <div class="flex flex-col items-center justify-start min-h-screen py-32 px-6">
+    <div class="flex flex-col items-center w-full relative z-10">
+      {menuItems.map((item) => (
+        <a href={`#${item.id}`} class="nav-link w-full py-8 border-b border-white/5 flex flex-col items-center group hover:bg-white/[0.02] transition-all first:border-t">
+           <span class={`text-[10px] ${item.color} opacity-40 group-hover:opacity-100 mb-2 font-fira`}>{item.num}</span> 
+           <span class="text-2xl font-black uppercase tracking-[0.2em] text-[#858585] group-hover:text-white transition-colors">{item.name}</span>
+        </a>
+      ))}
     </div>
 
-    <div class="pb-16 border-t border-white/10 w-full max-w-xs text-center flex flex-col items-center z-10 pt-12 shrink-0">
+    <div class="mt-12 pt-12 border-t border-white/5 w-full max-w-xs text-center flex flex-col items-center z-10 shrink-0 pb-12">
        <div class="flex gap-8 text-[#444]">
           <a href="https://github.com/luiz1361" target="_blank" class="hover:text-neon-yellow transition-colors"><Activity size={24} /></a>
           <a href="https://linkedin.com/in/luiz1361" target="_blank" class="hover:text-neon-cyan transition-colors"><Zap size={24} /></a>
@@ -109,7 +90,7 @@ import { Cpu, Zap, Activity, X, Coffee } from '@lucide/astro';
        </div>
     </div>
   </div>
-</nav>
+</div>
 
 <script>
   const toggle = document.getElementById('menu-toggle');
@@ -122,7 +103,6 @@ import { Cpu, Zap, Activity, X, Coffee } from '@lucide/astro';
     menu?.classList.toggle('translate-x-full');
     document.body.classList.toggle('overflow-hidden');
     
-    // Toggle nav background opacity
     if (isOpen) {
       nav?.classList.remove('bg-black/80');
       nav?.classList.add('bg-black');
@@ -143,12 +123,9 @@ import { Cpu, Zap, Activity, X, Coffee } from '@lucide/astro';
   toggle?.addEventListener('click', toggleMenu);
 
   links.forEach(link => {
-    link.addEventListener('click', () => {
-      closeMenu();
-    });
+    link.addEventListener('click', closeMenu);
   });
 
-  // Esc key support
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeMenu();
