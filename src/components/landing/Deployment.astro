@@ -4,8 +4,10 @@ const deployments = [
     id: "LOG_01",
     status: "CURRENT",
     org: "Prisma",
+    region: "eu-west-1",
     roles: [
       { 
+        version: "v3.6",
         title: "Senior Software Engineer (Infrastructure)", 
         date: "Jan 2026 - Present",
         summary: "Architecting AI-assisted development stacks and autonomous user management frameworks via IaC, reducing dashboard creation time by 90% and eliminating manual provisioning."
@@ -16,8 +18,10 @@ const deployments = [
     id: "LOG_02",
     status: "ARCHIVED",
     org: "AWS",
+    region: "eu-west-1",
     roles: [
       { 
+        version: "v3.5",
         title: "Senior Systems Engineer (L6)", 
         date: "Jul 2025 - Oct 2025",
         summary: "Developed high-scale BI dashboards for regional project tracking and automated task management systems, reducing manual effort by >90%."
@@ -28,28 +32,34 @@ const deployments = [
     id: "LOG_03",
     status: "ARCHIVED",
     org: "LearnUpon",
+    region: "eu-west-1",
     roles: [
       { 
+        version: "v3.5",
         title: "Senior Staff DevOps Engineer", 
         date: "Apr 2025 – Jul 2025",
         summary: "Strategized and scaled EKS infrastructure with 99.99% uptime while mentoring high-performing engineering teams."
       },
       { 
+        version: "v3.3 - v3.5",
         title: "Staff DevOps Engineer", 
         date: "Feb 2023 – Apr 2025",
         summary: "Architected cloud optimizations resulting in 30% cost savings and modernized CI/CD pipelines to cut deployment latency by 70%."
       },
       { 
+        version: "v3.1 - v3.3",
         title: "Senior DevOps Engineer", 
         date: "Jul 2021 – Feb 2023",
         summary: "Implemented advanced Prometheus/Grafana observability and automated configuration management to eliminate manual errors."
       },
       { 
+        version: "v3.0 - v3.1",
         title: "DevOps Engineer", 
         date: "Jun 2020 – Jul 2021",
         summary: "Built containerized development environments and reusable infrastructure components to triple developer productivity."
       },
       { 
+        version: "v2.9 - v3.0",
         title: "Site Reliability Engineer", 
         date: "Jul 2019 – Jun 2020",
         summary: "Migrated legacy self-hosted services to managed cloud solutions, freeing up 40% team capacity for strategic initiatives."
@@ -60,13 +70,16 @@ const deployments = [
     id: "LOG_04",
     status: "ARCHIVED",
     org: "Griffith College Dublin",
+    region: "eu-west-1",
     roles: [
       { 
+        version: "v2.9",
         title: "Systems Operations Manager", 
         date: "Mar 2019 – Jul 2019",
         summary: "Managed campus IT infrastructure and virtualization, improving uptime by 40% for 8,000+ users."
       },
       { 
+        version: "v2.5 - v2.9",
         title: "Senior Systems & Network Administrator", 
         date: "Jan 2015 – Mar 2019",
         summary: "Implemented SD-WAN and revamped delivery pipelines, reducing deployment times from hours to seconds."
@@ -77,23 +90,28 @@ const deployments = [
     id: "LOG_05",
     status: "ARCHIVED",
     org: "Ativa Investimentos",
+    region: "sa-east-1 (Sao Paulo)",
     roles: [
       { 
+        version: "v2.3 - v2.4",
         title: "IT Manager", 
         date: "Aug 2013 – May 2014", 
         summary: "Directed enterprise LAN/WAN deployments and led zero-downtime datacenter migrations for mission-critical trading systems."
       },
       { 
+        version: "v2.2 - v2.3",
         title: "Network Team Leader", 
         date: "Sep 2012 – Aug 2013",
         summary: "Automated maintenance workflows and backups, reducing operational toil by 50% through Ansible orchestration."
       },
       { 
+        version: "v1.9 - v2.2",
         title: "Senior Network Engineer", 
         date: "Oct 2009 – Sep 2012",
         summary: "Optimized BGP and ultra-low-latency networks for high-performance market-data systems."
       },
       { 
+        version: "v1.8 - v1.9",
         title: "Network Analyst Intern", 
         date: "Nov 2008 – Oct 2009",
         summary: "Supported legacy application transitions to virtualized environments and introduced early CI/CD practices."
@@ -104,8 +122,10 @@ const deployments = [
     id: "LOG_06",
     status: "ARCHIVED",
     org: "Alinfo",
+    region: "sa-east-1 (Sao Paulo)",
     roles: [
       { 
+        version: "v1.8",
         title: "Network Analyst", 
         date: "Jan 2008 – Nov 2008",
         summary: "Planned and executed Cisco network deployments, WiFi site surveys, and on-call rotation protocols."
@@ -116,8 +136,10 @@ const deployments = [
     id: "LOG_07",
     status: "ARCHIVED",
     org: "Assessorial Ltda Epp",
+    region: "sa-east-1 (Sao Paulo)",
     roles: [
       { 
+        version: "v1.7",
         title: "Infrastructure Analyst", 
         date: "Jul 2007 - Dec 2007",
         summary: "Managed on-prem cluster infrastructure including servers, firewalls, and storage with direct helpdesk support."
@@ -145,6 +167,9 @@ const deployments = [
                 <span class={`text-[9px] font-bold px-1.5 py-0.5 rounded border ${d.status === 'CURRENT' ? 'border-[#00ff00]/30 text-[#00ff00] bg-[#00ff00]/5' : 'border-[#858585]/30 text-[#858585] bg-[#858585]/5'}`}>
                   {d.status}
                 </span>
+                <span class="text-[8px] font-fira text-[#00ffff] border border-[#00ffff]/30 px-2 py-0.5 rounded">
+                  REGION: {d.region}
+                </span>
              </div>
              <h4 class="text-3xl font-black text-white group-hover:text-[#00ff00] transition-colors uppercase tracking-tight">{d.org}</h4>
           </div>
@@ -153,7 +178,10 @@ const deployments = [
             {d.roles.map((r) => (
               <div class="relative">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-3">
-                  <p class="text-[#00ffff] text-sm font-black font-fira uppercase tracking-tight">{r.title}</p>
+                  <div class="flex items-center gap-3">
+                    <span class="text-[9px] font-black bg-[#ff00ff] text-black px-1.5 py-0.5 rounded">{r.version}</span>
+                    <p class="text-[#00ffff] text-sm font-black font-fira uppercase tracking-tight">{r.title}</p>
+                  </div>
                   <div class="text-[10px] text-[#555] font-fira uppercase tracking-widest sm:text-right">
                     {r.date}
                   </div>
