@@ -52,9 +52,9 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
       </div>
 
       <div class="w-full">
-        <div class="bg-black border border-[#330033] rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-[0_0_50px_rgba(255,0,255,0.1)]">
+        <div class="bg-black border border-[#330033] rounded-3xl p-6 sm:p-8 relative shadow-[0_0_50px_rgba(255,0,255,0.1)] min-h-[500px] flex flex-col justify-center">
           {/* Visual representation of the Mesh with Luiz & Bob Failover Animation */}
-          <div class="w-full flex items-center justify-between gap-2 sm:gap-4 h-64 relative">
+          <div class="w-full flex items-center justify-between gap-2 sm:gap-4 h-48 relative mb-8">
              
              {/* Luiz Node */}
              <div class="z-20 flex flex-col items-center animate-failover-luiz shrink-0">
@@ -67,7 +67,7 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
              </div>
 
              {/* Connection Left */}
-             <div class="flex-1 flex items-center justify-center animate-failover-flow-left min-w-[30px]">
+             <div class="flex-1 flex items-center justify-center animate-failover-flow-left min-w-[20px]">
                 <div class="w-full h-[1px] bg-[#ff00ff] relative flex items-center justify-between">
                    <div class="w-1.5 h-1.5 border-t border-l border-[#ff00ff] rotate-[-45deg]"></div>
                    <div class="w-1.5 h-1.5 border-t border-r border-[#ff00ff] rotate-[45deg]"></div>
@@ -86,7 +86,7 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
              </div>
 
              {/* Connection Right */}
-             <div class="flex-1 flex items-center justify-center min-w-[30px]">
+             <div class="flex-1 flex items-center justify-center min-w-[20px]">
                 <div class="w-full h-[1px] bg-[#00ffff] relative flex items-center justify-between animate-failover-flow-right">
                    <div class="w-1.5 h-1.5 border-t border-l border-[#00ffff] rotate-[-45deg]"></div>
                    <div class="w-1.5 h-1.5 border-t border-r border-[#00ffff] rotate-[45deg]"></div>
@@ -107,7 +107,7 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
           </div>
 
           {/* Failover Logs */}
-          <div class="mt-8">
+          <div>
              <div class="flex items-center gap-2 mb-2 px-1">
                 <div class="w-2 h-2 rounded-full bg-[#333]"></div>
                 <span class="text-[10px] font-fira text-[#555] uppercase tracking-widest font-bold">Console:</span>
@@ -165,12 +165,12 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
 
   @keyframes project-progress {
     0% { width: 0%; opacity: 1; }
-    30% { width: 35%; opacity: 1; } /* Luiz & Bob Collaborating */
-    35% { width: 35%; opacity: 0.8; } /* Failure point - production pause/hiccup */
-    60% { width: 85%; opacity: 1; } /* Bob continuing production alone */
-    70% { width: 100%; opacity: 1; } /* Success & Luiz Reconnected */
-    90% { width: 100%; opacity: 1; } /* Hold success state */
-    100% { width: 0%; opacity: 0; } /* Reset for next cycle */
+    30% { width: 35%; opacity: 1; }
+    35% { width: 35%; opacity: 0.8; }
+    60% { width: 85%; opacity: 1; }
+    70% { width: 100%; opacity: 1; }
+    90% { width: 100%; opacity: 1; }
+    100% { width: 0%; opacity: 0; }
   }
 
   @keyframes log-reveal-1 { 0%, 0% { opacity: 0; } 5%, 95% { opacity: 1; } 100% { opacity: 0; } }
