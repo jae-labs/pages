@@ -13,21 +13,42 @@ import { Cpu, Zap, Activity } from '@lucide/astro';
       </div>
     </a>
     
-    <div class="flex items-center gap-6">
-      <div class="hidden sm:flex flex-col items-end">
+    <div class="flex items-center gap-4 sm:gap-6">
+      {/* Desktop Dropdown */}
+      <div class="hidden md:block relative group/dropdown">
+         <button class="flex items-center gap-2 px-4 py-2 border border-white/10 rounded-lg text-[10px] font-black uppercase tracking-widest text-[#858585] hover:text-neon-yellow hover:border-neon-yellow/30 transition-all">
+            <span>Modules</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover/dropdown:rotate-180 transition-transform"><path d="m6 9 6 6 6-9"/></svg>
+         </button>
+         
+         <div class="absolute top-full right-0 mt-2 w-56 bg-black border border-white/10 rounded-xl overflow-hidden shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover/dropdown:opacity-100 group-hover/dropdown:translate-y-0 group-hover/dropdown:pointer-events-auto transition-all duration-300 backdrop-blur-2xl">
+            <div class="p-2 flex flex-col">
+               <a href="#specs" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-yellow/10 hover:text-neon-yellow rounded-lg transition-all">01_Features</a>
+               <a href="#how-it-works" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-cyan/10 hover:text-neon-cyan rounded-lg transition-all">02_How it works</a>
+               <a href="#benchmarks" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-yellow/10 hover:text-neon-yellow rounded-lg transition-all">03_Benchmarks</a>
+               <a href="#reliability" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-cyan/10 hover:text-neon-cyan rounded-lg transition-all">04_Subagents</a>
+               <a href="#sponsor" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-yellow/10 hover:text-neon-yellow rounded-lg transition-all">05_Sponsor</a>
+               <a href="#reviews" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-cyan/10 hover:text-neon-cyan rounded-lg transition-all">06_Reviews</a>
+               <a href="#deployment" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-yellow/10 hover:text-neon-yellow rounded-lg transition-all">07_Changelog</a>
+               <a href="#faq" class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-neon-cyan/10 hover:text-neon-cyan rounded-lg transition-all">08_FAQ</a>
+            </div>
+         </div>
+      </div>
+
+      <div class="hidden lg:flex flex-col items-end">
         <div class="flex items-center gap-2 px-3 py-1 border border-[#330033] rounded-full text-[8px] uppercase tracking-widest text-[#00ff00] bg-[#00ff00]/5">
           <div class="w-1.5 h-1.5 rounded-full bg-[#00ff00] animate-pulse shadow-[0_0_8px_#00ff00]"></div>
           Available
         </div>
       </div>
 
-      <a href="#pricing" class="relative group px-6 py-2 bg-black border border-neon-yellow text-neon-yellow text-xs font-black uppercase tracking-widest overflow-hidden hover:text-black transition-colors duration-300">
+      <a href="#pricing" class="relative group px-4 sm:px-6 py-2 bg-black border border-neon-yellow text-neon-yellow text-[10px] sm:text-xs font-black uppercase tracking-widest overflow-hidden hover:text-black transition-colors duration-300 shrink-0">
         <div class="absolute inset-0 bg-neon-yellow translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-300"></div>
-        <span class="relative z-10">Deploy</span>
+        <span class="relative z-10">GET STARTED</span>
       </a>
 
-      {/* Sandwich Menu Toggle */}
-      <button id="menu-toggle" class="relative w-10 h-10 flex items-center justify-center text-white hover:text-neon-yellow transition-colors group">
+      {/* Sandwich Menu Toggle - Mobile Only */}
+      <button id="menu-toggle" class="md:hidden relative w-10 h-10 flex items-center justify-center text-white hover:text-neon-yellow transition-colors group">
          <div class="space-y-1.5">
             <div class="w-6 h-0.5 bg-current transition-all group-[.open]:rotate-45 group-[.open]:translate-y-2"></div>
             <div class="w-6 h-0.5 bg-current transition-all group-[.open]:opacity-0"></div>
@@ -37,51 +58,50 @@ import { Cpu, Zap, Activity } from '@lucide/astro';
     </div>
   </div>
 
-  {/* Fullscreen Mobile/Compact Menu */}
-  <div id="nav-menu" class="fixed inset-0 top-[65px] bg-black z-[250] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col items-center justify-center p-6 md:p-12">
+  {/* Fullscreen Mobile Menu - Only shows up to md breakpoint */}
+  <div id="nav-menu" class="md:hidden fixed inset-0 top-[65px] bg-black z-[250] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col items-center justify-center p-6">
     <div class="absolute inset-0 cyber-grid opacity-20 pointer-events-none"></div>
     
-    <div class="flex flex-col items-start gap-6 sm:gap-8 text-2xl sm:text-4xl font-black uppercase tracking-[0.2em] text-[#858585] relative z-10">
+    <div class="flex flex-col items-start gap-6 text-2xl font-black uppercase tracking-[0.2em] text-[#858585] relative z-10">
       <a href="#specs" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-6 group">
-         <span class="text-[10px] sm:text-xs text-neon-yellow opacity-40 group-hover:opacity-100 w-6 text-right">01</span> 
+         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 w-6 text-right">01</span> 
          <span>Features</span>
       </a>
       <a href="#how-it-works" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-6 group">
-         <span class="text-[10px] sm:text-xs text-neon-cyan opacity-40 group-hover:opacity-100 w-6 text-right">02</span> 
+         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 w-6 text-right">02</span> 
          <span>How it works</span>
       </a>
       <a href="#benchmarks" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-6 group">
-         <span class="text-[10px] sm:text-xs text-neon-yellow opacity-40 group-hover:opacity-100 w-6 text-right">03</span> 
+         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 w-6 text-right">03</span> 
          <span>Benchmarks</span>
       </a>
       <a href="#reliability" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-6 group">
-         <span class="text-[10px] sm:text-xs text-neon-cyan opacity-40 group-hover:opacity-100 w-6 text-right">04</span> 
+         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 w-6 text-right">04</span> 
          <span>Subagents</span>
       </a>
       <a href="#sponsor" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-6 group">
-         <span class="text-[10px] sm:text-xs text-neon-yellow opacity-40 group-hover:opacity-100 w-6 text-right">05</span> 
+         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 w-6 text-right">05</span> 
          <span>Sponsor</span>
       </a>
       <a href="#reviews" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-6 group">
-         <span class="text-[10px] sm:text-xs text-neon-cyan opacity-40 group-hover:opacity-100 w-6 text-right">06</span> 
+         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 w-6 text-right">06</span> 
          <span>Reviews</span>
       </a>
       <a href="#deployment" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-6 group">
-         <span class="text-[10px] sm:text-xs text-neon-yellow opacity-40 group-hover:opacity-100 w-6 text-right">07</span> 
+         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 w-6 text-right">07</span> 
          <span>Changelog</span>
       </a>
       <a href="#faq" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-6 group">
-         <span class="text-[10px] sm:text-xs text-neon-cyan opacity-40 group-hover:opacity-100 w-6 text-right">08</span> 
+         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 w-6 text-right">08</span> 
          <span>FAQ</span>
       </a>
       <a href="#pricing" class="nav-link hover:text-[#ffff00] transition-all flex items-center gap-6 group">
-         <span class="text-[10px] sm:text-xs text-[#ffff00] opacity-40 group-hover:opacity-100 w-6 text-right">09</span> 
+         <span class="text-[10px] text-[#ffff00] opacity-40 group-hover:opacity-100 w-6 text-right">09</span> 
          <span>Plans</span>
       </a>
     </div>
 
     <div class="mt-12 pt-12 border-t border-white/5 w-full max-w-xs text-center flex flex-col items-center z-10">
-       <span class="text-[8px] font-fira text-[#555] uppercase tracking-[0.5em] mb-4">Neural_Interface_Session_Active</span>
        <div class="flex gap-6 text-[#444]">
           <a href="https://github.com/luiz1361" target="_blank" class="hover:text-neon-yellow transition-colors"><Activity size={16} /></a>
           <a href="https://linkedin.com/in/luiz1361" target="_blank" class="hover:text-neon-cyan transition-colors"><Zap size={16} /></a>
