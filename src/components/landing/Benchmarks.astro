@@ -3,8 +3,7 @@ const benchmarks = [
   { 
     metric: "BIO-LOGIC", 
     desc: "Biological Reasoner",
-    luiz: 98, 
-    luiz_caff: 100, 
+    luiz: 100, 
     competitors: [
       { name: "Aura-Plus v1", val: 45 },
       { name: "G-Model 5 (Sim)", val: 42 },
@@ -15,8 +14,7 @@ const benchmarks = [
   { 
     metric: "N-DEEP", 
     desc: "Neural Data Patterning",
-    luiz: 95, 
-    luiz_caff: 99, 
+    luiz: 99, 
     competitors: [
       { name: "Aura-Plus v1", val: 68 },
       { name: "G-Model 5 (Sim)", val: 65 },
@@ -28,7 +26,6 @@ const benchmarks = [
     metric: "MTTR-INFRA", 
     desc: "Incident Reflex",
     luiz: 100, 
-    luiz_caff: 100, 
     competitors: [
       { name: "Aura-Plus v1", val: 20 },
       { name: "G-Model 5 (Sim)", val: 12 },
@@ -39,8 +36,7 @@ const benchmarks = [
   { 
     metric: "CTX-BUFFER", 
     desc: "Dynamic Memory",
-    luiz: 88, 
-    luiz_caff: 94, 
+    luiz: 94, 
     competitors: [
       { name: "Aura-Plus v1", val: 78 },
       { name: "G-Model 5 (Sim)", val: 70 },
@@ -51,8 +47,7 @@ const benchmarks = [
   { 
     metric: "ZERO-SHIRT", 
     desc: "Creative Output",
-    luiz: 96, 
-    luiz_caff: 98, 
+    luiz: 98, 
     competitors: [
       { name: "Aura-Plus v1", val: 64 },
       { name: "G-Model 5 (Sim)", val: 55 },
@@ -70,10 +65,9 @@ const benchmarks = [
       <h3 class="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter glitch" data-text="BENCHMARKS">BENCHMARKS</h3>
     </div>
 
-    <div class="space-y-16">
+    <div class="space-y-12">
       {benchmarks.map((b) => (
-        <div class="group border border-white/5 bg-[#050505]/40 backdrop-blur-sm p-8 rounded-2xl overflow-hidden relative">
-
+        <div class="group border border-white/10 bg-[#050505]/40 backdrop-blur-sm p-8 rounded-2xl overflow-hidden relative">
           
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
@@ -82,32 +76,22 @@ const benchmarks = [
             </div>
             <div class="flex gap-6 text-[10px] font-black uppercase">
                <div class="flex flex-col items-end">
-                  <span class="text-neon-yellow leading-none mb-1">Luiz 3.6</span>
+                  <span class="text-neon-yellow leading-none mb-1">lui.z 3.6 Pro</span>
                   <span class="text-white text-xl font-fira">{b.luiz}%</span>
-               </div>
-               <div class="flex flex-col items-end">
-                  <span class="text-neon-cyan leading-none mb-1">Luiz 3.6 Caffeinated</span>
-                  <span class="text-white text-xl font-fira">{b.luiz_caff}%</span>
                </div>
             </div>
           </div>
 
           <div class="space-y-6">
-            {/* Main Bars */}
+            {/* Main Bar */}
             <div class="space-y-2">
-               <div class="h-3 bg-white/5 rounded-full overflow-hidden relative group/bar">
+               <div class="h-4 bg-white/5 rounded-full overflow-hidden relative group/bar border border-white/5">
                   <div 
-                    class="absolute inset-y-0 left-0 bg-neon-cyan shadow-[0_0_15px_rgba(0,255,255,0.5)] transition-all duration-1000 ease-out origin-left group-hover/bar:brightness-125"
-                    style={{ width: `${b.luiz_caff}%` }}
-                  >
-                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-white/20 animate-pulse"></div>
-                  </div>
-               </div>
-               <div class="h-2 bg-white/5 rounded-full overflow-hidden relative">
-                  <div 
-                    class="absolute inset-y-0 left-0 bg-neon-yellow shadow-[0_0_10px_rgba(255,255,0,0.3)] transition-all duration-1000 delay-100 ease-out origin-left"
+                    class="absolute inset-y-0 left-0 bg-neon-yellow shadow-[0_0_20px_rgba(255,255,0,0.4)] transition-all duration-1000 ease-out origin-left group-hover/bar:brightness-125"
                     style={{ width: `${b.luiz}%` }}
-                  ></div>
+                  >
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-white/10 animate-pulse"></div>
+                  </div>
                </div>
             </div>
 
@@ -120,7 +104,7 @@ const benchmarks = [
                        <span class="text-[9px] text-[#858585] font-fira">{comp.val}%</span>
                     </div>
                     <div class="h-1 bg-white/5 rounded-full overflow-hidden">
-                       <div class="h-full bg-[#333] transition-all duration-1000 delay-300" style={{ width: `${comp.val}%` }}></div>
+                       <div class="h-full bg-[#222] transition-all duration-1000 delay-300" style={{ width: `${comp.val}%` }}></div>
                     </div>
                  </div>
                ))}
@@ -134,4 +118,4 @@ const benchmarks = [
       * All benchmarks are part of a fictional marketing parody. No biological units were actually measured for this data.
     </div>
   </div>
-</section>section>
+</section>
