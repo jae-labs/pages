@@ -4,16 +4,22 @@ import Navbar from '../components/landing/Navbar.astro';
 import Hero from '../components/landing/Hero.astro';
 import Specs from '../components/landing/Specs.astro';
 import Benchmarks from '../components/landing/Benchmarks.astro';
+import Reliability from '../components/landing/Reliability.astro';
 import Deployment from '../components/landing/Deployment.astro';
 import Pricing from '../components/landing/Pricing.astro';
+
+interface Props {
+  title: string;
+}
 ---
 
-<Layout title="Meet Agent-01">
+<Layout title="Meet LuizFCM 3.6">
   <Navbar />
   <main>
     <Hero />
     <Specs />
     <Benchmarks />
+    <Reliability />
     <Deployment />
     <Pricing />
   </main>
