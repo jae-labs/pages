@@ -73,8 +73,6 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
                 <div class="w-full h-[1px] bg-[#ff00ff] relative flex items-center justify-between px-1">
                    <div class="w-1.5 h-1.5 border-t border-l border-[#ff00ff] rotate-[-45deg]"></div>
                    <div class="w-1.5 h-1.5 border-t border-r border-[#ff00ff] rotate-[45deg]"></div>
-                   {/* Data Pulse */}
-                   <div class="absolute w-2 h-2 rounded-full bg-white shadow-[0_0_10px_#fff] animate-ping left-1/2 -translate-x-1/2"></div>
                 </div>
              </div>
 
@@ -85,7 +83,7 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
                    <ShieldCheck size={32} class="text-white mb-1 animate-bounce" />
                    <span class="text-[9px] font-black text-white tracking-widest uppercase text-center leading-tight">PROJECT<br/>ONE</span>
                 </div>
-                {/* Progress Bar in Project */}
+                {/* Progress Bar in Project - Synced to failover cycle */}
                 <div class="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#ff00ff] to-[#00ffff] animate-project-progress"></div>
              </div>
 
@@ -94,8 +92,6 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
                 <div class="w-full h-[1px] bg-[#00ffff] relative flex items-center justify-between px-1 animate-failover-flow-right">
                    <div class="w-1.5 h-1.5 border-t border-l border-[#00ffff] rotate-[-45deg]"></div>
                    <div class="w-1.5 h-1.5 border-t border-r border-[#00ffff] rotate-[45deg]"></div>
-                   {/* Data Pulse */}
-                   <div class="absolute w-2 h-2 rounded-full bg-white shadow-[0_0_10px_#fff] animate-ping left-1/2 -translate-x-1/2"></div>
                 </div>
              </div>
 
@@ -182,6 +178,6 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
   .animate-failover-image { animation: failover-image 10s infinite; }
   .animate-failover-flow-left { animation: failover-flow-left 10s infinite; transform-origin: left; }
   .animate-failover-flow-right { animation: failover-flow-right 10s infinite; }
-  .animate-project-progress { animation: project-progress 5s linear infinite; }
+  .animate-project-progress { animation: project-progress 10s linear infinite; }
   .animate-failover-logs { animation: failover-logs 10s infinite; }
 </style>
