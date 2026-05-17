@@ -11,14 +11,17 @@ import Testimonials from '../components/landing/Testimonials.astro';
 import Deployment from '../components/landing/Deployment.astro';
 import FAQ from '../components/landing/FAQ.astro';
 import Pricing from '../components/landing/Pricing.astro';
-import { Github, Linkedin, Coffee } from 'lucide-astro';
+import { Github, Linkedin, Coffee, Slack } from 'lucide-astro';
 
 interface Props {
   title: string;
 }
 ---
 
-<Layout title="Meet lui.z v3.6 Pro">
+<Layout
+  title="lui.z | THE TRUE HUMAN AGENT..."
+  description="THE TRUE HUMAN AGENT: cyberpunk-styled portfolio of Luiz F. C. Martins focused on SRE, DevOps, platform reliability, and autonomous delivery."
+>
   <Navbar />
   <main class="relative">
     <Hero />
@@ -36,18 +39,21 @@ interface Props {
   <footer class="py-12 border-t border-[#330033] bg-[#050505] px-6">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
       <div class="flex items-center gap-2">
-        <span class="font-bold text-xl tracking-tighter text-[#ffff00]">lui.z</span>
+        <span class="font-bold text-xl tracking-tighter text-[#ff8c00]">lui.z</span>
         <span class="text-[10px] text-[#555] font-fira ml-4">© 2026 lui.z</span>
       </div>
       
       <div class="flex gap-6 text-[#858585]">
-        <a href="https://github.com/luiz1361" class="hover:text-[#ffff00] transition-colors" target="_blank">
+        <a href="https://github.com/luiz1361" class="hover:text-[#ff8c00] transition-colors" target="_blank">
           <Github size={20} strokeWidth={1.5} />
+        </a>
+        <a href="https://join.slack.com/t/justanotherengineer/shared_invite/zt-23m74nwgy-STbP1b2nskLTz5Ql3NRtTQ" class="hover:text-[#ff8c00] transition-colors" target="_blank">
+          <Slack size={20} strokeWidth={1.5} />
         </a>
         <a href="https://www.linkedin.com/in/luiz1361/" class="hover:text-[#00ffff] transition-colors" target="_blank">
           <Linkedin size={20} strokeWidth={1.5} />
         </a>
-        <a href="https://buymeacoffee.com/luiz1361" class="hover:text-[#ffff00] transition-colors" target="_blank">
+        <a href="https://buymeacoffee.com/luiz1361" class="hover:text-[#ff8c00] transition-colors" target="_blank">
           <Coffee size={20} strokeWidth={1.5} />
         </a>
       </div>

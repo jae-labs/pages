@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-neon-yellow: #ffff00;
+  --color-neon-yellow: #ff8c00;
   --color-neon-cyan: #00ffff;
   --font-inter: "Inter", sans-serif;
   --font-fira: "Fira Code", monospace;
@@ -18,8 +18,8 @@
   /* Global Cyberpunk Grid */
   .cyber-grid {
     background-image: 
-      linear-gradient(to right, rgba(255, 255, 0, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 0, 0.05) 1px, transparent 1px);
+      linear-gradient(to right, rgba(255, 140, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 140, 0, 0.05) 1px, transparent 1px);
     background-size: 40px 40px;
   }
 
@@ -31,7 +31,7 @@
     background: linear-gradient(
       0deg,
       rgba(0, 0, 0, 0) 0%,
-      rgba(255, 255, 0, 0.02) 50%,
+      rgba(255, 140, 0, 0.02) 50%,
       rgba(0, 0, 0, 0) 100%
     );
     opacity: 0.1;
@@ -67,7 +67,7 @@
   
   .glitch::after {
     left: -2px;
-    text-shadow: -2px 0 #ffff00;
+    text-shadow: -2px 0 #ff8c00;
     clip: rect(44px, 450px, 56px, 0);
     animation: glitch-anim2 5s infinite linear alternate-reverse;
   }

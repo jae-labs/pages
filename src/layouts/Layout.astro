@@ -4,20 +4,65 @@ import '../styles/global.css';
 
 interface Props {
   title: string;
+  description?: string;
+  socialImage?: string;
+  noindex?: boolean;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description = 'lui.z: cyberpunk-styled human agent portfolio focused on SRE, DevOps, platform engineering, and reliability.',
+  socialImage = '/agent-hover.png',
+  noindex = false
+} = Astro.props;
+const pageTitle = title;
+const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : Astro.url.toString();
+const socialImagePath = /^(https?:)?\/\//.test(socialImage)
+  ? socialImage
+  : `${import.meta.env.BASE_URL}${socialImage.replace(/^\//, '')}`;
+const socialImageURL = /^(https?:)?\/\//.test(socialImagePath)
+  ? socialImagePath
+  : new URL(socialImagePath, Astro.site ?? Astro.url).toString();
+const websiteURL = Astro.site ? new URL(import.meta.env.BASE_URL, Astro.site).toString() : canonicalURL;
+const robotsContent = noindex
+  ? 'noindex, nofollow'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'lui.z',
+  url: websiteURL,
+  description,
+  inLanguage: 'en'
+};
+const GA_TRACKING_ID = 'G-N556PF9XWK';
 ---
 
 <!doctype html>
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="lui.z: The Next-Gen Human Agent" />
+    <meta name="description" content={description} />
+    <meta name="robots" content={robotsContent} />
+    <meta name="author" content="Luiz F. C. Martins" />
+    <meta name="theme-color" content="#050505" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
-    <title>{title} | lui.z</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="lui.z" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+    <title>{pageTitle}</title>
     <ClientRouter />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,6 +78,97 @@ const { title } = Astro.props;
     </div>
 
     <slot />
+
+    <div id="cookie-banner" class="hidden fixed bottom-4 left-4 right-4 z-[950]">
+      <div class="mx-auto max-w-4xl border border-neon-yellow/40 bg-black/95 backdrop-blur-xl rounded-2xl p-4 sm:p-5 shadow-[0_0_30px_rgba(255,140,0,0.2)]">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="text-[10px] uppercase tracking-[0.2em] text-neon-yellow font-black mb-1">Cookie Notice</p>
+            <p class="text-sm text-[#bfbfbf] leading-relaxed">
+              We use analytics cookies to improve this site. Accept to enable Google Analytics, or reject to continue without tracking.
+            </p>
+          </div>
+          <div class="flex gap-3 shrink-0">
+            <button id="cookie-reject" type="button" class="px-4 py-2 border border-white/15 rounded-lg text-xs font-black uppercase tracking-widest text-[#bfbfbf] hover:text-white hover:border-white/30 transition-colors">
+              Reject
+            </button>
+            <button id="cookie-accept" type="button" class="px-4 py-2 bg-neon-yellow text-black rounded-lg text-xs font-black uppercase tracking-widest hover:brightness-110 transition-all">
+              Accept
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline define:vars={{ GA_TRACKING_ID }}>
+      const COOKIE_CONSENT_KEY = 'cookie-consent';
+      const ACCEPTED = 'accepted';
+      const REJECTED = 'rejected';
+
+      const loadAnalytics = () => {
+        if (window.__gaInitialized) return;
+        window.__gaInitialized = true;
+
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function gtag() {
+          window.dataLayer.push(arguments);
+        };
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`;
+        document.head.appendChild(script);
+
+        window.gtag('js', new Date());
+        window.gtag('config', GA_TRACKING_ID, { anonymize_ip: true });
+      };
+
+      const initCookieBanner = () => {
+        const banner = document.getElementById('cookie-banner');
+        const accept = document.getElementById('cookie-accept');
+        const reject = document.getElementById('cookie-reject');
+        if (!banner || !accept || !reject) return;
+
+        const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+        if (consent === ACCEPTED) {
+          banner.classList.add('hidden');
+          loadAnalytics();
+          return;
+        }
+
+        if (consent === REJECTED) {
+          banner.classList.add('hidden');
+          return;
+        }
+
+        banner.classList.remove('hidden');
+
+        if (!accept.dataset.bound) {
+          accept.addEventListener('click', () => {
+            localStorage.setItem(COOKIE_CONSENT_KEY, ACCEPTED);
+            banner.classList.add('hidden');
+            loadAnalytics();
+          });
+          accept.dataset.bound = 'true';
+        }
+
+        if (!reject.dataset.bound) {
+          reject.addEventListener('click', () => {
+            localStorage.setItem(COOKIE_CONSENT_KEY, REJECTED);
+            banner.classList.add('hidden');
+          });
+          reject.dataset.bound = 'true';
+        }
+      };
+
+      if (document.readyState !== 'loading') {
+        initCookieBanner();
+      } else {
+        document.addEventListener('DOMContentLoaded', initCookieBanner, { once: true });
+      }
+
+      document.addEventListener('astro:page-load', initCookieBanner);
+    </script>
   </body>
 </html>
 
@@ -56,24 +192,24 @@ const { title } = Astro.props;
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #ffff00;
+    background: #ff8c00;
   }
 
   /* Neon Text Effects */
   .text-neon-yellow {
-    color: #ffff00;
-    text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+    color: #ff8c00;
+    text-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
   }
   .text-neon-cyan {
     color: #00ffff;
     text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
   }
   .border-neon-yellow {
-    border-color: #ffff00;
-    box-shadow: 0 0 10px rgba(255, 255, 0, 0.2);
+    border-color: #ff8c00;
+    box-shadow: 0 0 10px rgba(255, 140, 0, 0.2);
   }
   .bg-neon-yellow {
-    background-color: #ffff00;
-    box-shadow: 0 0 15px rgba(255, 255, 0, 0.4);
+    background-color: #ff8c00;
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0.4);
   }
 </style>
