@@ -1,60 +1,66 @@
 ---
 const benchmarks = [
   { 
-    metric: "BIO-LOGIC (Biological Reasoner)", 
+    metric: "BIO-LOGIC", 
+    desc: "Biological Reasoner",
     luiz: 98, 
     luiz_caff: 100, 
-    g5: 42,
-    c4: 38,
-    oplus: 45,
-    snet: 40
+    competitors: [
+      { name: "Aura-Plus v1", val: 45 },
+      { name: "G-Model 5 (Sim)", val: 42 },
+      { name: "C-Model 4 (Draft)", val: 38 },
+      { name: "Lumina-Net v2", val: 40 }
+    ]
   },
   { 
-    metric: "N-DEEP (Neural Data Patterning)", 
+    metric: "N-DEEP", 
+    desc: "Neural Data Patterning",
     luiz: 95, 
     luiz_caff: 99, 
-    g5: 65,
-    c4: 58,
-    oplus: 68,
-    snet: 62
+    competitors: [
+      { name: "Aura-Plus v1", val: 68 },
+      { name: "G-Model 5 (Sim)", val: 65 },
+      { name: "C-Model 4 (Draft)", val: 58 },
+      { name: "Lumina-Net v2", val: 62 }
+    ]
   },
   { 
-    metric: "MTTR-INFRA (Incident Reflex)", 
+    metric: "MTTR-INFRA", 
+    desc: "Incident Reflex",
     luiz: 100, 
     luiz_caff: 100, 
-    g5: 12,
-    c4: 15,
-    oplus: 20,
-    snet: 18
+    competitors: [
+      { name: "Aura-Plus v1", val: 20 },
+      { name: "G-Model 5 (Sim)", val: 12 },
+      { name: "C-Model 4 (Draft)", val: 15 },
+      { name: "Lumina-Net v2", val: 18 }
+    ]
   },
   { 
-    metric: "CTX-BUFFER (Dynamic Memory)", 
+    metric: "CTX-BUFFER", 
+    desc: "Dynamic Memory",
     luiz: 88, 
     luiz_caff: 94, 
-    g5: 70,
-    c4: 75,
-    oplus: 78,
-    snet: 72
+    competitors: [
+      { name: "Aura-Plus v1", val: 78 },
+      { name: "G-Model 5 (Sim)", val: 70 },
+      { name: "C-Model 4 (Draft)", val: 75 },
+      { name: "Lumina-Net v2", val: 72 }
+    ]
   },
   { 
-    metric: "ZERO-SHIRT (Creative Output)", 
+    metric: "ZERO-SHIRT", 
+    desc: "Creative Output",
     luiz: 96, 
     luiz_caff: 98, 
-    g5: 55,
-    c4: 60,
-    oplus: 64,
-    snet: 58
+    competitors: [
+      { name: "Aura-Plus v1", val: 64 },
+      { name: "G-Model 5 (Sim)", val: 55 },
+      { name: "C-Model 4 (Draft)", val: 60 },
+      { name: "Lumina-Net v2", val: 58 }
+    ]
   }
 ];
-
-const colors = {
-  luiz: "bg-[#ffff00]",
-  luiz_caff: "bg-[#00ffff]",
-  g5: "bg-[#333333]",
-  c4: "bg-[#222222]",
-  oplus: "bg-[#444444]",
-  snet: "bg-[#111111]"
-};
 ---
 
 <section id="benchmarks" class="py-12 px-6 relative border-y border-white/5 bg-black">
@@ -64,85 +70,68 @@ const colors = {
       <h3 class="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter glitch" data-text="BENCHMARKS">BENCHMARKS</h3>
     </div>
 
-    <div class="space-y-12 bg-black border border-white/10 rounded-3xl p-8 shadow-[0_0_50px_rgba(255,255,0,0.05)]">
+    <div class="space-y-16">
       {benchmarks.map((b) => (
-        <div class="group">
-          <div class="flex justify-between items-end mb-4">
-            <h4 class="text-white font-bold text-[10px] uppercase tracking-widest leading-none">{b.metric}</h4>
-            <div class="flex gap-4 text-[10px] font-fira uppercase leading-none">
-              <span class="text-[#ffff00]">3.6: {b.luiz}%</span>
-              <span class="text-[#00ffff]">3.6 Caff: {b.luiz_caff}%</span>
+        <div class="group border border-white/5 bg-[#050505]/40 backdrop-blur-sm p-8 rounded-2xl overflow-hidden relative">
+          <div class="hud-corner-tl !w-2 !h-2"></div>
+          <div class="hud-corner-br !w-2 !h-2"></div>
+          
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+              <h4 class="text-2xl font-black text-white italic tracking-tighter uppercase leading-none mb-1">{b.metric}</h4>
+              <span class="text-[8px] font-fira text-[#555] uppercase tracking-[0.3em]">{b.desc}</span>
+            </div>
+            <div class="flex gap-6 text-[10px] font-black uppercase">
+               <div class="flex flex-col items-end">
+                  <span class="text-neon-yellow leading-none mb-1">Luiz 3.6 Standard</span>
+                  <span class="text-white text-xl font-fira">{b.luiz}%</span>
+               </div>
+               <div class="flex flex-col items-end">
+                  <span class="text-neon-cyan leading-none mb-1">Luiz 3.6 Caffeinated</span>
+                  <span class="text-white text-xl font-fira">{b.luiz_caff}%</span>
+               </div>
             </div>
           </div>
-          
-          <div class="space-y-3">
-            {/* Luiz 3.6 Caffeinated - The Overclocker */}
-            <div class="relative h-4 bg-white/5 rounded-full overflow-hidden">
-              <div 
-                class="absolute inset-y-0 left-0 bg-[#00ffff] shadow-[0_0_15px_#00ffff] transition-all duration-1000 ease-out group-hover:scale-x-105 origin-left"
-                style={{ width: `${b.luiz_caff}%` }}
-              >
-                <div class="absolute inset-0 bg-gradient-to-r from-transparent to-white/20 animate-pulse"></div>
-              </div>
+
+          <div class="space-y-6">
+            {/* Main Bars */}
+            <div class="space-y-2">
+               <div class="h-3 bg-white/5 rounded-full overflow-hidden relative group/bar">
+                  <div 
+                    class="absolute inset-y-0 left-0 bg-neon-cyan shadow-[0_0_15px_rgba(0,255,255,0.5)] transition-all duration-1000 ease-out origin-left group-hover/bar:brightness-125"
+                    style={{ width: `${b.luiz_caff}%` }}
+                  >
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-white/20 animate-pulse"></div>
+                  </div>
+               </div>
+               <div class="h-2 bg-white/5 rounded-full overflow-hidden relative">
+                  <div 
+                    class="absolute inset-y-0 left-0 bg-neon-yellow shadow-[0_0_10px_rgba(255,255,0,0.3)] transition-all duration-1000 delay-100 ease-out origin-left"
+                    style={{ width: `${b.luiz}%` }}
+                  ></div>
+               </div>
             </div>
 
-            {/* Luiz 3.6 - Standard */}
-            <div class="relative h-2.5 bg-white/5 rounded-full overflow-hidden">
-              <div 
-                class="absolute inset-y-0 left-0 bg-[#ffff00] transition-all duration-1000 delay-100 ease-out"
-                style={{ width: `${b.luiz}%` }}
-              ></div>
-            </div>
-
-            {/* Competitors */}
-            <div class="flex gap-2 pt-1">
-               <div class="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
-                 <div class="h-full bg-[#333333]" style={{ width: `${b.g5}%` }}></div>
-               </div>
-               <div class="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
-                 <div class="h-full bg-[#222222]" style={{ width: `${b.c4}%` }}></div>
-               </div>
-               <div class="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
-                 <div class="h-full bg-[#444444]" style={{ width: `${b.oplus}%` }}></div>
-               </div>
-               <div class="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
-                 <div class="h-full bg-[#111111]" style={{ width: `${b.snet}%` }}></div>
-               </div>
+            {/* Competitor Grid */}
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-white/5">
+               {b.competitors.map((comp) => (
+                 <div>
+                    <div class="flex justify-between items-center mb-2">
+                       <span class="text-[8px] text-[#555] font-black uppercase tracking-tight truncate mr-2">{comp.name}</span>
+                       <span class="text-[9px] text-[#858585] font-fira">{comp.val}%</span>
+                    </div>
+                    <div class="h-1 bg-white/5 rounded-full overflow-hidden">
+                       <div class="h-full bg-[#333] transition-all duration-1000 delay-300" style={{ width: `${comp.val}%` }}></div>
+                    </div>
+                 </div>
+               ))}
             </div>
           </div>
         </div>
       ))}
-
-      {/* Legend */}
-      <div class="pt-8 border-t border-white/10 flex flex-wrap justify-center gap-6 text-[8px] font-fira uppercase tracking-widest">
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-[#00ffff] shadow-[0_0_5px_#00ffff]"></div>
-          <span class="text-white">Luiz 3.6 (Caff)</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-[#ffff00]"></div>
-          <span class="text-white">Luiz 3.6 (Base)</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-[#444]"></div>
-          <span class="text-[#555]">Aura-Plus v1</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-[#333]"></div>
-          <span class="text-[#555]">G-Model 5 (Sim)</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-[#222]"></div>
-          <span class="text-[#555]">C-Model 4 (Draft)</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-[#111]"></div>
-          <span class="text-[#555]">Lumina-Net v2</span>
-        </div>
-      </div>
     </div>
 
-    <div class="mt-12 text-center text-[#ffff00]/60 text-[10px] italic">
+    <div class="mt-12 text-center text-neon-yellow/40 text-[10px] italic">
       * All benchmarks are part of a fictional marketing parody. No biological units were actually measured for this data.
     </div>
   </div>
