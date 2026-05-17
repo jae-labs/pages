@@ -4,50 +4,65 @@ const deployments = [
     id: "LOG_01",
     status: "CURRENT",
     org: "Prisma",
-    role: "Senior Software Engineer (Infrastructure)",
-    date: "Jan 2026 - Present"
+    roles: [
+      { title: "Senior Software Engineer (Infrastructure)", date: "Jan 2026 - Present" }
+    ]
   },
   {
     id: "LOG_02",
     status: "ARCHIVED",
     org: "AWS",
-    role: "Senior Systems Engineer (L6)",
-    date: "Jul 2025 - Oct 2025"
+    roles: [
+      { title: "Senior Systems Engineer (L6)", date: "Jul 2025 - Oct 2025" }
+    ]
   },
   {
     id: "LOG_03",
     status: "ARCHIVED",
     org: "LearnUpon",
-    role: "Senior Staff DevOps Engineer",
-    date: "Jul 2019 - Jul 2025"
+    roles: [
+      { title: "Senior Staff DevOps Engineer", date: "Apr 2025 – Jul 2025" },
+      { title: "Staff DevOps Engineer", date: "Feb 2023 – Apr 2025" },
+      { title: "Senior DevOps Engineer", date: "Jul 2021 – Feb 2023" },
+      { title: "DevOps Engineer", date: "Jun 2020 – Jul 2021" },
+      { title: "Site Reliability Engineer", date: "Jul 2019 – Jun 2020" }
+    ]
   },
   {
     id: "LOG_04",
     status: "ARCHIVED",
     org: "Griffith College Dublin",
-    role: "Systems Operations Manager",
-    date: "Jan 2015 - Jul 2019"
+    roles: [
+      { title: "Systems Operations Manager", date: "Mar 2019 – Jul 2019" },
+      { title: "Senior Systems & Network Administrator", date: "Jan 2015 – Mar 2019" }
+    ]
   },
   {
     id: "LOG_05",
     status: "ARCHIVED",
     org: "Ativa Investimentos",
-    role: "IT Manager",
-    date: "Nov 2008 - May 2014"
+    roles: [
+      { title: "IT Manager", date: "Aug 2013 – May 2014" },
+      { title: "Network Team Leader", date: "Sep 2012 – Aug 2013" },
+      { title: "Senior Network Engineer", date: "Oct 2009 – Sep 2012" },
+      { title: "Network Analyst Intern", date: "Nov 2008 – Oct 2009" }
+    ]
   },
   {
     id: "LOG_06",
     status: "ARCHIVED",
     org: "Alinfo",
-    role: "Network Analyst",
-    date: "Jan 2008 - Nov 2008"
+    roles: [
+      { title: "Network Analyst", date: "Jan 2008 – Nov 2008" }
+    ]
   },
   {
     id: "LOG_07",
     status: "ARCHIVED",
     org: "Assessorial Ltda Epp",
-    role: "Infrastructure Analyst",
-    date: "Jul 2007 - Dec 2007"
+    roles: [
+      { title: "Infrastructure Analyst", date: "Jul 2007 - Dec 2007" }
+    ]
   }
 ];
 ---
@@ -59,26 +74,31 @@ const deployments = [
       <h3 class="text-4xl md:text-6xl font-black text-white">DEPLOYMENT HISTORY</h3>
     </div>
 
-    <div class="space-y-8">
+    <div class="space-y-12">
       {deployments.map((d) => (
         <div class="relative pl-8 border-l border-[#330033] py-2 group hover:border-[#00ff00] transition-colors">
           {/* Timeline Dot */}
-          <div class="absolute -left-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-[#111] border border-[#330033] group-hover:border-[#00ff00] group-hover:bg-[#00ff00] rounded-full shadow-[0_0_10px_rgba(0,255,0,0)] group-hover:shadow-[0_0_10px_#00ff00] transition-all"></div>
+          <div class="absolute -left-1.5 top-0 w-3 h-3 bg-[#111] border border-[#330033] group-hover:border-[#00ff00] group-hover:bg-[#00ff00] rounded-full shadow-[0_0_10px_rgba(0,255,0,0)] group-hover:shadow-[0_0_10px_#00ff00] transition-all"></div>
           
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-               <div class="flex items-center gap-3 mb-1">
-                  <span class="font-fira text-[9px] text-[#555]">{d.id}</span>
-                  <span class={`text-[9px] font-bold px-1.5 py-0.5 rounded border ${d.status === 'CURRENT' ? 'border-[#00ff00]/30 text-[#00ff00] bg-[#00ff00]/5' : 'border-[#858585]/30 text-[#858585] bg-[#858585]/5'}`}>
-                    {d.status}
-                  </span>
-               </div>
-               <h4 class="text-xl font-bold text-white group-hover:text-[#00ff00] transition-colors">{d.org}</h4>
-               <p class="text-[#00ffff] text-sm font-medium">{d.role}</p>
-            </div>
-            <div class="text-[10px] text-[#555] font-fira uppercase tracking-widest sm:text-right">
-               {d.date}
-            </div>
+          <div class="mb-4">
+             <div class="flex items-center gap-3 mb-2">
+                <span class="font-fira text-[9px] text-[#555]">{d.id}</span>
+                <span class={`text-[9px] font-bold px-1.5 py-0.5 rounded border ${d.status === 'CURRENT' ? 'border-[#00ff00]/30 text-[#00ff00] bg-[#00ff00]/5' : 'border-[#858585]/30 text-[#858585] bg-[#858585]/5'}`}>
+                  {d.status}
+                </span>
+             </div>
+             <h4 class="text-2xl font-black text-white group-hover:text-[#00ff00] transition-colors">{d.org}</h4>
+          </div>
+
+          <div class="space-y-4">
+            {d.roles.map((r) => (
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-white/5 pb-2 last:border-0">
+                <p class="text-[#00ffff] text-sm font-medium">{r.title}</p>
+                <div class="text-[9px] text-[#555] font-fira uppercase tracking-widest sm:text-right">
+                  {r.date}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       ))}
