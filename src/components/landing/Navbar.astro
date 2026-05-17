@@ -1,9 +1,9 @@
 ---
-import { Cpu, Zap, Activity, X } from '@lucide/astro';
+import { Cpu, Zap, Activity, X, Coffee } from 'lucide-astro';
 ---
 
 <nav class="fixed top-0 w-full z-[300] bg-black/80 backdrop-blur-xl border-b border-[#ffff00]/20 px-6 py-3">
-  <div class="max-w-7xl mx-auto flex justify-between items-center">
+  <div class="max-w-7xl mx-auto flex justify-between items-center relative z-[500]">
     <a href="/" class="flex items-center gap-3 group cursor-pointer relative z-[500]">
       <div class="w-10 h-10 bg-black border border-neon-yellow rounded flex items-center justify-center shadow-[0_0_15px_rgba(255,255,0,0.3)] group-hover:shadow-[0_0_20px_#ffff00] transition-all">
         <Cpu size={24} class="text-neon-yellow animate-pulse" />
@@ -60,10 +60,10 @@ import { Cpu, Zap, Activity, X } from '@lucide/astro';
 </nav>
 
 {/* Fullscreen Mobile Menu - Moved outside nav for better coverage */}
-<div id="nav-menu" class="md:hidden fixed inset-0 bg-black z-[400] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col items-center justify-center p-6">
+<div id="nav-menu" class="md:hidden fixed inset-0 bg-black z-[400] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col items-center justify-start overflow-y-auto p-6 pt-24">
   <div class="absolute inset-0 cyber-grid opacity-20 pointer-events-none"></div>
   
-  <div class="flex flex-col items-center gap-6 text-center text-2xl font-black uppercase tracking-[0.2em] text-[#858585] relative z-10 w-full">
+  <div class="flex flex-col items-center gap-6 text-center text-2xl font-black uppercase tracking-[0.2em] text-[#858585] relative z-10 w-full mb-12">
     <a href="#specs" class="nav-link hover:text-neon-yellow transition-all flex flex-col items-center group">
        <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 mb-1">01</span> 
        <span>Features</span>
@@ -102,10 +102,11 @@ import { Cpu, Zap, Activity, X } from '@lucide/astro';
     </a>
   </div>
 
-  <div class="mt-12 pt-12 border-t border-white/5 w-full max-w-xs text-center flex flex-col items-center z-10">
-     <div class="flex gap-6 text-[#444]">
+  <div class="pb-12 border-t border-white/5 w-full max-w-xs text-center flex flex-col items-center z-10 pt-12 shrink-0">
+     <div class="flex gap-8 text-[#444]">
         <a href="https://github.com/luiz1361" target="_blank" class="hover:text-neon-yellow transition-colors"><Activity size={24} /></a>
         <a href="https://linkedin.com/in/luiz1361" target="_blank" class="hover:text-neon-cyan transition-colors"><Zap size={24} /></a>
+        <a href="https://buymeacoffee.com/luiz1361" target="_blank" class="hover:text-neon-yellow transition-colors"><Coffee size={24} /></a>
      </div>
   </div>
 </div>
@@ -121,11 +122,22 @@ import { Cpu, Zap, Activity, X } from '@lucide/astro';
     document.body.classList.toggle('overflow-hidden');
   }
 
+  function closeMenu() {
+    toggle?.classList.remove('open');
+    menu?.classList.add('translate-x-full');
+    document.body.classList.remove('overflow-hidden');
+  }
+
   toggle?.addEventListener('click', toggleMenu);
 
   links.forEach(link => {
-    link.addEventListener('click', () => {
-      toggleMenu();
-    });
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Esc key support
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeMenu();
+    }
   });
 </script>
