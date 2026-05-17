@@ -1,10 +1,10 @@
 ---
-import { Cpu, Zap, Activity, X, Coffee } from 'lucide-astro';
+import { Cpu, Zap, Activity, X, Coffee } from '@lucide/astro';
 ---
 
-<nav class="fixed top-0 w-full z-[300] bg-black/80 backdrop-blur-xl border-b border-[#ffff00]/20 px-6 py-3">
-  <div class="max-w-7xl mx-auto flex justify-between items-center relative z-[500]">
-    <a href="/" class="flex items-center gap-3 group cursor-pointer relative z-[500]">
+<nav id="main-nav" class="fixed top-0 w-full z-[300] bg-black/80 backdrop-blur-xl border-b border-[#ffff00]/20 px-6 py-3 transition-colors duration-300">
+  <div class="max-w-7xl mx-auto flex justify-between items-center relative z-[600]">
+    <a href="/" class="flex items-center gap-3 group cursor-pointer">
       <div class="w-10 h-10 bg-black border border-neon-yellow rounded flex items-center justify-center shadow-[0_0_15px_rgba(255,255,0,0.3)] group-hover:shadow-[0_0_20px_#ffff00] transition-all">
         <Cpu size={24} class="text-neon-yellow animate-pulse" />
       </div>
@@ -13,7 +13,7 @@ import { Cpu, Zap, Activity, X, Coffee } from 'lucide-astro';
       </div>
     </a>
     
-    <div class="flex items-center gap-4 sm:gap-6 relative z-[500]">
+    <div class="flex items-center gap-4 sm:gap-6">
       {/* Desktop Dropdown */}
       <div class="hidden md:block relative group/dropdown">
          <button class="flex items-center gap-2 px-4 py-2 border border-white/10 rounded-lg text-[10px] font-black uppercase tracking-widest text-[#858585] hover:text-neon-yellow hover:border-neon-yellow/30 transition-all">
@@ -57,81 +57,95 @@ import { Cpu, Zap, Activity, X, Coffee } from 'lucide-astro';
       </button>
     </div>
   </div>
+
+  {/* Fullscreen Mobile Menu - Centered & Solid Black */}
+  <div id="nav-menu" class="md:hidden fixed inset-0 bg-black z-[400] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col items-center justify-start overflow-y-auto p-6 pt-32">
+    <div class="absolute inset-0 cyber-grid opacity-20 pointer-events-none"></div>
+    
+    <div class="flex flex-col items-center gap-6 text-center text-2xl font-black uppercase tracking-[0.2em] text-[#858585] relative z-10 w-full mb-16">
+      <a href="#specs" class="nav-link hover:text-neon-yellow transition-all flex flex-col items-center group">
+         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 mb-1">01</span> 
+         <span>Features</span>
+      </a>
+      <a href="#how-it-works" class="nav-link hover:text-neon-cyan transition-all flex flex-col items-center group">
+         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 mb-1">02</span> 
+         <span>How it works</span>
+      </a>
+      <a href="#benchmarks" class="nav-link hover:text-neon-yellow transition-all flex flex-col items-center group">
+         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 mb-1">03</span> 
+         <span>Benchmarks</span>
+      </a>
+      <a href="#reliability" class="nav-link hover:text-neon-cyan transition-all flex flex-col items-center group">
+         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 mb-1">04</span> 
+         <span>Subagents</span>
+      </a>
+      <a href="#sponsor" class="nav-link hover:text-neon-yellow transition-all flex flex-col items-center group">
+         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 mb-1">05</span> 
+         <span>Sponsor</span>
+      </a>
+      <a href="#reviews" class="nav-link hover:text-neon-cyan transition-all flex flex-col items-center group">
+         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 mb-1">06</span> 
+         <span>Reviews</span>
+      </a>
+      <a href="#deployment" class="nav-link hover:text-neon-yellow transition-all flex flex-col items-center group">
+         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 mb-1">07</span> 
+         <span>Changelog</span>
+      </a>
+      <a href="#faq" class="nav-link hover:text-neon-cyan transition-all flex flex-col items-center group">
+         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 mb-1">08</span> 
+         <span>FAQ</span>
+      </a>
+      <a href="#pricing" class="nav-link hover:text-[#ffff00] transition-all flex flex-col items-center group">
+         <span class="text-[10px] text-[#ffff00] opacity-40 group-hover:opacity-100 mb-1">09</span> 
+         <span>Plans</span>
+      </a>
+    </div>
+
+    <div class="pb-16 border-t border-white/10 w-full max-w-xs text-center flex flex-col items-center z-10 pt-12 shrink-0">
+       <div class="flex gap-8 text-[#444]">
+          <a href="https://github.com/luiz1361" target="_blank" class="hover:text-neon-yellow transition-colors"><Activity size={24} /></a>
+          <a href="https://linkedin.com/in/luiz1361" target="_blank" class="hover:text-neon-cyan transition-colors"><Zap size={24} /></a>
+          <a href="https://buymeacoffee.com/luiz1361" target="_blank" class="hover:text-neon-yellow transition-colors"><Coffee size={24} /></a>
+       </div>
+    </div>
+  </div>
 </nav>
-
-{/* Fullscreen Mobile Menu - Moved outside nav for better coverage */}
-<div id="nav-menu" class="md:hidden fixed inset-0 bg-black z-[400] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col items-center justify-start overflow-y-auto p-6 pt-24">
-  <div class="absolute inset-0 cyber-grid opacity-20 pointer-events-none"></div>
-  
-  <div class="flex flex-col items-center gap-6 text-center text-2xl font-black uppercase tracking-[0.2em] text-[#858585] relative z-10 w-full mb-12">
-    <a href="#specs" class="nav-link hover:text-neon-yellow transition-all flex flex-col items-center group">
-       <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 mb-1">01</span> 
-       <span>Features</span>
-    </a>
-    <a href="#how-it-works" class="nav-link hover:text-neon-cyan transition-all flex flex-col items-center group">
-       <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 mb-1">02</span> 
-       <span>How it works</span>
-    </a>
-    <a href="#benchmarks" class="nav-link hover:text-neon-yellow transition-all flex flex-col items-center group">
-       <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 mb-1">03</span> 
-       <span>Benchmarks</span>
-    </a>
-    <a href="#reliability" class="nav-link hover:text-neon-cyan transition-all flex flex-col items-center group">
-       <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 mb-1">04</span> 
-       <span>Subagents</span>
-    </a>
-    <a href="#sponsor" class="nav-link hover:text-neon-yellow transition-all flex flex-col items-center group">
-       <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 mb-1">05</span> 
-       <span>Sponsor</span>
-    </a>
-    <a href="#reviews" class="nav-link hover:text-neon-cyan transition-all flex flex-col items-center group">
-       <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 mb-1">06</span> 
-       <span>Reviews</span>
-    </a>
-    <a href="#deployment" class="nav-link hover:text-neon-yellow transition-all flex flex-col items-center group">
-       <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100 mb-1">07</span> 
-       <span>Changelog</span>
-    </a>
-    <a href="#faq" class="nav-link hover:text-neon-cyan transition-all flex flex-col items-center group">
-       <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100 mb-1">08</span> 
-       <span>FAQ</span>
-    </a>
-    <a href="#pricing" class="nav-link hover:text-[#ffff00] transition-all flex flex-col items-center group">
-       <span class="text-[10px] text-[#ffff00] opacity-40 group-hover:opacity-100 mb-1">09</span> 
-       <span>Plans</span>
-    </a>
-  </div>
-
-  <div class="pb-12 border-t border-white/5 w-full max-w-xs text-center flex flex-col items-center z-10 pt-12 shrink-0">
-     <div class="flex gap-8 text-[#444]">
-        <a href="https://github.com/luiz1361" target="_blank" class="hover:text-neon-yellow transition-colors"><Activity size={24} /></a>
-        <a href="https://linkedin.com/in/luiz1361" target="_blank" class="hover:text-neon-cyan transition-colors"><Zap size={24} /></a>
-        <a href="https://buymeacoffee.com/luiz1361" target="_blank" class="hover:text-neon-yellow transition-colors"><Coffee size={24} /></a>
-     </div>
-  </div>
-</div>
 
 <script>
   const toggle = document.getElementById('menu-toggle');
   const menu = document.getElementById('nav-menu');
+  const nav = document.getElementById('main-nav');
   const links = document.querySelectorAll('.nav-link');
 
   function toggleMenu() {
-    toggle?.classList.toggle('open');
+    const isOpen = toggle?.classList.toggle('open');
     menu?.classList.toggle('translate-x-full');
     document.body.classList.toggle('overflow-hidden');
+    
+    // Toggle nav background opacity
+    if (isOpen) {
+      nav?.classList.remove('bg-black/80');
+      nav?.classList.add('bg-black');
+    } else {
+      nav?.classList.remove('bg-black');
+      nav?.classList.add('bg-black/80');
+    }
   }
 
   function closeMenu() {
     toggle?.classList.remove('open');
     menu?.classList.add('translate-x-full');
     document.body.classList.remove('overflow-hidden');
+    nav?.classList.remove('bg-black');
+    nav?.classList.add('bg-black/80');
   }
 
   toggle?.addEventListener('click', toggleMenu);
 
   links.forEach(link => {
-    link.addEventListener('click', closeMenu);
+    link.addEventListener('click', () => {
+      closeMenu();
+    });
   });
 
   // Esc key support
