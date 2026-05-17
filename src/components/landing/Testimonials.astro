@@ -1,0 +1,70 @@
+---
+import { Quote, MessageSquareQuote } from 'lucide-astro';
+
+const reviews = [
+  {
+    text: "lui.z is an awesome SRE, with a strong vein on traditional development aspects. He approached each problem in it's own space, evaluating all the options, keep focus on the clearest, easiest solution which brings the best balance of investment and return. I can just recommend working with him!",
+    author: "Aron Kovacs",
+    org: "Prisma",
+    role: "Senior Peer Node"
+  },
+  {
+    text: "lui.z has been an exceptional member of our team for nearly 5 years. His critical thinking and troubleshooting skills under pressure are second to none. He has a fantastic ability to absorb complex knowledge and is able in turn to pass this on to others regardless of their skill level. Whilst working with us he completed his MSc part-time and managed both academic and office workloads with ease, graduating first in his class and at the same time designing and delivering large and complex projects within the department. He is a consummate professional, always striving to improve his knowledge and skills so he can offer more to those he works with.",
+    author: "John Molohan",
+    org: "Griffith College Dublin",
+    role: "Operational Lead"
+  },
+  {
+    text: "lui.z was one of the best IT professionals I’ve ever worked with. He has an excellent level of knowledge, especially in networking. He is very determined and enjoys learning new things. Very humble, he takes on any challenge to achieve his goals.",
+    author: "Davi Quixadá",
+    org: "Ativa Investimentos",
+    role: "Network Architect"
+  },
+  {
+    text: "A good person and an excellent professional. Dedicated and committed to the company.",
+    author: "Eloi Silva",
+    org: "Assessorial Ltda Epp",
+    role: "Unit Manager"
+  }
+];
+---
+
+<section id="reviews" class="py-12 px-6 relative bg-black border-y border-white/5">
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="mb-16 relative">
+      <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-12 bg-neon-cyan"></div>
+      <h3 class="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter glitch" data-text="VALIDATIONS">VALIDATIONS</h3>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {reviews.map((r) => (
+        <div class="group border border-white/5 bg-[#050505]/40 backdrop-blur-sm p-8 rounded-2xl hover:border-neon-cyan/30 transition-all duration-500 relative flex flex-col shadow-inner">
+          <div class="mb-6 text-neon-yellow/40 group-hover:text-neon-yellow transition-colors">
+            <MessageSquareQuote size={32} />
+          </div>
+          
+          <p class="text-sm text-[#888] leading-relaxed mb-8 flex-1 italic">
+            "{r.text}"
+          </p>
+
+          <div class="pt-6 border-t border-white/5 flex items-center justify-between">
+            <div>
+              <span class="block text-white font-black text-xs uppercase tracking-tight">{r.author}</span>
+              <span class="text-[8px] font-fira text-[#555] uppercase tracking-widest">{r.org}</span>
+            </div>
+            <div class="text-right">
+               <span class="inline-block px-2 py-0.5 rounded border border-[#333] text-[7px] font-black text-[#444] uppercase tracking-widest">
+                  {r.role}
+               </span>
+            </div>
+          </div>
+          
+          {/* Decorative ID */}
+          <div class="absolute top-4 right-4 text-[6px] font-fira text-[#222] uppercase tracking-[0.3em]">
+            PEER_VALIDATION_STAMP_{r.author.split(' ')[0].toUpperCase()}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
