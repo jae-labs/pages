@@ -1,5 +1,5 @@
 ---
-import { MessageSquare, ArrowRight } from 'lucide-astro';
+import { MessageSquare, Ship, GraduationCap } from 'lucide-astro';
 ---
 
 <section id="how-it-works" class="py-12 px-6 relative bg-black border-y border-white/5">
@@ -10,15 +10,49 @@ import { MessageSquare, ArrowRight } from 'lucide-astro';
     </div>
 
     <div class="grid grid-cols-1 gap-16 md:gap-24">
-      {/* Slack Interaction 1 */}
+      {/* Step 01: Deployment */}
       <div class="group border border-white/10 bg-[#050505]/40 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl transition-all hover:border-neon-yellow/30">
-        <div class="p-8 md:p-12 flex flex-col md:flex-row gap-12 items-center">
+        <div class="p-8 md:p-12 flex flex-col md:flex-row-reverse gap-12 items-center">
           <div class="flex-1">
             <div class="flex items-center gap-3 mb-6">
               <div class="w-10 h-10 rounded-full bg-neon-yellow/10 flex items-center justify-center text-neon-yellow shadow-[0_0_15px_rgba(255,255,0,0.2)]">
+                <Ship size={24} />
+              </div>
+              <span class="text-xs font-fira text-neon-yellow uppercase tracking-[0.3em] font-bold">Step_01: Deployment</span>
+            </div>
+            
+            <h4 class="text-3xl font-black text-white uppercase tracking-tight mb-6 italic">
+              Deploy lui.z on the company
+            </h4>
+            
+            <p class="text-[#888] leading-relaxed">
+              Provision the unit into your organizational cluster. Fully compatible with standard corporate protocols and culture. One seat available for immediate integration.
+            </p>
+          </div>
+
+          <div class="flex-1 flex justify-center">
+             <div class="relative w-48 h-48 sm:w-64 sm:h-64">
+                <div class="absolute inset-0 bg-neon-yellow/5 rounded-full animate-ping"></div>
+                <div class="absolute inset-4 border-2 border-dashed border-neon-yellow/20 rounded-full animate-[spin_10s_linear_infinite]"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                   <div class="w-24 h-24 sm:w-32 sm:h-32 bg-black border border-neon-yellow rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(255,255,0,0.2)]">
+                      <Ship size={48} class="text-neon-yellow" />
+                   </div>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Slack Interaction 1 (Step 02) */}
+      <div class="group border border-white/10 bg-[#050505]/40 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl transition-all hover:border-neon-cyan/30">
+        <div class="p-8 md:p-12 flex flex-col md:flex-row gap-12 items-center">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 rounded-full bg-neon-cyan/10 flex items-center justify-center text-neon-cyan shadow-[0_0_15px_rgba(0,255,255,0.2)]">
                 <MessageSquare size={24} />
               </div>
-              <span class="text-xs font-fira text-neon-yellow uppercase tracking-[0.3em] font-bold">Step_01: Communication</span>
+              <span class="text-xs font-fira text-neon-cyan uppercase tracking-[0.3em] font-bold">Step_02: Communication</span>
             </div>
             
             <h4 class="text-3xl font-black text-white uppercase tracking-tight mb-6 italic">
@@ -31,7 +65,7 @@ import { MessageSquare, ArrowRight } from 'lucide-astro';
           </div>
 
           <div class="flex-1 w-full max-w-md relative group/img">
-            <div class="absolute -inset-1 bg-gradient-to-r from-neon-yellow to-neon-cyan rounded-2xl blur opacity-20 group-hover/img:opacity-40 transition duration-1000"></div>
+            <div class="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-yellow rounded-2xl blur opacity-20 group-hover/img:opacity-40 transition duration-1000"></div>
             <div class="relative bg-[#1a1d21] border border-white/10 rounded-xl overflow-hidden shadow-2xl">
               <div class="bg-[#121519] px-4 py-2 flex items-center gap-2 border-b border-white/5">
                 <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
@@ -45,15 +79,15 @@ import { MessageSquare, ArrowRight } from 'lucide-astro';
         </div>
       </div>
 
-      {/* Slack Interaction 2 */}
-      <div class="group border border-white/10 bg-[#050505]/40 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl transition-all hover:border-neon-cyan/30">
+      {/* Slack Interaction 2 (Step 03) */}
+      <div class="group border border-white/10 bg-[#050505]/40 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl transition-all hover:border-neon-yellow/30">
         <div class="p-8 md:p-12 flex flex-col md:flex-row-reverse gap-12 items-center">
           <div class="flex-1">
             <div class="flex items-center gap-3 mb-6">
-              <div class="w-10 h-10 rounded-full bg-neon-cyan/10 flex items-center justify-center text-neon-cyan shadow-[0_0_15px_rgba(0,255,255,0.2)]">
+              <div class="w-10 h-10 rounded-full bg-neon-yellow/10 flex items-center justify-center text-neon-yellow shadow-[0_0_15px_rgba(255,255,0,0.2)]">
                 <MessageSquare size={24} />
               </div>
-              <span class="text-xs font-fira text-neon-cyan uppercase tracking-[0.3em] font-bold">Step_02: Autonomous Ops</span>
+              <span class="text-xs font-fira text-neon-yellow uppercase tracking-[0.3em] font-bold">Step_03: Autonomous Ops</span>
             </div>
             
             <h4 class="text-3xl font-black text-white uppercase tracking-tight mb-6 italic">
@@ -66,7 +100,7 @@ import { MessageSquare, ArrowRight } from 'lucide-astro';
           </div>
 
           <div class="flex-1 w-full max-w-md relative group/img">
-            <div class="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-yellow rounded-2xl blur opacity-20 group-hover/img:opacity-40 transition duration-1000"></div>
+            <div class="absolute -inset-1 bg-gradient-to-r from-neon-yellow to-neon-cyan rounded-2xl blur opacity-20 group-hover/img:opacity-40 transition duration-1000"></div>
             <div class="relative bg-[#1a1d21] border border-white/10 rounded-xl overflow-hidden shadow-2xl">
               <div class="bg-[#121519] px-4 py-2 flex items-center gap-2 border-b border-white/5">
                 <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
@@ -76,6 +110,40 @@ import { MessageSquare, ArrowRight } from 'lucide-astro';
               </div>
               <img src="/slack-chat-2.png" alt="Slack conversation 2" class="w-full h-auto" />
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Step 04: On-boarding */}
+      <div class="group border border-white/10 bg-[#050505]/40 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl transition-all hover:border-neon-cyan/30">
+        <div class="p-8 md:p-12 flex flex-col md:flex-row gap-12 items-center">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 rounded-full bg-neon-cyan/10 flex items-center justify-center text-neon-cyan shadow-[0_0_15px_rgba(0,255,255,0.2)]">
+                <GraduationCap size={24} />
+              </div>
+              <span class="text-xs font-fira text-neon-cyan uppercase tracking-[0.3em] font-bold">Step_04: Neural Training</span>
+            </div>
+            
+            <h4 class="text-3xl font-black text-white uppercase tracking-tight mb-6 italic">
+              Optional On-boarding
+            </h4>
+            
+            <p class="text-[#888] leading-relaxed">
+              Highly recommended for best results. lui.z adapts to your specific internal documents, goals, and technical requirements to achieve peak operational synergy.
+            </p>
+          </div>
+
+          <div class="flex-1 flex justify-center">
+             <div class="relative w-48 h-48 sm:w-64 sm:h-64">
+                <div class="absolute inset-0 bg-neon-cyan/5 rounded-xl rotate-6 group-hover:rotate-12 transition-transform"></div>
+                <div class="absolute inset-0 bg-black border border-neon-cyan rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(0,255,255,0.2)]">
+                   <div class="flex flex-col items-center gap-4">
+                      <GraduationCap size={64} class="text-neon-cyan" />
+                      <span class="text-[10px] font-fira text-white/30 uppercase tracking-widest">Knowledge_Transfer_Active</span>
+                   </div>
+                </div>
+             </div>
           </div>
         </div>
       </div>
