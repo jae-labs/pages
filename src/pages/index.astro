@@ -17,36 +17,68 @@ interface Props {
 <Layout title="Meet LuizFCM 3.6">
   <Navbar />
   <main class="relative">
-    <div class="relative"><Hero /></div>
+    <div class="relative min-h-screen flex flex-col snap-start">
+      <Hero />
+      <div class="mt-auto pb-12 flex justify-center w-full">
+         <a href="#specs" class="w-10 h-10 border border-neon-pink/30 rounded-full flex items-center justify-center text-neon-pink animate-bounce hover:bg-neon-pink/10 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-9"/></svg>
+         </a>
+      </div>
+    </div>
     
-    <div class="relative border-y border-white/5 py-8">
+    <div id="specs" class="relative border-y border-white/5 py-24 min-h-screen flex flex-col justify-center snap-start">
       <div class="hud-corner-tl !left-4 !top-4"></div>
       <div class="hud-corner-tr !right-4 !top-4"></div>
       <Specs />
+      <div class="mt-auto pb-12 flex justify-center w-full">
+         <a href="#benchmarks" class="w-10 h-10 border border-neon-cyan/30 rounded-full flex items-center justify-center text-neon-cyan animate-bounce hover:bg-neon-cyan/10 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-9"/></svg>
+         </a>
+      </div>
     </div>
 
-    <div class="relative border-y border-white/5 py-8">
+    <div id="benchmarks" class="relative border-y border-white/5 py-24 min-h-screen flex flex-col justify-center snap-start">
       <Benchmarks />
+      <div class="mt-auto pb-12 flex justify-center w-full">
+         <a href="#reliability" class="w-10 h-10 border border-neon-pink/30 rounded-full flex items-center justify-center text-neon-pink animate-bounce hover:bg-neon-pink/10 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-9"/></svg>
+         </a>
+      </div>
     </div>
 
-    <div class="relative border-y border-white/5 py-8">
+    <div id="reliability" class="relative border-y border-white/5 py-24 min-h-screen flex flex-col justify-center snap-start">
       <div class="hud-corner-bl !left-4 !bottom-4"></div>
       <div class="hud-corner-br !right-4 !bottom-4"></div>
       <Reliability />
+      <div class="mt-auto pb-12 flex justify-center w-full">
+         <a href="#sponsor" class="w-10 h-10 border border-neon-cyan/30 rounded-full flex items-center justify-center text-neon-cyan animate-bounce hover:bg-neon-cyan/10 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-9"/></svg>
+         </a>
+      </div>
     </div>
 
-    <div class="relative border-y border-white/5 py-8">
+    <div id="sponsor" class="relative border-y border-white/5 py-24 min-h-screen flex flex-col justify-center snap-start">
       <Sponsor />
+      <div class="mt-auto pb-12 flex justify-center w-full">
+         <a href="#deployment" class="w-10 h-10 border border-neon-pink/30 rounded-full flex items-center justify-center text-neon-pink animate-bounce hover:bg-neon-pink/10 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-9"/></svg>
+         </a>
+      </div>
     </div>
 
-    <div class="relative border-y border-white/5 py-8">
+    <div id="deployment" class="relative border-y border-white/5 py-24 min-h-screen flex flex-col justify-center snap-start">
        <div class="absolute top-4 left-4 text-[8px] font-fira text-white/20 uppercase tracking-widest">
           Version_Log_Buffer // Read_Only
        </div>
       <Deployment />
+      <div class="mt-auto pb-12 flex justify-center w-full">
+         <a href="#pricing" class="w-10 h-10 border border-neon-cyan/30 rounded-full flex items-center justify-center text-neon-cyan animate-bounce hover:bg-neon-cyan/10 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-9"/></svg>
+         </a>
+      </div>
     </div>
 
-    <div class="relative border-y border-white/5 py-8 bg-[#050505]/50">
+    <div id="pricing" class="relative border-y border-white/5 py-24 min-h-screen flex flex-col justify-center snap-start bg-[#050505]/50">
       <Pricing />
     </div>
   </main>
