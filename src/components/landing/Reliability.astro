@@ -109,17 +109,23 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
           </div>
 
           {/* Failover Logs */}
-          <div class="mt-8 bg-black border border-white/10 rounded-xl p-4 font-fira text-[10px] overflow-hidden h-32 relative">
-             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 pointer-events-none z-10"></div>
-             <div class="space-y-1 animate-failover-logs text-[#858585]">
-                <p class="text-[#00ff00] uppercase">[OK] LUIZ & BOB COLLABORATING ON PROJECT ONE</p>
-                <p class="text-[#ff00ff] uppercase">[LUIZ] SYNCING_PROJECT_STATE...</p>
-                <p class="text-[#00ffff] uppercase">[BOB] FETCHING_LATEST_COMMITS...</p>
-                <p class="text-[#ff0000] font-black animate-pulse uppercase">!! [ALERT] LUIZ_AGI_3.6 DISCONNECTED !!</p>
-                <p class="text-[#00ffff] uppercase">[FAILOVER] BOB_AGENT TAKING OVER LUIZ_PIPELINE</p>
-                <p class="text-[#00ffff] uppercase">[SUCCESS] PROJECT ONE PRODUCTION UNINTERRUPTED</p>
-                <p class="text-[#00ff00] uppercase">[OK] LUIZ_AGI_3.6 RECONNECTED</p>
-                <p class="uppercase">[INFO] BI-DIRECTIONAL SYNC RESTORED...</p>
+          <div class="mt-8">
+             <div class="flex items-center gap-2 mb-2 px-1">
+                <div class="w-2 h-2 rounded-full bg-[#333]"></div>
+                <span class="text-[10px] font-fira text-[#555] uppercase tracking-widest font-bold">Console:</span>
+             </div>
+             <div class="bg-black border border-white/10 rounded-xl p-4 font-fira text-[10px] overflow-hidden h-36 relative">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 pointer-events-none z-10"></div>
+                <div class="space-y-1 relative">
+                   <p class="text-[#00ff00] uppercase animate-log-row-1">[OK] LUIZ & BOB COLLABORATING ON PROJECT ONE</p>
+                   <p class="text-[#ff00ff] uppercase animate-log-row-2">[LUIZ] SYNCING_PROJECT_STATE...</p>
+                   <p class="text-[#00ffff] uppercase animate-log-row-3">[BOB] FETCHING_LATEST_COMMITS...</p>
+                   <p class="text-[#ff0000] font-black uppercase animate-log-row-4">!! [ALERT] LUIZ_AGI_3.6 DISCONNECTED !!</p>
+                   <p class="text-[#00ffff] uppercase animate-log-row-5">[FAILOVER] BOB_AGENT TAKING OVER LUIZ_PIPELINE</p>
+                   <p class="text-[#00ffff] uppercase animate-log-row-6">[SUCCESS] PROJECT ONE PRODUCTION UNINTERRUPTED</p>
+                   <p class="text-[#00ff00] uppercase animate-log-row-7">[OK] LUIZ_AGI_3.6 RECONNECTED</p>
+                   <p class="uppercase animate-log-row-8">[INFO] BI-DIRECTIONAL SYNC RESTORED...</p>
+                </div>
              </div>
           </div>
         </div>
@@ -169,14 +175,23 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
     100% { width: 0%; opacity: 0; } /* Reset for next cycle */
   }
 
-  @keyframes failover-logs {
-    0% { transform: translateY(0); }
-    30% { transform: translateY(-20px); }
-    40% { transform: translateY(-60px); }
-    60% { transform: translateY(-100px); }
-    70% { transform: translateY(-140px); }
-    100% { transform: translateY(0); }
-  }
+  @keyframes log-reveal-1 { 0%, 0% { opacity: 0; } 5%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-2 { 0%, 10% { opacity: 0; } 15%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-3 { 0%, 20% { opacity: 0; } 25%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-4 { 0%, 35% { opacity: 0; } 40%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-5 { 0%, 45% { opacity: 0; } 50%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-6 { 0%, 55% { opacity: 0; } 60%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-7 { 0%, 65% { opacity: 0; } 70%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-8 { 0%, 75% { opacity: 0; } 80%, 95% { opacity: 1; } 100% { opacity: 0; } }
+
+  .animate-log-row-1 { animation: log-reveal-1 10s infinite; opacity: 0; }
+  .animate-log-row-2 { animation: log-reveal-2 10s infinite; opacity: 0; }
+  .animate-log-row-3 { animation: log-reveal-3 10s infinite; opacity: 0; }
+  .animate-log-row-4 { animation: log-reveal-4 10s infinite; opacity: 0; }
+  .animate-log-row-5 { animation: log-reveal-5 10s infinite; opacity: 0; }
+  .animate-log-row-6 { animation: log-reveal-6 10s infinite; opacity: 0; }
+  .animate-log-row-7 { animation: log-reveal-7 10s infinite; opacity: 0; }
+  .animate-log-row-8 { animation: log-reveal-8 10s infinite; opacity: 0; }
 
   .animate-failover-luiz { animation: failover-luiz 10s infinite; }
   .animate-failover-bob { animation: failover-bob 10s infinite; }
@@ -184,5 +199,4 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
   .animate-failover-flow-left { animation: failover-flow-left 10s infinite; transform-origin: left; }
   .animate-failover-flow-right { animation: failover-flow-right 10s infinite; }
   .animate-project-progress { animation: project-progress 10s linear infinite; }
-  .animate-failover-logs { animation: failover-logs 10s infinite; }
 </style>
