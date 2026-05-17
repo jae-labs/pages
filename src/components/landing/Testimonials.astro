@@ -49,19 +49,14 @@ const reviews = [
 
           <div class="pt-6 border-t border-white/5 flex items-center justify-between">
             <div>
-              <span class="block text-white font-black text-xs uppercase tracking-tight">{r.author}</span>
-              <span class="text-[8px] font-fira text-[#555] uppercase tracking-widest">{r.org}</span>
-            </div>
-            <div class="text-right">
-               <span class="inline-block px-2 py-0.5 rounded border border-[#333] text-[7px] font-black text-[#444] uppercase tracking-widest">
-                  {r.role}
-               </span>
+              <span class="block text-white font-black text-xs uppercase tracking-tight">{r.org}</span>
+              <span class="text-[8px] font-fira text-[#555] uppercase tracking-widest">Validated Deployment Node</span>
             </div>
           </div>
           
           {/* Decorative ID */}
           <div class="absolute top-4 right-4 text-[6px] font-fira text-[#222] uppercase tracking-[0.3em]">
-            PEER_VALIDATION_STAMP_{r.author.split(' ')[0].toUpperCase()}
+            PEER_VALIDATION_STAMP_{r.org.split(' ')[0].toUpperCase()}
           </div>
         </div>
       ))}
