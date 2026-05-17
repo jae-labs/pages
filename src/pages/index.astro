@@ -17,8 +17,8 @@ interface Props {
 <Layout title="Meet LuizFCM 3.6">
   <Navbar />
   <main class="relative h-screen overflow-y-auto snap-y snap-mandatory scroll-smooth">
-    <div id="hero" class="relative h-screen min-h-screen flex flex-col snap-start overflow-hidden">
-      <div class="flex-1 flex flex-col justify-center"><Hero /></div>
+    <div id="hero" class="relative min-h-screen flex flex-col snap-start">
+      <div class="flex-1 flex flex-col justify-center py-12"><Hero /></div>
       <div class="pb-12 flex justify-center w-full shrink-0">
          <a href="#specs" class="w-10 h-10 border border-neon-pink/30 rounded-full flex items-center justify-center text-neon-pink animate-bounce hover:bg-neon-pink/10 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-9"/></svg>
@@ -26,10 +26,10 @@ interface Props {
       </div>
     </div>
     
-    <div id="specs" class="relative h-screen min-h-screen flex flex-col snap-start overflow-hidden border-y border-white/5">
+    <div id="specs" class="relative min-h-screen flex flex-col snap-start border-y border-white/5">
       <div class="hud-corner-tl !left-4 !top-4"></div>
       <div class="hud-corner-tr !right-4 !top-4"></div>
-      <div class="flex-1 flex flex-col justify-center overflow-y-auto py-12"><Specs /></div>
+      <div class="flex-1 flex flex-col justify-center py-24"><Specs /></div>
       <div class="pb-12 flex justify-center w-full shrink-0">
          <a href="#benchmarks" class="w-10 h-10 border border-neon-cyan/30 rounded-full flex items-center justify-center text-neon-cyan animate-bounce hover:bg-neon-cyan/10 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-9"/></svg>
@@ -37,8 +37,8 @@ interface Props {
       </div>
     </div>
 
-    <div id="benchmarks" class="relative h-screen min-h-screen flex flex-col snap-start overflow-hidden border-y border-white/5">
-      <div class="flex-1 flex flex-col justify-center overflow-y-auto py-12"><Benchmarks /></div>
+    <div id="benchmarks" class="relative min-h-screen flex flex-col snap-start border-y border-white/5">
+      <div class="flex-1 flex flex-col justify-center py-24"><Benchmarks /></div>
       <div class="pb-12 flex justify-center w-full shrink-0">
          <a href="#reliability" class="w-10 h-10 border border-neon-pink/30 rounded-full flex items-center justify-center text-neon-pink animate-bounce hover:bg-neon-pink/10 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-9"/></svg>
@@ -46,10 +46,10 @@ interface Props {
       </div>
     </div>
 
-    <div id="reliability" class="relative h-screen min-h-screen flex flex-col snap-start overflow-hidden border-y border-white/5">
+    <div id="reliability" class="relative min-h-screen flex flex-col snap-start border-y border-white/5">
       <div class="hud-corner-bl !left-4 !bottom-4"></div>
       <div class="hud-corner-br !right-4 !bottom-4"></div>
-      <div class="flex-1 flex flex-col justify-center overflow-y-auto py-12"><Reliability /></div>
+      <div class="flex-1 flex flex-col justify-center py-24"><Reliability /></div>
       <div class="pb-12 flex justify-center w-full shrink-0">
          <a href="#sponsor" class="w-10 h-10 border border-neon-cyan/30 rounded-full flex items-center justify-center text-neon-cyan animate-bounce hover:bg-neon-cyan/10 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-9"/></svg>
@@ -57,8 +57,8 @@ interface Props {
       </div>
     </div>
 
-    <div id="sponsor" class="relative h-screen min-h-screen flex flex-col snap-start overflow-hidden border-y border-white/5">
-      <div class="flex-1 flex flex-col justify-center overflow-y-auto py-12"><Sponsor /></div>
+    <div id="sponsor" class="relative min-h-screen flex flex-col snap-start border-y border-white/5">
+      <div class="flex-1 flex flex-col justify-center py-24"><Sponsor /></div>
       <div class="pb-12 flex justify-center w-full shrink-0">
          <a href="#deployment" class="w-10 h-10 border border-neon-pink/30 rounded-full flex items-center justify-center text-neon-pink animate-bounce hover:bg-neon-pink/10 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-9"/></svg>
@@ -66,11 +66,11 @@ interface Props {
       </div>
     </div>
 
-    <div id="deployment" class="relative h-screen min-h-screen flex flex-col snap-start overflow-hidden border-y border-white/5">
+    <div id="deployment" class="relative min-h-screen flex flex-col snap-start border-y border-white/5">
        <div class="absolute top-4 left-4 text-[8px] font-fira text-white/20 uppercase tracking-widest z-20">
           Version_Log_Buffer // Read_Only
        </div>
-      <div class="flex-1 flex flex-col justify-center overflow-y-auto py-24 px-4 sm:px-12"><Deployment /></div>
+      <div class="flex-1 flex flex-col justify-center py-24 px-4 sm:px-12"><Deployment /></div>
       <div class="pb-12 flex justify-center w-full shrink-0">
          <a href="#pricing" class="w-10 h-10 border border-neon-cyan/30 rounded-full flex items-center justify-center text-neon-cyan animate-bounce hover:bg-neon-cyan/10 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-9"/></svg>
@@ -78,8 +78,13 @@ interface Props {
       </div>
     </div>
 
-    <div id="pricing" class="relative h-screen min-h-screen flex flex-col snap-start overflow-hidden border-y border-white/5 bg-[#050505]/50">
-      <div class="flex-1 flex flex-col justify-center overflow-y-auto py-12"><Pricing /></div>
+    <div id="pricing" class="relative min-h-screen flex flex-col snap-start border-y border-white/5 bg-[#050505]/50">
+      <div class="flex-1 flex flex-col justify-center py-24"><Pricing /></div>
+      <div class="pb-12 flex justify-center w-full shrink-0">
+         <a href="#hero" class="w-10 h-10 border border-neon-pink/30 rounded-full flex items-center justify-center text-neon-pink animate-bounce hover:bg-neon-pink/10 transition-colors rotate-180">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-9"/></svg>
+         </a>
+      </div>
     </div>
   </main>
   
