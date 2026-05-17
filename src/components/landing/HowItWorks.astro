@@ -1,0 +1,55 @@
+---
+import { MessageSquare, ArrowRight } from 'lucide-astro';
+---
+
+<section id="how-it-works" class="py-12 px-6 relative bg-black border-y border-white/5">
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="mb-16 relative">
+      <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-12 bg-neon-yellow"></div>
+      <h3 class="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter glitch" data-text="HOW IT WORKS">HOW IT WORKS</h3>
+    </div>
+
+    <div class="grid grid-cols-1 gap-12">
+      {/* Slack Interaction 1 */}
+      <div class="group border border-white/10 bg-[#050505]/40 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl transition-all hover:border-neon-yellow/30">
+        <div class="p-8 md:p-12 flex flex-col md:flex-row gap-12 items-center">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 rounded-full bg-neon-yellow/10 flex items-center justify-center text-neon-yellow shadow-[0_0_15px_rgba(255,255,0,0.2)]">
+                <MessageSquare size={24} />
+              </div>
+              <span class="text-xs font-fira text-neon-yellow uppercase tracking-[0.3em] font-bold">Step_01: Communication</span>
+            </div>
+            
+            <h4 class="text-3xl font-black text-white uppercase tracking-tight mb-6 italic">
+              Tell lui.z what you need in plain english
+            </h4>
+            
+            <p class="text-[#888] leading-relaxed mb-8">
+              lui.z integrates directly into your existing communication nodes. No complex prompt engineering required—just standard technical dialogue.
+            </p>
+
+            <div class="flex items-center gap-4 py-3 px-4 bg-white/5 border border-white/10 rounded-xl">
+               <div class="w-2 h-2 rounded-full bg-[#00ff00] animate-pulse"></div>
+               <span class="text-[10px] font-fira text-[#555] uppercase tracking-widest">Natural_Language_Interpreter_Active</span>
+            </div>
+          </div>
+
+          <div class="flex-1 w-full max-w-md relative group/img">
+            <div class="absolute -inset-1 bg-gradient-to-r from-neon-yellow to-neon-cyan rounded-2xl blur opacity-20 group-hover/img:opacity-40 transition duration-1000"></div>
+            <div class="relative bg-[#1a1d21] border border-white/10 rounded-xl overflow-hidden shadow-2xl">
+              {/* Fake Slack Header */}
+              <div class="bg-[#121519] px-4 py-2 flex items-center gap-2 border-b border-white/5">
+                <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
+                <div class="w-2 h-2 rounded-full bg-yellow-500/50"></div>
+                <div class="w-2 h-2 rounded-full bg-green-500/50"></div>
+                <span class="ml-2 text-[9px] font-fira text-white/30 uppercase tracking-widest">#infrastructure-ops</span>
+              </div>
+              <img src="/slack-chat-1.png" alt="Slack conversation with lui.z" class="w-full h-auto" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
