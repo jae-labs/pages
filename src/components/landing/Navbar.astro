@@ -2,29 +2,17 @@
 import { Cpu, Zap, Activity } from '@lucide/astro';
 ---
 
-<nav class="fixed top-0 w-full z-[200] bg-black/80 backdrop-blur-xl border-b border-[#ffff00]/20 px-6 py-3">
+<nav class="fixed top-0 w-full z-[300] bg-black/80 backdrop-blur-xl border-b border-[#ffff00]/20 px-6 py-3">
   <div class="max-w-7xl mx-auto flex justify-between items-center">
-    <div class="flex items-center gap-3 group cursor-pointer">
+    <a href="/" class="flex items-center gap-3 group cursor-pointer">
       <div class="w-10 h-10 bg-black border border-neon-yellow rounded flex items-center justify-center shadow-[0_0_15px_rgba(255,255,0,0.3)] group-hover:shadow-[0_0_20px_#ffff00] transition-all">
         <Cpu size={24} class="text-neon-yellow animate-pulse" />
       </div>
       <div class="flex flex-col">
         <span class="font-black text-xl tracking-tighter text-white leading-none glitch" data-text="lui.z">lui.z</span>
       </div>
-    </div>
+    </a>
     
-    <div class="hidden lg:flex items-center gap-8 text-[10px] font-black uppercase tracking-widest text-[#858585]">
-      <a href="#specs" class="hover:text-neon-yellow transition-colors py-1 border-b border-transparent hover:border-neon-yellow">01_Features</a>
-      <a href="#how-it-works" class="hover:text-neon-cyan transition-colors py-1 border-b border-transparent hover:border-neon-cyan">02_How it works</a>
-      <a href="#benchmarks" class="hover:text-neon-yellow transition-colors py-1 border-b border-transparent hover:border-neon-yellow">03_Benchmarks</a>
-      <a href="#reliability" class="hover:text-neon-cyan transition-colors py-1 border-b border-transparent hover:border-neon-cyan">04_Subagents</a>
-      <a href="#sponsor" class="hover:text-neon-yellow transition-colors py-1 border-b border-transparent hover:border-neon-yellow">05_Sponsor</a>
-      <a href="#reviews" class="hover:text-neon-cyan transition-colors py-1 border-b border-transparent hover:border-neon-cyan">06_Reviews</a>
-      <a href="#deployment" class="hover:text-neon-yellow transition-colors py-1 border-b border-transparent hover:border-neon-yellow">07_Changelog</a>
-      <a href="#faq" class="hover:text-neon-cyan transition-colors py-1 border-b border-transparent hover:border-neon-cyan">08_FAQ</a>
-      <a href="#pricing" class="hover:text-[#ffff00] transition-colors py-1 border-b border-transparent hover:border-[#ffff00]">09_Plans</a>
-    </div>
-
     <div class="flex items-center gap-6">
       <div class="hidden sm:flex flex-col items-end">
         <div class="flex items-center gap-2 px-3 py-1 border border-[#330033] rounded-full text-[8px] uppercase tracking-widest text-[#00ff00] bg-[#00ff00]/5">
@@ -32,10 +20,80 @@ import { Cpu, Zap, Activity } from '@lucide/astro';
           Available
         </div>
       </div>
+
       <a href="#pricing" class="relative group px-6 py-2 bg-black border border-neon-yellow text-neon-yellow text-xs font-black uppercase tracking-widest overflow-hidden hover:text-black transition-colors duration-300">
         <div class="absolute inset-0 bg-neon-yellow translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-300"></div>
         <span class="relative z-10">Deploy</span>
       </a>
+
+      {/* Sandwich Menu Toggle */}
+      <button id="menu-toggle" class="relative w-10 h-10 flex items-center justify-center text-white hover:text-neon-yellow transition-colors group">
+         <div class="space-y-1.5">
+            <div class="w-6 h-0.5 bg-current transition-all group-[.open]:rotate-45 group-[.open]:translate-y-2"></div>
+            <div class="w-6 h-0.5 bg-current transition-all group-[.open]:opacity-0"></div>
+            <div class="w-6 h-0.5 bg-current transition-all group-[.open]:-rotate-45 group-[.open]:-translate-y-2"></div>
+         </div>
+      </button>
+    </div>
+  </div>
+
+  {/* Fullscreen Mobile/Compact Menu */}
+  <div id="nav-menu" class="fixed inset-0 top-[65px] bg-black/95 backdrop-blur-2xl z-[250] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col items-center justify-center p-12">
+    <div class="absolute inset-0 cyber-grid opacity-20 pointer-events-none"></div>
+    
+    <div class="flex flex-col items-center gap-8 text-2xl font-black uppercase tracking-[0.2em] text-[#858585] relative z-10 w-full max-w-md">
+      <a href="#specs" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-4 w-full justify-center group">
+         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100">01</span> Features
+      </a>
+      <a href="#how-it-works" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-4 w-full justify-center group">
+         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100">02</span> How it works
+      </a>
+      <a href="#benchmarks" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-4 w-full justify-center group">
+         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100">03</span> Benchmarks
+      </a>
+      <a href="#reliability" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-4 w-full justify-center group">
+         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100">04</span> Subagents
+      </a>
+      <a href="#sponsor" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-4 w-full justify-center group">
+         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100">05</span> Sponsor
+      </a>
+      <a href="#reviews" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-4 w-full justify-center group">
+         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100">06</span> Reviews
+      </a>
+      <a href="#deployment" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-4 w-full justify-center group">
+         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100">07</span> Changelog
+      </a>
+      <a href="#faq" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-4 w-full justify-center group">
+         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100">08</span> FAQ
+      </a>
+    </div>
+
+    <div class="mt-12 pt-12 border-t border-white/5 w-full max-w-xs text-center flex flex-col items-center">
+       <span class="text-[8px] font-fira text-[#555] uppercase tracking-[0.5em] mb-4">Neural_Interface_Session_Active</span>
+       <div class="flex gap-6 text-[#444]">
+          <a href="https://github.com/luiz1361" target="_blank" class="hover:text-neon-yellow transition-colors"><Activity size={16} /></a>
+          <a href="https://linkedin.com/in/luiz1361" target="_blank" class="hover:text-neon-cyan transition-colors"><Zap size={16} /></a>
+       </div>
     </div>
   </div>
 </nav>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('nav-menu');
+  const links = document.querySelectorAll('.nav-link');
+
+  function toggleMenu() {
+    toggle?.classList.toggle('open');
+    menu?.classList.toggle('translate-x-full');
+    document.body.classList.toggle('overflow-hidden');
+  }
+
+  toggle?.addEventListener('click', toggleMenu);
+
+  links.forEach(link => {
+    link.addEventListener('click', () => {
+      toggleMenu();
+    });
+  });
+</script>
