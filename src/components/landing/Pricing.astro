@@ -6,7 +6,9 @@ const tiers = [
     desc: "Pro-bono integration for non-profits, charities, and open-source contributions.",
     features: ["Shared tenancy", "Volunteer-first priority", "Full human agent capability", "Self-hosted in eu-west-1", "Subject to bio-unit availability"],
     cta: "Contact Us",
-    color: "border-[#00ff00]/30"
+    color: "border-[#00ff00]/30",
+    tenancy: "Shared Tenancy",
+    tenancyColor: "bg-[#00ff00] text-black"
   },
   {
     name: "Enterprise",
@@ -16,12 +18,14 @@ const tiers = [
     cta: "Contact Us",
     color: "border-neon-yellow",
     popular: true,
-    urgency: "ONLY 1 LICENSE LEFT"
+    urgency: "ONLY 1 LICENSE LEFT",
+    tenancy: "Single Tenant",
+    tenancyColor: "bg-neon-yellow text-black"
   }
 ];
 ---
 
-<section id="pricing" class="py-12 px-6 bg-black relative overflow-hidden border-y border-white/5">
+<section id="pricing" class="py-12 px-6 relative overflow-hidden border-y border-white/5 bg-black">
   <div class="max-w-4xl mx-auto">
     <div class="mb-16 relative">
       <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-12 bg-neon-yellow"></div>
@@ -31,9 +35,9 @@ const tiers = [
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
       {tiers.map((t) => (
         <div class={`relative p-8 rounded-3xl border ${t.color} bg-black flex flex-col transition-transform hover:-translate-y-2 duration-500`}>
-          {t.popular && (
-            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-neon-yellow text-black text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full shadow-[0_0_20px_#ffff00]">
-              Single Tenant
+          {t.tenancy && (
+            <div class={`absolute -top-4 left-1/2 -translate-x-1/2 ${t.tenancyColor} text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.1)]`}>
+              {t.tenancy}
             </div>
           )}
 
