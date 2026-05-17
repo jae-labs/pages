@@ -61,7 +61,7 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
                 <div class="absolute inset-0 bg-gradient-to-br from-[#ff00ff]/10 to-[#00ffff]/10 animate-pulse"></div>
                 <div class="relative flex flex-col items-center">
                    <ShieldCheck size={32} class="text-white mb-1 animate-bounce" />
-                   <span class="text-[8px] font-black text-white tracking-widest uppercase">PROJ_ALPHA</span>
+                   <span class="text-[8px] font-black text-white tracking-widest uppercase text-center">PROJECT<br/>ONE</span>
                 </div>
                 {/* Progress Bar in Project */}
                 <div class="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#ff00ff] to-[#00ffff] animate-project-progress"></div>
@@ -75,8 +75,12 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
                       LUIZ_AGI_3.6
                    </div>
                 </div>
-                {/* Data Flow Line to Project */}
-                <div class="w-16 h-0.5 bg-gradient-to-r from-current to-transparent absolute top-1/2 left-full -translate-y-1/2 animate-failover-flow-left shadow-[0_0_8px_#ff00ff]"></div>
+                {/* Data Flow Line to Project - Arrows both ways */}
+                <div class="w-16 h-1 flex items-center justify-between absolute top-1/2 left-full -translate-y-1/2 animate-failover-flow-left">
+                   <div class="w-1.5 h-1.5 border-t border-l border-current rotate-[-45deg]"></div>
+                   <div class="h-[1px] flex-1 bg-current mx-1"></div>
+                   <div class="w-1.5 h-1.5 border-t border-r border-current rotate-[45deg]"></div>
+                </div>
              </div>
 
              {/* Bob Node (Peer Agent) */}
@@ -89,8 +93,12 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
                       Bob_Peer_Agent
                    </div>
                 </div>
-                {/* Data Flow Line to Project */}
-                <div class="w-16 h-0.5 bg-gradient-to-l from-[#00ffff] to-transparent absolute top-1/2 right-full -translate-y-1/2 animate-failover-flow-right shadow-[0_0_8px_#00ffff]"></div>
+                {/* Data Flow Line to Project - Arrows both ways */}
+                <div class="w-16 h-1 flex items-center justify-between absolute top-1/2 right-full -translate-y-1/2 animate-failover-flow-right">
+                   <div class="w-1.5 h-1.5 border-t border-l border-[#00ffff] rotate-[-45deg]"></div>
+                   <div class="h-[1px] flex-1 bg-[#00ffff] mx-1"></div>
+                   <div class="w-1.5 h-1.5 border-t border-r border-[#00ffff] rotate-[45deg]"></div>
+                </div>
              </div>
           </div>
 
@@ -98,14 +106,14 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
           <div class="mt-8 bg-black border border-white/10 rounded-xl p-4 font-fira text-[10px] overflow-hidden h-32 relative">
              <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 pointer-events-none z-10"></div>
              <div class="space-y-1 animate-failover-logs text-[#858585]">
-                <p class="text-[#00ff00] uppercase">[OK] LUIZ & BOB COLLABORATING ON PROJECT_ALPHA</p>
-                <p class="text-[#ff00ff] uppercase">[LUIZ] PROCESSING_CORE_BLOCKS...</p>
-                <p class="text-[#00ffff] uppercase">[BOB] OPTIMIZING_CLOUD_RESOURCES...</p>
+                <p class="text-[#00ff00] uppercase">[OK] LUIZ & BOB COLLABORATING ON PROJECT ONE</p>
+                <p class="text-[#ff00ff] uppercase">[LUIZ] SYNCING_PROJECT_STATE...</p>
+                <p class="text-[#00ffff] uppercase">[BOB] FETCHING_LATEST_COMMITS...</p>
                 <p class="text-[#ff0000] font-black animate-pulse uppercase">!! [ALERT] LUIZ_AGI_3.6 DISCONNECTED !!</p>
                 <p class="text-[#00ffff] uppercase">[FAILOVER] BOB_AGENT TAKING OVER LUIZ_PIPELINE</p>
-                <p class="text-[#00ffff] uppercase">[SUCCESS] PROJECT_ALPHA PRODUCTION UNINTERRUPTED</p>
+                <p class="text-[#00ffff] uppercase">[SUCCESS] PROJECT ONE PRODUCTION UNINTERRUPTED</p>
                 <p class="text-[#00ff00] uppercase">[OK] LUIZ_AGI_3.6 RECONNECTED</p>
-                <p class="uppercase">[INFO] RE-BALANCING WORKLOAD BETWEEN NODES...</p>
+                <p class="uppercase">[INFO] BI-DIRECTIONAL SYNC RESTORED...</p>
              </div>
           </div>
         </div>
