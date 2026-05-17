@@ -21,13 +21,13 @@ const tiers = [
 ];
 ---
 
-<section id="pricing" class="py-24 px-6 bg-black relative overflow-hidden text-center">
-  <div class="max-w-7xl mx-auto">
-    <div class="mb-20">
-      <h2 class="text-[#ffff00] font-fira text-sm mb-4 tracking-[0.3em] uppercase">Plans</h2>
+<section id="pricing" class="py-24 px-6 bg-black relative overflow-hidden">
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-16">
+      <h3 class="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter">PLANS</h3>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
       {tiers.map((t) => (
         <div class={`relative p-8 rounded-3xl border ${t.color} bg-black flex flex-col transition-transform hover:-translate-y-2 duration-500`}>
           {t.popular && (
