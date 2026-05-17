@@ -53,62 +53,107 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
 
       <div class="relative">
         <div class="bg-black border border-[#330033] rounded-3xl p-8 relative overflow-hidden shadow-[0_0_50px_rgba(255,0,255,0.1)]">
-          {/* Visual representation of the Mesh */}
+          {/* Visual representation of the Mesh with Failover Animation */}
           <div class="relative aspect-square flex items-center justify-center">
-             {/* Central Node (Luiz) */}
-             <div class="relative z-20 w-32 h-32 rounded-full border-2 border-[#ff00ff] p-1 animate-pulse">
-                <img src="/agent.png" class="w-full h-full rounded-full object-cover grayscale brightness-75 contrast-125" />
-             </div>
-
-             {/* Orbital Nodes (Peers) */}
-             <div class="absolute inset-0 flex items-center justify-center">
-                <div class="w-full h-full border border-dashed border-[#330033] rounded-full animate-[spin_20s_linear_infinite]"></div>
+             
+             {/* Failover Animation Container */}
+             <div class="relative w-full h-full flex items-center justify-center">
                 
-                {/* Node 1 - Active */}
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                  <div class="w-12 h-12 bg-[#111] border border-[#00ffff] rounded-full flex items-center justify-center text-[#00ffff] shadow-[0_0_10px_#00ffff]">
-                    <ShieldCheck size={20} />
-                  </div>
-                  <span class="text-[8px] font-fira text-[#00ffff] mt-2">PEER_ACTIVE</span>
+                {/* Central Node (Luiz) with Failover Animation */}
+                <div class="relative z-20 w-32 h-32 rounded-full p-1 transition-all duration-500 animate-failover-luiz">
+                   <div class="absolute inset-0 rounded-full border-2 border-current"></div>
+                   <img src="/agent.png" class="w-full h-full rounded-full object-cover grayscale brightness-75 contrast-125 transition-all duration-500 animate-failover-image" />
+                   
+                   {/* Status Label on Luiz */}
+                   <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-black border border-current px-2 py-0.5 rounded text-[8px] font-black animate-failover-label whitespace-nowrap">
+                      LUIZ_FCM_3.6
+                   </div>
                 </div>
 
-                {/* Node 2 - Failed/Offline */}
-                <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 flex flex-col items-center">
-                  <div class="w-12 h-12 bg-black border border-red-900 rounded-full flex items-center justify-center text-red-900 group">
-                    <ZapOff size={20} />
-                    {/* Redirecting Arrow */}
-                    <div class="absolute -top-12 left-0 w-1 h-12 bg-gradient-to-b from-[#ff00ff] to-transparent"></div>
-                  </div>
-                  <span class="text-[8px] font-fira text-red-900 mt-2">NODE_FAILURE</span>
+                {/* The Peer Node taking over */}
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-4 flex flex-col items-center z-30 animate-failover-peer">
+                   <div class="w-16 h-16 bg-black border-2 border-current rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(0,255,255,0.3)]">
+                      <ShieldCheck size={24} />
+                   </div>
+                   <span class="text-[8px] font-fira text-[#00ffff] mt-2 font-bold animate-pulse">PEER_REDUNDANCY_ACTIVE</span>
                 </div>
 
-                {/* Node 3 - Syncing */}
-                <div class="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                  <div class="w-12 h-12 bg-[#111] border border-[#330033] rounded-full flex items-center justify-center text-[#330033]">
-                    <Users size={20} />
-                  </div>
-                  <span class="text-[8px] font-fira text-[#330033] mt-2">SYNC_IN_PROGRESS</span>
-                </div>
-             </div>
+                {/* Orbital Path */}
+                <div class="absolute inset-4 border border-dashed border-[#330033] rounded-full"></div>
 
-             {/* Connectivity lines/pulses */}
-             <div class="absolute inset-0 flex items-center justify-center">
-               <div class="w-48 h-48 border border-[#ff00ff]/20 rounded-full animate-ping"></div>
+                {/* Connection Lines with Pulsing Data Flow */}
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-32 origin-top rotate-0 animate-failover-line">
+                   <div class="w-full h-full bg-gradient-to-b from-[#00ffff] to-transparent"></div>
+                   <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-[#00ffff] shadow-[0_0_10px_#00ffff]"></div>
+                </div>
              </div>
           </div>
 
-          <div class="mt-8 bg-white/5 border border-white/10 rounded-xl p-4 font-fira text-[10px] text-white/50">
-             <div class="flex justify-between mb-2">
-               <span>MESS_STABILITY</span>
-               <span class="text-[#00ff00]">OPTIMAL</span>
+          <div class="mt-8 bg-black border border-white/10 rounded-xl p-4 font-fira text-[10px] overflow-hidden h-32 relative">
+             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 pointer-events-none z-10"></div>
+             <div class="space-y-1 animate-failover-logs text-[#858585]">
+                <p class="text-[#00ff00]">[OK] LUIZ_FCM_3.6 NORMAL_OPS</p>
+                <p>[INFO] SYNCING_CLUSTER_STATE...</p>
+                <p class="text-[#ff0000] font-black animate-pulse">!! [CRITICAL] PRIMARY_UNIT_OFFLINE !!</p>
+                <p class="text-[#00ffff]">[FAILOVER] INITIATING_PEER_TAKEOVER...</p>
+                <p class="text-[#00ffff]">[SUCCESS] WORKLOAD_REROUTED_TO_PEER_01</p>
+                <p>[INFO] LUIZ_FCM_3.6 RESTARTING_BIO_HARDWARE...</p>
+                <p class="text-[#858585]">... Awaiting reconnection ...</p>
              </div>
-             <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
-               <div class="w-[99%] h-full bg-[#00ff00] shadow-[0_0_10px_#00ff00]"></div>
-             </div>
-             <p class="mt-4 text-[#858585]">LuizFCM 3.6 is currently absorbing data from 2 redundant peer clusters. Zero loss detected.</p>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes failover-luiz {
+    0%, 40% { color: #ff00ff; opacity: 1; transform: scale(1); }
+    45%, 55% { color: #ff0000; opacity: 0.8; transform: scale(0.95); }
+    60%, 90% { color: #333333; opacity: 0.5; transform: scale(0.9); }
+    95%, 100% { color: #ff00ff; opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes failover-image {
+    0%, 40% { filter: grayscale(1) brightness(0.75); }
+    45%, 90% { filter: grayscale(1) brightness(0.2); }
+    95%, 100% { filter: grayscale(1) brightness(0.75); }
+  }
+
+  @keyframes failover-label {
+    0%, 40% { content: 'LUIZ_ACTIVE'; color: #ff00ff; }
+    45%, 90% { content: 'LUIZ_OFFLINE'; color: #ff0000; }
+    95%, 100% { content: 'LUIZ_ACTIVE'; color: #ff00ff; }
+  }
+
+  @keyframes failover-peer {
+    0%, 45% { color: #333333; transform: scale(0.8) translateY(0); }
+    50%, 90% { color: #00ffff; transform: scale(1.1) translateY(-10px); }
+    95%, 100% { color: #333333; transform: scale(0.8) translateY(0); }
+  }
+
+  @keyframes failover-line {
+    0%, 45% { opacity: 0; }
+    50%, 90% { opacity: 1; }
+    95%, 100% { opacity: 0; }
+  }
+
+  @keyframes failover-logs {
+    0% { transform: translateY(0); }
+    40% { transform: translateY(-20px); }
+    50% { transform: translateY(-60px); }
+    90% { transform: translateY(-100px); }
+    100% { transform: translateY(0); }
+  }
+
+  .animate-failover-luiz { animation: failover-luiz 8s infinite; }
+  .animate-failover-image { animation: failover-image 8s infinite; }
+  .animate-failover-label { animation: failover-label 8s infinite; }
+  .animate-failover-peer { animation: failover-peer 8s infinite; }
+  .animate-failover-line { animation: failover-line 8s infinite; }
+  .animate-failover-logs { animation: failover-logs 8s infinite; }
+</style>
     </div>
   </div>
 </section>
