@@ -44,6 +44,43 @@ const { title } = Astro.props;
     </div>
 
     <slot />
+
+    <script>
+      // Keyboard Navigation for Snap Sections
+      const sections = ['hero', 'specs', 'benchmarks', 'reliability', 'sponsor', 'deployment', 'pricing'];
+      let currentSectionIndex = 0;
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          if (currentSectionIndex < sections.length - 1) {
+            currentSectionIndex++;
+            document.getElementById(sections[currentSectionIndex])?.scrollIntoView({ behavior: 'smooth' });
+          }
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          if (currentSectionIndex > 0) {
+            currentSectionIndex--;
+            document.getElementById(sections[currentSectionIndex])?.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+
+      // Update index on scroll
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const index = sections.indexOf(entry.target.id);
+            if (index !== -1) currentSectionIndex = index;
+          }
+        });
+      }, { threshold: 0.5 });
+
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    </script>
   </body>
 </html>
 
