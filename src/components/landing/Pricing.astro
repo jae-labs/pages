@@ -1,29 +1,21 @@
 ---
 const tiers = [
   {
-    name: "Volunteer",
+    name: "Community",
     price: "$0",
-    desc: "Pro-bono integration for non-profits and charities.",
-    features: ["Charity-first priority", "Full AGI capability", "Bio-unit onsite", "Subject to availability"],
+    desc: "Pro-bono integration for non-profits, charities, and open-source contributions.",
+    features: ["Volunteer-first priority", "Full AGI capability", "Self-hosted in eu-west-1", "Subject to bio-unit availability"],
     cta: "Request Donation",
     color: "border-[#00ff00]/30"
   },
   {
-    name: "Commercial",
+    name: "Enterprise",
     price: "Contact Us",
-    desc: "Single-tenant provisioning for high-scale environments.",
-    features: ["Dedicated processing power", "eu-west-1 Self-hosting", "Custom skill integration", "Hybrid/Cloud native support"],
+    desc: "Single-tenant provisioning for high-scale, mission-critical environments.",
+    features: ["Dedicated processing power", "Multi-agent failover sync", "Custom skill injection", "Full GDPR compliance", "Direct API access (Email)"],
     cta: "Provision Seat",
     color: "border-neon-pink",
     popular: true
-  },
-  {
-    name: "Strategic",
-    price: "Acquire",
-    desc: "Permanent IP and hardware unit transfer.",
-    features: ["Full unit acquisition", "Strategic IP transfer", "Unlimited scalability", "Lifetime maintenance"],
-    cta: "Contact Sales",
-    color: "border-[#330033]"
   }
 ];
 ---
@@ -33,10 +25,10 @@ const tiers = [
     <div class="mb-20">
       <h2 class="text-[#ffff00] font-fira text-sm mb-4 tracking-[0.3em] uppercase">Licensing Model</h2>
       <h3 class="text-4xl md:text-6xl font-black text-white italic">AVAILABILITY: 1 SEAT</h3>
-      <p class="mt-6 text-[#858585] max-w-2xl mx-auto">Single-tenant architecture. Only one commercial instance of LuizFCM 3.6 can be provisioned at any given time.</p>
+      <p class="mt-6 text-[#858585] max-w-2xl mx-auto">LuizFCM 3.6 follows a single-tenant model. Only one Enterprise seat can be active globally.</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left">
       {tiers.map((t) => (
         <div class={`relative p-8 rounded-3xl border ${t.color} bg-black flex flex-col transition-transform hover:-translate-y-2 duration-500`}>
           {t.popular && (
