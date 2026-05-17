@@ -1,5 +1,5 @@
 ---
-import { Cpu, Zap, Activity, X, Coffee } from '@lucide/astro';
+import { Cpu, Zap, Activity, X, Coffee, Github, Linkedin } from 'lucide-astro';
 
 const menuItems = [
   { id: "specs", name: "Features", num: "01", color: "text-neon-yellow" },
@@ -53,7 +53,7 @@ const menuItems = [
 
       <a href="#pricing" class="relative group px-4 sm:px-6 py-2 bg-black border border-neon-yellow text-neon-yellow text-[10px] sm:text-xs font-black uppercase tracking-widest overflow-hidden hover:text-black transition-colors duration-300 shrink-0">
         <div class="absolute inset-0 bg-neon-yellow translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-300"></div>
-        <span class="relative z-10">GET STARTED</span>
+        <span class="relative z-10 uppercase">GET STARTED</span>
       </a>
 
       {/* Sandwich Menu Toggle - Mobile Only */}
@@ -72,20 +72,20 @@ const menuItems = [
 <div id="nav-menu" class="md:hidden fixed inset-0 bg-black z-[400] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-y-auto">
   <div class="absolute inset-0 cyber-grid opacity-20 pointer-events-none"></div>
   
-  <div class="flex flex-col items-center justify-start min-h-screen py-32 px-6">
+  <div class="flex flex-col items-center justify-center min-h-screen py-20 px-6">
     <div class="flex flex-col items-center w-full relative z-10">
       {menuItems.map((item) => (
-        <a href={`#${item.id}`} class="nav-link w-full py-8 border-b border-white/5 flex flex-col items-center group hover:bg-white/[0.02] transition-all first:border-t">
-           <span class={`text-[10px] ${item.color} opacity-40 group-hover:opacity-100 mb-2 font-fira`}>{item.num}</span> 
-           <span class="text-2xl font-black uppercase tracking-[0.2em] text-[#858585] group-hover:text-white transition-colors">{item.name}</span>
+        <a href={`#${item.id}`} class="nav-link w-full py-4 border-b border-white/5 flex flex-col items-center group hover:bg-white/[0.02] transition-all first:border-t">
+           <span class={`text-[10px] ${item.color} opacity-40 group-hover:opacity-100 mb-1 font-fira`}>{item.num}</span> 
+           <span class="text-xl font-black uppercase tracking-[0.2em] text-[#858585] group-hover:text-white transition-colors">{item.name}</span>
         </a>
       ))}
     </div>
 
-    <div class="mt-12 pt-12 border-t border-white/5 w-full max-w-xs text-center flex flex-col items-center z-10 shrink-0 pb-12">
+    <div class="mt-8 pt-8 border-t border-white/5 w-full max-w-xs text-center flex flex-col items-center z-10 shrink-0">
        <div class="flex gap-8 text-[#444]">
-          <a href="https://github.com/luiz1361" target="_blank" class="hover:text-neon-yellow transition-colors"><Activity size={24} /></a>
-          <a href="https://linkedin.com/in/luiz1361" target="_blank" class="hover:text-neon-cyan transition-colors"><Zap size={24} /></a>
+          <a href="https://github.com/luiz1361" target="_blank" class="hover:text-neon-yellow transition-colors"><Github size={24} /></a>
+          <a href="https://linkedin.com/in/luiz1361" target="_blank" class="hover:text-neon-cyan transition-colors"><Linkedin size={24} /></a>
           <a href="https://buymeacoffee.com/luiz1361" target="_blank" class="hover:text-neon-yellow transition-colors"><Coffee size={24} /></a>
        </div>
     </div>
