@@ -38,37 +38,49 @@ import { Cpu, Zap, Activity } from '@lucide/astro';
   </div>
 
   {/* Fullscreen Mobile/Compact Menu */}
-  <div id="nav-menu" class="fixed inset-0 top-[65px] bg-black/95 backdrop-blur-2xl z-[250] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col items-center justify-center p-12">
+  <div id="nav-menu" class="fixed inset-0 top-[65px] bg-black z-[250] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col items-center justify-center p-6 md:p-12">
     <div class="absolute inset-0 cyber-grid opacity-20 pointer-events-none"></div>
     
-    <div class="flex flex-col items-center gap-8 text-2xl font-black uppercase tracking-[0.2em] text-[#858585] relative z-10 w-full max-w-md">
-      <a href="#specs" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-4 w-full justify-center group">
-         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100">01</span> Features
+    <div class="flex flex-col items-start gap-6 sm:gap-8 text-2xl sm:text-4xl font-black uppercase tracking-[0.2em] text-[#858585] relative z-10">
+      <a href="#specs" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-6 group">
+         <span class="text-[10px] sm:text-xs text-neon-yellow opacity-40 group-hover:opacity-100 w-6 text-right">01</span> 
+         <span>Features</span>
       </a>
-      <a href="#how-it-works" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-4 w-full justify-center group">
-         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100">02</span> How it works
+      <a href="#how-it-works" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-6 group">
+         <span class="text-[10px] sm:text-xs text-neon-cyan opacity-40 group-hover:opacity-100 w-6 text-right">02</span> 
+         <span>How it works</span>
       </a>
-      <a href="#benchmarks" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-4 w-full justify-center group">
-         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100">03</span> Benchmarks
+      <a href="#benchmarks" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-6 group">
+         <span class="text-[10px] sm:text-xs text-neon-yellow opacity-40 group-hover:opacity-100 w-6 text-right">03</span> 
+         <span>Benchmarks</span>
       </a>
-      <a href="#reliability" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-4 w-full justify-center group">
-         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100">04</span> Subagents
+      <a href="#reliability" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-6 group">
+         <span class="text-[10px] sm:text-xs text-neon-cyan opacity-40 group-hover:opacity-100 w-6 text-right">04</span> 
+         <span>Subagents</span>
       </a>
-      <a href="#sponsor" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-4 w-full justify-center group">
-         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100">05</span> Sponsor
+      <a href="#sponsor" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-6 group">
+         <span class="text-[10px] sm:text-xs text-neon-yellow opacity-40 group-hover:opacity-100 w-6 text-right">05</span> 
+         <span>Sponsor</span>
       </a>
-      <a href="#reviews" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-4 w-full justify-center group">
-         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100">06</span> Reviews
+      <a href="#reviews" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-6 group">
+         <span class="text-[10px] sm:text-xs text-neon-cyan opacity-40 group-hover:opacity-100 w-6 text-right">06</span> 
+         <span>Reviews</span>
       </a>
-      <a href="#deployment" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-4 w-full justify-center group">
-         <span class="text-[10px] text-neon-yellow opacity-40 group-hover:opacity-100">07</span> Changelog
+      <a href="#deployment" class="nav-link hover:text-neon-yellow transition-all flex items-center gap-6 group">
+         <span class="text-[10px] sm:text-xs text-neon-yellow opacity-40 group-hover:opacity-100 w-6 text-right">07</span> 
+         <span>Changelog</span>
       </a>
-      <a href="#faq" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-4 w-full justify-center group">
-         <span class="text-[10px] text-neon-cyan opacity-40 group-hover:opacity-100">08</span> FAQ
+      <a href="#faq" class="nav-link hover:text-neon-cyan transition-all flex items-center gap-6 group">
+         <span class="text-[10px] sm:text-xs text-neon-cyan opacity-40 group-hover:opacity-100 w-6 text-right">08</span> 
+         <span>FAQ</span>
+      </a>
+      <a href="#pricing" class="nav-link hover:text-[#ffff00] transition-all flex items-center gap-6 group">
+         <span class="text-[10px] sm:text-xs text-[#ffff00] opacity-40 group-hover:opacity-100 w-6 text-right">09</span> 
+         <span>Plans</span>
       </a>
     </div>
 
-    <div class="mt-12 pt-12 border-t border-white/5 w-full max-w-xs text-center flex flex-col items-center">
+    <div class="mt-12 pt-12 border-t border-white/5 w-full max-w-xs text-center flex flex-col items-center z-10">
        <span class="text-[8px] font-fira text-[#555] uppercase tracking-[0.5em] mb-4">Neural_Interface_Session_Active</span>
        <div class="flex gap-6 text-[#444]">
           <a href="https://github.com/luiz1361" target="_blank" class="hover:text-neon-yellow transition-colors"><Activity size={16} /></a>
