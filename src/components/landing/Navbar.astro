@@ -1,35 +1,18 @@
 ---
-import { Cpu, Github, Linkedin, Coffee, ChevronDown } from 'lucide-astro';
+import { Cpu, Github, Linkedin, Coffee } from 'lucide-astro';
 
-const groups = [
-  {
-    name: "Agent",
-    items: [
-      { id: "specs", name: "Features", num: "01", color: "text-neon-yellow" },
-      { id: "how-it-works", name: "How it works", num: "02", color: "text-neon-cyan" },
-      { id: "benchmarks", name: "Benchmarks", num: "03", color: "text-neon-yellow" },
-    ]
-  },
-  {
-    name: "Network",
-    items: [
-      { id: "reliability", name: "Subagents", num: "04", color: "text-neon-cyan" },
-      { id: "sponsor", name: "Sponsor", num: "05", color: "text-neon-yellow" },
-      { id: "reviews", name: "Reviews", num: "06", color: "text-neon-cyan" },
-    ]
-  },
-  {
-    name: "Log",
-    items: [
-      { id: "deployment", name: "Changelog", num: "07", color: "text-neon-yellow" },
-      { id: "faq", name: "FAQ", num: "08", color: "text-neon-cyan" },
-    ]
-  }
+const menuItems = [
+  { id: "specs", name: "Features", num: "01", color: "text-neon-yellow" },
+  { id: "how-it-works", name: "How it works", num: "02", color: "text-neon-cyan" },
+  { id: "benchmarks", name: "Benchmarks", num: "03", color: "text-neon-yellow" },
+  { id: "reliability", name: "Subagents", num: "04", color: "text-neon-cyan" },
+  { id: "sponsor", name: "Sponsor", num: "05", color: "text-neon-yellow" },
+  { id: "reviews", name: "Reviews", num: "06", color: "text-neon-cyan" },
+  { id: "deployment", name: "Changelog", num: "07", color: "text-neon-yellow" },
+  { id: "faq", name: "FAQ", num: "08", color: "text-neon-cyan" },
 ];
 
-const allItems = groups.flatMap(g => g.items).concat([
-  { id: "pricing", name: "Plans", num: "09", color: "text-[#ffff00]" }
-]);
+const mobileItems = [...menuItems, { id: "pricing", name: "Plans", num: "09", color: "text-[#ffff00]" }];
 ---
 
 <nav id="main-nav" class="fixed top-0 w-full z-[300] bg-black/80 backdrop-blur-xl border-b border-[#ffff00]/20 px-6 py-3 transition-colors duration-300">
@@ -43,30 +26,17 @@ const allItems = groups.flatMap(g => g.items).concat([
       </div>
     </a>
     
-    <div class="flex items-center gap-4 sm:gap-6">
-      {/* Desktop Dropdowns */}
-      <div class="hidden md:flex items-center gap-4">
-         {groups.map((group) => (
-           <div class="relative group/dropdown">
-             <button class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg text-[10px] font-black uppercase tracking-widest text-[#858585] hover:text-neon-yellow hover:border-neon-yellow/20 transition-all">
-                <span>{group.name}</span>
-                <ChevronDown size={12} class="group-hover/dropdown:rotate-180 transition-transform" />
-             </button>
-             
-             <div class="absolute top-full right-0 mt-2 w-48 bg-black border border-white/10 rounded-xl overflow-hidden shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover/dropdown:opacity-100 group-hover/dropdown:translate-y-0 group-hover/dropdown:pointer-events-auto transition-all duration-300 backdrop-blur-2xl">
-                <div class="p-2 flex flex-col">
-                   {group.items.map((item) => (
-                     <a href={`#${item.id}`} class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#858585] hover:bg-white/5 hover:text-white rounded-lg transition-all">
-                       <span class={`mr-2 ${item.color} opacity-60`}>{item.num}</span> {item.name}
-                     </a>
-                   ))}
-                </div>
-             </div>
-           </div>
+    <div class="flex items-center gap-4 lg:gap-8">
+      {/* Desktop Links - Horizontal List */}
+      <div class="hidden md:flex items-center gap-4 lg:gap-6 text-[10px] font-black uppercase tracking-widest text-[#858585]">
+         {menuItems.map((item) => (
+           <a href={`#${item.id}`} class="hover:text-white transition-all py-1 border-b border-transparent hover:border-neon-yellow">
+             <span class={`${item.color} opacity-60 mr-1`}>{item.num}</span> {item.name}
+           </a>
          ))}
       </div>
 
-      <div class="hidden lg:flex flex-col items-end">
+      <div class="hidden xl:flex flex-col items-end">
         <div class="flex items-center gap-2 px-3 py-1 border border-[#330033] rounded-full text-[8px] uppercase tracking-widest text-[#00ff00] bg-[#00ff00]/5">
           <div class="w-1.5 h-1.5 rounded-full bg-[#00ff00] animate-pulse shadow-[0_0_8px_#00ff00]"></div>
           Available
@@ -90,13 +60,13 @@ const allItems = groups.flatMap(g => g.items).concat([
   </div>
 </nav>
 
-{/* Fullscreen Mobile Menu - Maximum Density Squeeze */}
+{/* Fullscreen Mobile Menu - Optimized Centering & Spacing */}
 <div id="nav-menu" class="md:hidden fixed inset-0 bg-black z-[400] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-y-auto">
   <div class="absolute inset-0 cyber-grid opacity-20 pointer-events-none"></div>
   
   <div class="flex flex-col items-center justify-center min-h-screen py-16 px-6">
     <div class="flex flex-col items-center w-full relative z-10">
-      {allItems.map((item) => (
+      {mobileItems.map((item) => (
         <a href={`#${item.id}`} class="nav-link w-full py-2.5 border-b border-white/5 flex flex-col items-center group hover:bg-white/[0.02] transition-all first:border-t">
            <span class={`text-[8px] ${item.color} opacity-40 group-hover:opacity-100 font-fira`}>{item.num}</span> 
            <span class="text-lg font-black uppercase tracking-[0.2em] text-[#858585] group-hover:text-white transition-colors">{item.name}</span>
