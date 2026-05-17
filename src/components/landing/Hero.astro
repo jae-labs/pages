@@ -44,19 +44,19 @@ import { ArrowRight, Terminal } from '@lucide/astro';
         Features
       </a>
     </div>
-  </div>
 
-  {/* Terminal Bar Simulation at bottom */}
-  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-full max-w-xl px-6">
-    <div class="bg-black/40 backdrop-blur-sm border border-[#330033] rounded-lg p-3 font-fira text-[10px] flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <span class="text-[#ff00ff]">$</span>
-        <span class="text-[#858585]">luizfcm --info</span>
-      </div>
-      <div class="flex gap-4">
-        <span class="text-[#00ff00]">STATUS: CONSCIOUS</span>
-        <span class="text-[#00ffff]">INTUITION: 100%</span>
-        <span class="text-[#ffff00]">OPINION_MOD: ON</span>
+    {/* Terminal Bar Simulation - Moved into flow to prevent overlapping */}
+    <div class="mt-16 w-full max-w-xl mx-auto">
+      <div class="bg-black/40 backdrop-blur-sm border border-[#330033] rounded-lg p-3 font-fira text-[10px] flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
+        <div class="flex items-center gap-3">
+          <span class="text-[#ff00ff]">$</span>
+          <span class="text-[#858585]">luizfcm --info</span>
+        </div>
+        <div class="flex gap-4">
+          <span class="text-[#00ff00]">STATUS: CONSCIOUS</span>
+          <span class="text-[#00ffff]">INTUITION: 100%</span>
+          <span class="text-[#ffff00]">OPINION_MOD: ON</span>
+        </div>
       </div>
     </div>
   </div>
