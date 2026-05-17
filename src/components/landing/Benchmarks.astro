@@ -1,42 +1,44 @@
 ---
 const metrics = [
-  { label: "Physical Bench Press", agent: "100kg", ai: "N/A", win: "agent" },
-  { label: "Code Shipping Velocity", agent: "Insane", ai: "High", win: "agent" },
-  { label: "Creativity (Zero-Shot)", agent: "Native", ai: "Simulated", win: "agent" },
-  { label: "Coffee to Code Efficiency", agent: "98%", ai: "0%", win: "agent" },
-  { label: "Context Window", agent: "Unlimited*", ai: "128k", win: "agent" },
+  { label: "Consciousness", luiz: "Native", luiz_caff: "Overclocked", ai: "Simulated", win: "luiz" },
+  { label: "Incident MTTR", luiz: "98/100", luiz_caff: "99/100", ai: "45/100", win: "luiz" },
+  { label: "Opinion Stability", luiz: "Fixed", luiz_caff: "Aggressive", ai: "Unstable", win: "luiz" },
+  { label: "Complex Architecture", luiz: "Intuitive", luiz_caff: "God-like", ai: "Hallucinating", win: "luiz" },
+  { label: "Caffeine Tolerance", luiz: "95%", luiz_caff: "100%", ai: "0%", win: "luiz" },
 ];
 ---
 
 <section id="benchmarks" class="py-24 px-6 relative border-y border-[#330033]/30">
-  <div class="max-w-4xl mx-auto">
+  <div class="max-w-5xl mx-auto">
     <div class="text-center mb-16">
-      <h2 class="text-neon-pink font-fira text-sm mb-4 tracking-[0.3em] uppercase">Comparative Analysis</h2>
-      <h3 class="text-4xl md:text-6xl font-black text-white">THE BENCHMARKS</h3>
-      <p class="mt-6 text-[#858585]">Tested against the leading LLM models. Results are definitive.</p>
+      <h2 class="text-neon-pink font-fira text-sm mb-4 tracking-[0.3em] uppercase">Synthetic vs Biological</h2>
+      <h3 class="text-4xl md:text-6xl font-black text-white italic">LUIPMARK™ RESULTS</h3>
+      <p class="mt-6 text-[#858585]">Comparative analysis between LuizFCM v3.6 and leading silicon-based models.</p>
     </div>
 
-    <div class="bg-black border border-[#330033] rounded-3xl overflow-hidden">
-      <div class="grid grid-cols-3 p-6 border-b border-[#330033] bg-[#0a0a0a] font-bold text-[10px] uppercase tracking-widest text-[#555]">
+    <div class="bg-black border border-[#330033] rounded-3xl overflow-hidden shadow-[0_0_30px_rgba(255,0,255,0.1)]">
+      <div class="grid grid-cols-4 p-6 border-b border-[#330033] bg-[#0a0a0a] font-bold text-[10px] uppercase tracking-widest text-[#555]">
         <div>Metric</div>
-        <div class="text-center text-[#ff00ff]">Agent-01</div>
-        <div class="text-center">LLM Clusters</div>
+        <div class="text-center text-[#ff00ff]">LuizFCM 3.6</div>
+        <div class="text-center text-[#00ffff]">LuizFCM 3.6 Caff</div>
+        <div class="text-center">Modern LLMs</div>
       </div>
       
       {metrics.map((m) => (
-        <div class="grid grid-cols-3 p-6 border-b border-[#330033]/50 items-center hover:bg-white/[0.02] transition-colors">
+        <div class="grid grid-cols-4 p-6 border-b border-[#330033]/50 items-center hover:bg-white/[0.02] transition-colors">
           <div class="text-sm font-bold text-white">{m.label}</div>
           <div class="text-center">
-            <span class="px-3 py-1 rounded-full bg-[#ff00ff]/10 text-[#ff00ff] text-xs font-bold border border-[#ff00ff]/20">
-              {m.agent}
-            </span>
+            <span class="text-[#ff00ff] text-xs font-bold font-fira">{m.luiz}</span>
+          </div>
+          <div class="text-center">
+            <span class="text-[#00ffff] text-xs font-bold font-fira">{m.luiz_caff}</span>
           </div>
           <div class="text-center text-[#555] text-xs italic">{m.ai}</div>
         </div>
       ))}
       
       <div class="p-4 bg-[#ff00ff]/5 text-[10px] text-center text-[#ff00ff] italic">
-        *Disclaimer: Context window limited only by sleep cycles and caffeine availability.
+        *LuizFCM 3.6 Caffeinated mode requires V60-optimized input. Use with caution.
       </div>
     </div>
   </div>

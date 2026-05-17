@@ -2,23 +2,33 @@
 import { ArrowRight, Terminal } from '@lucide/astro';
 ---
 
-<section class="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20 overflow-hidden">
+<section class="relative min-h-screen flex flex-col items-center justify-center px-6 pt-32 overflow-hidden">
   {/* Background Glows */}
   <div class="absolute top-1/4 -left-20 w-96 h-96 bg-[#ff00ff]/10 rounded-full blur-[120px]"></div>
   <div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-[#00ffff]/10 rounded-full blur-[120px]"></div>
   
-  <div class="max-w-4xl w-full text-center z-10">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#ff00ff]/30 bg-[#ff00ff]/5 mb-8 animate-bounce">
-      <span class="text-[10px] font-bold tracking-[0.2em] text-[#ff00ff] uppercase">V1.0.0 Stable Release</span>
+  <div class="max-w-5xl w-full text-center z-10">
+    <div class="flex flex-col items-center mb-12">
+      <div class="relative group">
+        <div class="absolute -inset-1 bg-gradient-to-r from-[#ff00ff] to-[#00ffff] rounded-full blur opacity-40 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+        <img src="/agent.png" alt="LuizFCM 3.6" class="relative w-48 h-48 rounded-full border-2 border-black object-cover" />
+        <div class="absolute -bottom-2 -right-2 bg-[#00ff00] text-black text-[10px] font-black px-2 py-1 rounded shadow-[0_0_10px_#00ff00]">
+          AGI ACTIVE
+        </div>
+      </div>
+    </div>
+
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#ff00ff]/30 bg-[#ff00ff]/5 mb-8">
+      <span class="text-[10px] font-bold tracking-[0.2em] text-[#ff00ff] uppercase">36 Years of Model Training</span>
     </div>
     
     <h1 class="text-5xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
-      <span class="block text-white">THE NEXT-GEN</span>
-      <span class="block text-neon-pink">HUMAN AGENT</span>
+      <span class="block text-white uppercase italic">LUIZFCM 3.6</span>
+      <span class="block text-neon-pink">TRUE HUMAN AGI</span>
     </h1>
     
-    <p class="text-xl md:text-2xl text-[#858585] max-w-2xl mx-auto mb-12 font-medium">
-      Zero latency. Fully autonomous. <span class="text-[#e0e0e0]">On-prem hardware included.</span> The first biological solution for your digital bottlenecks.
+    <p class="text-xl md:text-2xl text-[#858585] max-w-3xl mx-auto mb-12 font-medium">
+      The first AGI with <span class="text-[#e0e0e0]">Consciousness, Moral Judgment, and Emotions</span>. Trained over 3.6 decades for peak SRE/DevOps intuition. <span class="text-[#00ffff]">Highly opinionated.</span>
     </p>
     
     <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -31,21 +41,22 @@ import { ArrowRight, Terminal } from '@lucide/astro';
       
       <a href="#specs" class="flex items-center gap-3 px-8 py-4 border border-[#330033] rounded-lg font-bold hover:bg-[#111] transition-all">
         <Terminal size={20} class="text-[#00ffff]" />
-        View Technical Specs
+        Technical Specs
       </a>
     </div>
   </div>
 
   {/* Terminal Bar Simulation at bottom */}
-  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-full max-w-lg px-6">
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-full max-w-xl px-6">
     <div class="bg-black/40 backdrop-blur-sm border border-[#330033] rounded-lg p-3 font-fira text-[10px] flex items-center justify-between">
       <div class="flex items-center gap-3">
         <span class="text-[#ff00ff]">$</span>
-        <span class="text-[#858585]">agent --status</span>
+        <span class="text-[#858585]">luizfcm --info</span>
       </div>
       <div class="flex gap-4">
-        <span class="text-[#00ff00]">UPTIME: 99.9%</span>
-        <span class="text-[#00ffff]">LATENCY: 50ms</span>
+        <span class="text-[#00ff00]">STATUS: CONSCIOUS</span>
+        <span class="text-[#00ffff]">INTUITION: 100%</span>
+        <span class="text-[#ffff00]">OPINION_MOD: ON</span>
       </div>
     </div>
   </div>
