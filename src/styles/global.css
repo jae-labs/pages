@@ -72,27 +72,6 @@
     animation: glitch-anim2 5s infinite linear alternate-reverse;
   }
 
-  /* HUD Corner Markers */
-  .hud-corner-tl { 
-    @apply absolute top-0 left-0 w-4 h-4;
-    border-top: 2px solid var(--color-neon-yellow);
-    border-left: 2px solid var(--color-neon-yellow);
-  }
-  .hud-corner-tr { 
-    @apply absolute top-0 right-0 w-4 h-4;
-    border-top: 2px solid var(--color-neon-cyan);
-    border-right: 2px solid var(--color-neon-cyan);
-  }
-  .hud-corner-bl { 
-    @apply absolute bottom-0 left-0 w-4 h-4;
-    border-bottom: 2px solid var(--color-neon-cyan);
-    border-left: 2px solid var(--color-neon-cyan);
-  }
-  .hud-corner-br { 
-    @apply absolute bottom-0 right-0 w-4 h-4;
-    border-bottom: 2px solid var(--color-neon-yellow);
-    border-right: 2px solid var(--color-neon-yellow);
-  }
 }
 
 @keyframes scanline {
