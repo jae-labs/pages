@@ -8,6 +8,7 @@ import Reliability from '../components/landing/Reliability.astro';
 import Sponsor from '../components/landing/Sponsor.astro';
 import Deployment from '../components/landing/Deployment.astro';
 import Pricing from '../components/landing/Pricing.astro';
+import { Github, Linkedin } from 'lucide-astro';
 
 interface Props {
   title: string;
@@ -33,9 +34,13 @@ interface Props {
         <span class="text-[10px] text-[#555] font-fira ml-4">© 2026 lui.z // v3.6 Pro</span>
       </div>
       
-      <div class="flex gap-8 text-[10px] font-fira uppercase tracking-[0.2em] text-[#858585]">
-        <a href="https://github.com/luiz1361" class="hover:text-[#ffff00]" target="_blank">GitHub</a>
-        <a href="https://www.linkedin.com/in/luiz1361/" class="hover:text-[#00ffff]" target="_blank">LinkedIn</a>
+      <div class="flex gap-6 text-[#858585]">
+        <a href="https://github.com/luiz1361" class="hover:text-[#ffff00] transition-colors" target="_blank">
+          <Github size={20} strokeWidth={1.5} />
+        </a>
+        <a href="https://www.linkedin.com/in/luiz1361/" class="hover:text-[#00ffff] transition-colors" target="_blank">
+          <Linkedin size={20} strokeWidth={1.5} />
+        </a>
       </div>
     </div>
   </footer>
