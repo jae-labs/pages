@@ -160,8 +160,13 @@ import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
   }
 
   @keyframes project-progress {
-    0% { width: 0%; }
-    100% { width: 100%; }
+    0% { width: 0%; opacity: 1; }
+    30% { width: 35%; opacity: 1; } /* Luiz & Bob Collaborating */
+    35% { width: 35%; opacity: 0.8; } /* Failure point - production pause/hiccup */
+    60% { width: 85%; opacity: 1; } /* Bob continuing production alone */
+    70% { width: 100%; opacity: 1; } /* Success & Luiz Reconnected */
+    90% { width: 100%; opacity: 1; } /* Hold success state */
+    100% { width: 0%; opacity: 0; } /* Reset for next cycle */
   }
 
   @keyframes failover-logs {
