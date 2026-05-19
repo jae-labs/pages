@@ -1,0 +1,223 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  socialImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = 'lui.z: cyberpunk-styled human agent portfolio focused on SRE, DevOps, platform engineering, and reliability.',
+  socialImage = '/agent-hover.png',
+  noindex = false
+} = Astro.props;
+const pageTitle = title;
+const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : Astro.url.toString();
+const socialImageURL = /^(https?:)?\/\//.test(socialImage)
+  ? socialImage
+  : new URL(socialImage, Astro.site ?? Astro.url).toString();
+const websiteURL = Astro.site ? new URL(import.meta.env.BASE_URL, Astro.site).toString() : canonicalURL;
+const robotsContent = noindex
+  ? 'noindex, nofollow'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'lui.z',
+  url: websiteURL,
+  description,
+  inLanguage: 'en'
+};
+const GA_TRACKING_ID = 'G-N556PF9XWK';
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="robots" content={robotsContent} />
+    <meta name="author" content="Luiz F. C. Martins" />
+    <meta name="theme-color" content="#050505" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="lui.z" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+    <title>{pageTitle}</title>
+    <ClientRouter />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-black text-[#e0e0e0] font-inter antialiased overflow-x-hidden cyber-grid scroll-smooth">
+    {/* Visual FX Layers */}
+    <div class="scanline"></div>
+    
+    {/* Global HUD Frame */}
+    <div class="fixed inset-0 pointer-events-none z-[100] border border-white/5">
+       
+    </div>
+
+    <slot />
+
+    <div id="cookie-banner" class="hidden fixed bottom-4 left-4 right-4 z-[950]">
+      <div class="mx-auto max-w-4xl border border-neon-yellow/40 bg-black/95 backdrop-blur-xl rounded-2xl p-4 sm:p-5 shadow-[0_0_30px_rgba(255,140,0,0.2)]">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="text-[10px] uppercase tracking-[0.2em] text-neon-yellow font-black mb-1">Cookie Notice</p>
+            <p class="text-sm text-[#bfbfbf] leading-relaxed">
+              This website uses cookies for Google Analytics. By continuing to use this website, you agree to that use.
+            </p>
+          </div>
+          <div class="flex gap-3 shrink-0">
+            <button id="cookie-ok" type="button" class="px-4 py-2 bg-neon-yellow text-black rounded-lg text-xs font-black uppercase tracking-widest hover:brightness-110 transition-all">
+              Okay
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const GA_TRACKING_ID = 'G-N556PF9XWK';
+      const COOKIE_CONSENT_KEY = 'cookie-consent';
+      const ACCEPTED = 'accepted';
+
+      const loadAnalytics = () => {
+        if ((window as any).__gaInitialized) return;
+        (window as any).__gaInitialized = true;
+
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).gtag = function gtag() {
+          (window as any).dataLayer.push(arguments);
+        };
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`;
+        document.head.appendChild(script);
+
+        (window as any).gtag('js', new Date());
+        (window as any).gtag('config', GA_TRACKING_ID, { anonymize_ip: true });
+      };
+
+      const initCookieBanner = () => {
+        const banner = document.getElementById('cookie-banner');
+        const ok = document.getElementById('cookie-ok');
+        if (!banner || !ok) return;
+
+        const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+        if (consent === ACCEPTED) {
+          banner.classList.add('hidden');
+          loadAnalytics();
+          return;
+        }
+
+        loadAnalytics();
+        banner.classList.remove('hidden');
+
+        if (!ok.dataset.bound) {
+          ok.addEventListener('click', () => {
+            localStorage.setItem(COOKIE_CONSENT_KEY, ACCEPTED);
+            banner.classList.add('hidden');
+          });
+          ok.dataset.bound = 'true';
+        }
+      };
+
+      if (document.readyState !== 'loading') {
+        initCookieBanner();
+      } else {
+        document.addEventListener('DOMContentLoaded', initCookieBanner, { once: true });
+      }
+
+      document.addEventListener('astro:page-load', initCookieBanner);
+    </script>
+    <script>
+      let calendlyLoading = false;
+
+      const loadCalendly = (callback: () => void) => {
+        if ((window as any).Calendly?.initPopupWidget) {
+          callback();
+          return;
+        }
+
+        // Inject stylesheet
+        if (!document.querySelector('link[href*="calendly.com"]')) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = 'https://assets.calendly.com/assets/external/widget.css';
+          document.head.appendChild(link);
+        }
+
+        // Inject script if not already loading
+        if (!document.querySelector('script[src*="calendly.com"]') && !calendlyLoading) {
+          calendlyLoading = true;
+          const script = document.createElement('script');
+          script.src = 'https://assets.calendly.com/assets/external/widget.js';
+          script.async = true;
+          script.onload = () => {
+            calendlyLoading = false;
+            callback();
+          };
+          document.head.appendChild(script);
+        } else {
+          // If script is already inserted but not yet loaded, poll briefly
+          const interval = setInterval(() => {
+            if ((window as any).Calendly?.initPopupWidget) {
+              clearInterval(interval);
+              callback();
+            }
+          }, 100);
+        }
+      };
+
+      const initCalendlyButtons = () => {
+        document.querySelectorAll('[data-calendly-url]').forEach((link) => {
+          if (!(link instanceof HTMLAnchorElement) || link.dataset.bound === 'true') return;
+
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const url = link.dataset.calendlyUrl;
+            if (url) {
+              loadCalendly(() => {
+                (window as any).Calendly.initPopupWidget({ url });
+              });
+            }
+          });
+
+          // Preload on mouse enter (hover) to eliminate dynamic loading lag
+          link.addEventListener('mouseenter', () => {
+            loadCalendly(() => {});
+          }, { once: true });
+
+          link.dataset.bound = 'true';
+        });
+      };
+
+      if (document.readyState !== 'loading') {
+        initCalendlyButtons();
+      } else {
+        document.addEventListener('DOMContentLoaded', initCalendlyButtons, { once: true });
+      }
+
+      document.addEventListener('astro:page-load', initCalendlyButtons);
+    </script>
+  </body>
+</html>

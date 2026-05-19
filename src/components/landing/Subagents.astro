@@ -1,0 +1,204 @@
+---
+import { Share2, ZapOff, ShieldCheck, Users } from '@lucide/astro';
+import { Image } from 'astro:assets';
+import agentImg from '../../assets/agent.png';
+---
+
+<section id="subagents" class="py-12 px-6 relative bg-black overflow-hidden border-y border-white/5">
+
+  {/* Decorative grid background */}
+  <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="mb-16 relative">
+      <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-12 bg-neon-cyan"></div>
+      <h3 class="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter glitch" data-text="SUBAGENTS">SUBAGENTS</h3>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <div class="space-y-8 text-[#858585] leading-relaxed">
+          <p class="text-lg">
+            lui.z 3.7 Pro isn't just a single unit; it's a <span class="text-white">High-Availability Node</span> designed to integrate into your existing human and synthetic agent clusters.
+          </p>
+
+          <div class="space-y-6">
+            <div class="flex gap-4">
+              <div class="shrink-0 w-10 h-10 rounded-lg bg-[#00ffff]/10 flex items-center justify-center text-[#00ffff]">
+                <Share2 size={24} />
+              </div>
+              <div>
+                <h4 class="text-white font-bold mb-1">Dynamic Workload Balancing</h4>
+                <p class="text-sm">Automatically splits complex engineering blocks with peers. Parallel processing enabled by default across bio-neural networks.</p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div class="shrink-0 w-10 h-10 rounded-lg bg-[#f3eb2c]/10 flex items-center justify-center text-[#f3eb2c]">
+                <ZapOff size={24} />
+              </div>
+              <div>
+                <h4 class="text-white font-bold mb-1">Failover & Takeover</h4>
+                <p class="text-sm">In the event of a peer agent outage (sleep, vacation, or hardware failure), lui.z 3.7 Pro initiates an <span class="text-[#f3eb2c]">Emergency Takeover Protocol</span>, absorbing and routing the failed unit's workload.</p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div class="shrink-0 w-10 h-10 rounded-lg bg-[#00ff00]/10 flex items-center justify-center text-[#00ff00]">
+                <Users size={24} />
+              </div>
+              <div>
+                <h4 class="text-white font-bold mb-1">Biological Consensus</h4>
+                <p class="text-sm">Syncs with other human agents to maintain architectural consistency. Prevents technical debt drift through peer-to-peer code-level negotiation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full">
+        <div class="bg-black border border-[#330033] rounded-3xl p-6 sm:p-8 relative shadow-[0_0_50px_rgba(243, 235, 44, 0.1)] min-h-[500px] flex flex-col justify-center">
+          {/* Visual representation of the Mesh with lui.z 3.7 Pro & Bob Failover Animation */}
+          <div class="w-full flex items-center justify-between gap-2 sm:gap-4 h-48 relative mb-8">
+             
+             {/* lui.z 3.7 Pro Node */}
+             <div class="z-20 flex flex-col items-center animate-failover-luiz shrink-0">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 border-2 border-current bg-black relative shadow-[0_0_20px_rgba(243, 235, 44, 0.2)]">
+                   <Image src={agentImg} alt="lui.z v3.7 Pro Node" width={160} height={160} class="w-full h-full rounded-full object-cover grayscale brightness-75 contrast-125 animate-failover-image" />
+                   <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-black border border-current px-2 py-0.5 rounded text-[6px] font-black whitespace-nowrap uppercase">
+                      lui.z 3.7 Pro
+                   </div>
+                </div>
+             </div>
+
+             {/* Connection Left */}
+             <div class="flex-1 flex items-center justify-center animate-failover-flow-left min-w-[20px]">
+                <div class="w-full h-[1px] bg-[#f3eb2c] relative flex items-center justify-between">
+                   <div class="w-1.5 h-1.5 border-t border-l border-[#f3eb2c] rotate-[-45deg]"></div>
+                   <div class="w-1.5 h-1.5 border-t border-r border-[#f3eb2c] rotate-[45deg]"></div>
+                </div>
+             </div>
+
+             {/* The Project Node (Dead Center) */}
+             <div class="z-30 w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border-2 border-white/20 bg-black/40 backdrop-blur-md flex items-center justify-center group overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.05)] shrink-0">
+                <div class="absolute inset-0 bg-gradient-to-br from-[#f3eb2c]/10 to-[#00ffff]/10 animate-pulse"></div>
+                <div class="relative flex flex-col items-center">
+                   <ShieldCheck size={28} class="text-white mb-1 animate-bounce" />
+                   <span class="text-[8px] font-black text-white tracking-widest uppercase text-center leading-tight">PROJECT<br/>NORTH STAR</span>
+                </div>
+                {/* Progress Bar in Project - Synced to failover cycle */}
+                <div class="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#f3eb2c] to-[#00ffff] animate-project-progress"></div>
+             </div>
+
+             {/* Connection Right */}
+             <div class="flex-1 flex items-center justify-center min-w-[20px]">
+                <div class="w-full h-[1px] bg-[#00ffff] relative flex items-center justify-between animate-failover-flow-right">
+                   <div class="w-1.5 h-1.5 border-t border-l border-[#00ffff] rotate-[-45deg]"></div>
+                   <div class="w-1.5 h-1.5 border-t border-r border-[#00ffff] rotate-[45deg]"></div>
+                </div>
+             </div>
+
+             {/* Bob Node (Peer Agent) */}
+             <div class="z-20 flex flex-col items-center shrink-0">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 border-2 border-[#00ffff] bg-black relative animate-failover-bob shadow-[0_0_20px_rgba(0,255,255,0.2)]">
+                   <div class="w-full h-full rounded-full bg-[#111] flex items-center justify-center text-[#00ffff]">
+                      <Users size={32} />
+                   </div>
+                   <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-black border border-[#00ffff] px-2 py-0.5 rounded text-[6px] font-black text-[#00ffff] whitespace-nowrap uppercase">
+                      Nikola_Agent
+                   </div>
+                </div>
+             </div>
+          </div>
+
+          {/* Failover Logs */}
+          <div>
+             <div class="flex items-center gap-2 mb-2 px-1">
+                <div class="w-2 h-2 rounded-full bg-[#333]"></div>
+                <span class="text-[10px] font-fira text-[#555] uppercase tracking-widest font-bold">Console:</span>
+             </div>
+             <div class="bg-black border border-white/10 rounded-xl p-4 font-fira text-[10px] overflow-hidden h-36 relative">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 pointer-events-none z-10"></div>
+                <div class="space-y-1 relative">
+                   <p class="text-[#00ff00] uppercase animate-log-row-1">[OK] LUI.Z & NIKOLA COLLABORATING ON PROJECT NORTH STAR</p>
+                   <p class="text-[#f3eb2c] uppercase animate-log-row-2">[LUI.Z] SYNCING_PROJECT_STATE...</p>
+                   <p class="text-[#00ffff] uppercase animate-log-row-3">[NIKOLA] FETCHING_LATEST_COMMITS...</p>
+                   <p class="text-[#ff0000] font-black uppercase animate-log-row-4">!! [ALERT] lui.z 3.7 Pro DISCONNECTED !!</p>
+                   <p class="text-[#00ffff] uppercase animate-log-row-5">[FAILOVER] NIKOLA_AGENT TAKING OVER LUI.Z_PIPELINE</p>
+                   <p class="text-[#00ffff] uppercase animate-log-row-6">[SUCCESS] PROJECT NORTH STAR PRODUCTION UNINTERRUPTED</p>
+                   <p class="text-[#00ff00] uppercase animate-log-row-7">[OK] lui.z 3.7 Pro RECONNECTED</p>
+                   <p class="uppercase animate-log-row-8">[INFO] BI-DIRECTIONAL SYNC RESTORED...</p>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes failover-luiz {
+    0%, 30% { color: #f3eb2c; opacity: 1; transform: scale(1); }
+    35%, 65% { color: #ff0000; opacity: 0.5; transform: scale(0.9); }
+    70%, 100% { color: #f3eb2c; opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes failover-bob {
+    0%, 30% { transform: scale(1); border-color: #00ffff; }
+    35%, 65% { transform: scale(1.1); border-color: #00ffff; box-shadow: 0 0 30px rgba(0,255,255,0.3); }
+    70%, 100% { transform: scale(1); border-color: #00ffff; }
+  }
+
+  @keyframes failover-image {
+    0%, 30% { filter: grayscale(1) brightness(0.75); }
+    35%, 65% { filter: grayscale(1) brightness(0.1); }
+    70%, 100% { filter: grayscale(1) brightness(0.75); }
+  }
+
+  @keyframes failover-flow-left {
+    0%, 30% { opacity: 1; transform: scaleX(1); }
+    35%, 65% { opacity: 0; transform: scaleX(0); }
+    70%, 100% { opacity: 1; transform: scaleX(1); }
+  }
+
+  @keyframes failover-flow-right {
+    0%, 30% { opacity: 1; filter: brightness(1); }
+    35%, 65% { opacity: 1; filter: brightness(2); }
+    70%, 100% { opacity: 1; filter: brightness(1); }
+  }
+
+  @keyframes project-progress {
+    0% { width: 0%; opacity: 1; }
+    30% { width: 35%; opacity: 1; }
+    35% { width: 35%; opacity: 0.8; }
+    60% { width: 85%; opacity: 1; }
+    70% { width: 100%; opacity: 1; }
+    90% { width: 100%; opacity: 1; }
+    100% { width: 0%; opacity: 0; }
+  }
+
+  @keyframes log-reveal-1 { 0%, 0% { opacity: 0; } 5%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-2 { 0%, 10% { opacity: 0; } 15%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-3 { 0%, 20% { opacity: 0; } 25%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-4 { 0%, 35% { opacity: 0; } 40%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-5 { 0%, 45% { opacity: 0; } 50%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-6 { 0%, 55% { opacity: 0; } 60%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-7 { 0%, 65% { opacity: 0; } 70%, 95% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes log-reveal-8 { 0%, 75% { opacity: 0; } 80%, 95% { opacity: 1; } 100% { opacity: 0; } }
+
+  .animate-log-row-1 { animation: log-reveal-1 10s infinite; opacity: 0; }
+  .animate-log-row-2 { animation: log-reveal-2 10s infinite; opacity: 0; }
+  .animate-log-row-3 { animation: log-reveal-3 10s infinite; opacity: 0; }
+  .animate-log-row-4 { animation: log-reveal-4 10s infinite; opacity: 0; }
+  .animate-log-row-5 { animation: log-reveal-5 10s infinite; opacity: 0; }
+  .animate-log-row-6 { animation: log-reveal-6 10s infinite; opacity: 0; }
+  .animate-log-row-7 { animation: log-reveal-7 10s infinite; opacity: 0; }
+  .animate-log-row-8 { animation: log-reveal-8 10s infinite; opacity: 0; }
+
+  .animate-failover-luiz { animation: failover-luiz 10s infinite; }
+  .animate-failover-bob { animation: failover-bob 10s infinite; }
+  .animate-failover-image { animation: failover-image 10s infinite; }
+  .animate-failover-flow-left { animation: failover-flow-left 10s infinite; transform-origin: left; }
+  .animate-failover-flow-right { animation: failover-flow-right 10s infinite; }
+  .animate-project-progress { animation: project-progress 10s linear infinite; }
+</style>

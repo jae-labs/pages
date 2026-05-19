@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+@theme {
+  --color-neon-yellow: #f3eb2c;
+  --color-neon-cyan: #00ffff;
+  --font-inter: "Inter", sans-serif;
+  --font-fira: "Fira Code", monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-black text-[#e0e0e0] antialiased overflow-x-hidden selection:bg-neon-yellow/30 selection:text-white;
+    font-family: var(--font-inter);
+  }
+}
+
+@layer components {
+  /* Global Cyberpunk Grid */
+  .cyber-grid {
+    background-image: 
+      linear-gradient(to right, rgba(243, 235, 44, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(243, 235, 44, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Scanline Effect */
+  .scanline {
+    width: 100%;
+    height: 100px;
+    z-index: 100;
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(243, 235, 44, 0.02) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    opacity: 0.1;
+    position: fixed;
+    bottom: 100%;
+    animation: scanline 8s linear infinite;
+    pointer-events: none;
+  }
+
+  /* Glitch Text Effect */
+  .glitch {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+  }
+  
+  .glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 #00ffff;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+  }
+  
+  .glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 #f3eb2c;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim2 5s infinite linear alternate-reverse;
+  }
+
+}
+
+@keyframes scanline {
+  0% { bottom: 100%; }
+  100% { bottom: -100px; }
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(42px, 9999px, 44px, 0); }
+  20% { clip: rect(12px, 9999px, 56px, 0); }
+  40% { clip: rect(26px, 9999px, 86px, 0); }
+  60% { clip: rect(85px, 9999px, 66px, 0); }
+  80% { clip: rect(15px, 9999px, 32px, 0); }
+  100% { clip: rect(55px, 9999px, 100px, 0); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(12px, 9999px, 32px, 0); }
+  20% { clip: rect(25px, 9999px, 12px, 0); }
+  40% { clip: rect(55px, 9999px, 85px, 0); }
+  60% { clip: rect(22px, 9999px, 55px, 0); }
+  80% { clip: rect(85px, 9999px, 10px, 0); }
+  100% { clip: rect(32px, 9999px, 25px, 0); }
+}
+
+@utility font-fira {
+  font-family: var(--font-fira);
+}
+
+@utility font-inter {
+  font-family: var(--font-inter);
+}
+
+@utility text-neon-yellow {
+  color: var(--color-neon-yellow);
+  text-shadow: 0 0 10px rgba(243, 235, 44, 0.5);
+}
+
+@utility text-neon-cyan {
+  color: var(--color-neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+@utility border-neon-yellow {
+  border-color: var(--color-neon-yellow);
+  box-shadow: 0 0 10px rgba(243, 235, 44, 0.2);
+}
+
+@utility bg-neon-yellow {
+  background-color: var(--color-neon-yellow);
+  box-shadow: 0 0 15px rgba(243, 235, 44, 0.4);
+}
+
+/* Cyberpunk Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-neon-yellow);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #fbf36a;
+}
+
