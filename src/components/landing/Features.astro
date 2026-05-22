@@ -1,0 +1,41 @@
+---
+import { features } from '../../config/portfolio';
+import { BrainCircuit, Scale, Zap, RefreshCw, Users, Settings } from '@lucide/astro';
+
+const featureIcons = {
+  BrainCircuit,
+  Scale,
+  Zap,
+  RefreshCw,
+  Users,
+  Settings
+};
+---
+
+<section id="features" class="py-12 px-6 relative bg-[#050505] border-y border-white/5">
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-16 relative">
+      <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-12 bg-neon-yellow"></div>
+      <h3 class="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter glitch" data-text="FEATURES">FEATURES</h3>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {features.map((feature) => {
+        const Icon = featureIcons[feature.icon];
+
+        return (
+          <div class={`p-8 bg-black/40 backdrop-blur-sm border ${feature.border} rounded-xl group hover:border-white/50 transition-all duration-500 relative overflow-hidden`}>
+
+            <div class={`${feature.color} mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]`}>
+              <Icon size={48} stroke-width={1.5} />
+            </div>
+            <h4 class="text-2xl font-black text-white mb-4 tracking-tighter uppercase italic">{feature.title}</h4>
+            <p class="text-[#858585] text-sm leading-relaxed font-medium">
+              {feature.desc}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
