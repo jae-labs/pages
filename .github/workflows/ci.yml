@@ -19,7 +19,7 @@ jobs:
       deployments: write
     
     environment:
-      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'review' }}
       url: ${{ github.ref == 'refs/heads/main' && 'https://justanother.engineer' || steps.deploy.outputs.deployment-url }}
 
     steps:
