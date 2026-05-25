@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+      url: ${{ github.ref == 'refs/heads/main' && 'https://justanother.engineer' || steps.deploy.outputs.deployment-url }}
+
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22.12.0'
+          cache: npm
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Check and Build
+        env:
+          SITE_URL: ${{ github.ref == 'refs/heads/main' && 'https://justanother.engineer' || '' }}
+          SITE_BASE: /
+          PUBLIC_VIDEO_URL: ${{ secrets.PUBLIC_VIDEO_URL }}
+        run: npm run check
+
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=jae-pages

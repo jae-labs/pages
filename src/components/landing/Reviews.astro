@@ -1,0 +1,200 @@
+---
+import { MessageSquareQuote, ChevronLeft, ChevronRight } from '@lucide/astro';
+import { reviews } from '../../config/portfolio';
+---
+
+<section id="reviews" class="py-12 px-6 relative bg-black border-y border-white/5 overflow-hidden">
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="mb-16 relative">
+      <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-12 bg-neon-yellow"></div>
+      <h3 class="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter glitch" data-text="REVIEWS">REVIEWS</h3>
+    </div>
+
+    <div class="relative group">
+      {/* Carousel Container */}
+      <div class="overflow-hidden rounded-3xl border border-white/10 bg-[#050505]/40 backdrop-blur-sm relative">
+        <div id="review-track" class="flex transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]">
+          {reviews.map((r) => (
+            <div class="min-w-full p-8 md:p-12 flex flex-col relative min-h-[400px] md:min-h-[350px]">
+              <div class="mb-6 text-neon-yellow">
+                <MessageSquareQuote size={48} stroke-width={1.5} />
+              </div>
+              
+              <p class="text-lg md:text-xl text-[#ccc] leading-relaxed mb-10 italic font-medium flex-1">
+                "{r.text}"
+              </p>
+
+              <div class="pt-8 border-t border-white/5">
+                <div>
+                  <a 
+                    href={r.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    class="block text-white font-black text-xl tracking-tighter uppercase hover:text-neon-yellow transition-colors"
+                  >
+                    {r.org}
+                  </a>
+                </div>
+              </div>
+
+              {/* Decorative Corner Tag */}
+              <div class="absolute top-4 right-8 text-[8px] font-fira text-[#222] uppercase tracking-[0.3em]">
+                PEER_VALIDATION_STAMP
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Navigation Buttons */}
+      <div class="absolute top-1/2 -left-4 -translate-y-1/2 z-20 hidden md:block">
+        <button id="prev-review" aria-label="Previous review" class="w-12 h-12 bg-black border border-white/10 rounded-full flex items-center justify-center text-white hover:border-neon-cyan hover:text-neon-cyan transition-all hover:scale-110 shadow-2xl backdrop-blur-md">
+          <ChevronLeft size={24} />
+        </button>
+      </div>
+      <div class="absolute top-1/2 -right-4 -translate-y-1/2 z-20 hidden md:block">
+        <button id="next-review" aria-label="Next review" class="w-12 h-12 bg-black border border-white/10 rounded-full flex items-center justify-center text-white hover:border-neon-cyan hover:text-neon-cyan transition-all hover:scale-110 shadow-2xl backdrop-blur-md">
+          <ChevronRight size={24} />
+        </button>
+      </div>
+
+      {/* Pagination Dots */}
+      <div class="flex justify-center gap-3 mt-8">
+        {reviews.map((_, i) => (
+          <button 
+            data-index={i} 
+            aria-label={`Go to slide ${i + 1}`}
+            class="review-dot w-8 h-1 rounded-full bg-white/10 hover:bg-white/20 transition-all overflow-hidden relative"
+          >
+            <div class="dot-progress absolute inset-y-0 left-0 bg-neon-cyan w-0"></div>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  let currentIndex = 0;
+  type ReviewsWindow = Window & typeof globalThis & {
+    __cleanupReviewsAutoplay?: () => void;
+  };
+
+  let interval: ReturnType<typeof setInterval> | null = null;
+
+  function initReviews() {
+    const track = document.getElementById('review-track');
+    if (!track) return;
+
+    const slides = track.children;
+    const dots = document.querySelectorAll('.review-dot');
+    const totalSlides = slides.length;
+    if (totalSlides === 0) return;
+
+    // Reset index
+    currentIndex = 0;
+
+    function updateCarousel(index: number) {
+      if (!track) return;
+      currentIndex = index;
+      if (currentIndex >= totalSlides) currentIndex = 0;
+      if (currentIndex < 0) currentIndex = totalSlides - 1;
+
+      const offset = currentIndex * -100;
+      track.style.transform = `translateX(${offset}%)`;
+
+      // Update Dots
+      dots.forEach((dot, i) => {
+        const progress = dot.querySelector('.dot-progress') as HTMLElement;
+        if (i === currentIndex) {
+          dot.classList.add('bg-white/20');
+          if (progress) progress.style.width = '100%';
+        } else {
+          dot.classList.remove('bg-white/20');
+          if (progress) progress.style.width = '0%';
+        }
+      });
+    }
+
+    function startAutoPlay() {
+      stopAutoPlay();
+      interval = setInterval(() => {
+        updateCarousel(currentIndex + 1);
+      }, 6000);
+    }
+
+    function stopAutoPlay() {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
+    }
+
+    // Bind controls
+    const nextBtn = document.getElementById('next-review');
+    const prevBtn = document.getElementById('prev-review');
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        updateCarousel(currentIndex + 1);
+        startAutoPlay();
+      });
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        updateCarousel(currentIndex - 1);
+        startAutoPlay();
+      });
+    }
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const index = parseInt(dot.getAttribute('data-index') || '0', 10);
+        updateCarousel(index);
+        startAutoPlay();
+      });
+    });
+
+    // Make stopAutoPlay globally accessible for page cleanup
+    (window as ReviewsWindow).__cleanupReviewsAutoplay = stopAutoPlay;
+
+    // Initial load
+    updateCarousel(0);
+    startAutoPlay();
+  }
+
+  function stopAutoPlay() {
+    if (interval) {
+      clearInterval(interval);
+      interval = null;
+    }
+  }
+
+  if (document.readyState !== 'loading') {
+    initReviews();
+  } else {
+    document.addEventListener('DOMContentLoaded', initReviews, { once: true });
+  }
+
+  document.addEventListener('astro:page-load', initReviews);
+
+  // Transition clean up to avoid memory leaks
+  document.addEventListener('astro:before-preparation', () => {
+    const reviewsWindow = window as ReviewsWindow;
+    if (typeof reviewsWindow.__cleanupReviewsAutoplay === 'function') {
+      reviewsWindow.__cleanupReviewsAutoplay();
+    } else {
+      stopAutoPlay();
+    }
+  });
+</script>
+
+<style>
+  #review-track {
+    will-change: transform;
+  }
+  .dot-progress {
+    transition: width 6s linear;
+  }
+</style>

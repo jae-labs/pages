@@ -1,0 +1,33 @@
+---
+import { Image } from 'astro:assets';
+import laptopSwagImg from '../../assets/laptop-swag.png';
+---
+
+<section id="sponsor" class="py-12 px-6 relative bg-black overflow-hidden border-y border-white/5">
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="mb-16 relative">
+      <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-12 bg-neon-yellow"></div>
+      <h3 class="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter glitch" data-text="SPONSOR">SPONSOR</h3>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
+      <div>
+        <div class="space-y-6 text-[#858585] leading-relaxed">
+          <p class="text-lg">
+            lui.z 3.7 Pro supports high-visibility brand integration during <span class="text-white font-bold">temporary deployments across over 50 countries</span>. 
+          </p>
+          <p>
+            Secure premium placement on primary hardware and tactical gear used at global conferences, technical workshops, and high-traffic nodes.
+          </p>
+        </div>
+      </div>
+
+      <div class="relative group">
+        <div class="absolute -inset-2 bg-gradient-to-r from-[#f3eb2c]/20 to-[#00ffff]/20 rounded-3xl blur-xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
+        <div class="relative bg-black border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+           <Image src={laptopSwagImg} alt="MacBook Sponsorship Space" width={800} class="w-full h-auto" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
