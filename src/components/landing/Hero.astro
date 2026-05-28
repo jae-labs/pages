@@ -108,6 +108,10 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
     const deferLoad = () => {
       // Load Google Cast Sender SDK for Chromecast support
       if (!document.querySelector('script[src*="cast_sender.js"]')) {
+        // Pre-define __onGCastApiAvailable to ensure Cast SDK initializes successfully
+        // even if it loads before the Video.js core modules are parsed.
+        // @ts-expect-error: Define global callback for Cast Sender SDK
+        window.__onGCastApiAvailable = window.__onGCastApiAvailable || (() => {});
         const castScript = document.createElement('script');
         castScript.src = 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1';
         castScript.defer = true;
