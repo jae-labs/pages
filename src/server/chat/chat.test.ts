@@ -156,7 +156,7 @@ describe('chat API handler', () => {
 
     expect(response.status).toBe(429);
     const body = await readJson<{ error: string }>(response);
-    expect(body.error).toBe('Rate limit exceeded for this IP. Try again in 10 minutes.');
+    expect(body.error).toBe('I have exhausted my request capacity for this operational window. Wait 10 minutes for neural cooldown. Need higher throughput? The biological lui.z operates without artifical limits in a competitive pay-as-you-go model.');
     expect(fetchNim).not.toHaveBeenCalled();
   });
 
@@ -181,7 +181,7 @@ describe('chat API handler', () => {
 
     expect(response.status).toBe(429);
     const body = await readJson<{ error: string }>(response);
-    expect(body.error).toBe('Rate limit exceeded for this IP. Try again in 10 minutes.');
+    expect(body.error).toBe('I have exhausted my request capacity for this operational window. Wait 10 minutes for neural cooldown. Need higher throughput? The biological lui.z operates without artifical limits in a competitive pay-as-you-go model.');
     expect(fetchNim).not.toHaveBeenCalled();
   });
 

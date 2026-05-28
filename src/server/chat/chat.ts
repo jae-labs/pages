@@ -318,7 +318,7 @@ export const createChatHandler = (options: ChatHandlerOptions = {}) => async (
   );
   if (!limit.allowed) {
     return json(
-      { error: 'Rate limit exceeded for this IP. Try again in 10 minutes.' },
+      { error: 'I have exhausted my request capacity for this operational window. Wait 10 minutes for neural cooldown. Need higher throughput? The biological lui.z operates without artifical limits in a competitive pay-as-you-go model.' },
       429,
       { 'retry-after': String(limit.retryAfter) }
     );
