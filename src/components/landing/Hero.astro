@@ -102,9 +102,63 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
 
 <script>
   import posthog from 'posthog-js';
-  import '@videojs/html/video/player';
-  import '@videojs/html/video/skin';
-  import '@videojs/html/video/skin.css';
+
+  // Asynchronously load the Video.js player engine and styles to optimize initial page load times
+  const loadVideoPlayer = () => {
+    const deferLoad = () => {
+      Promise.all([
+        import('@videojs/html/video/player'),
+        import('@videojs/html/video/skin'),
+        import('@videojs/html/video/skin.css')
+      ]).then(() => {
+        // Once registered, inject our custom styling and interactions gate
+        injectCustomControlsStyle();
+      }).catch(() => {});
+    };
+
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(deferLoad);
+    } else {
+      setTimeout(deferLoad, 100);
+    }
+  };
+
+  const injectCustomControlsStyle = () => {
+    const skin = document.querySelector('video-skin');
+    if (skin && skin.shadowRoot && !skin.dataset.styled) {
+      const style = document.createElement('style');
+      style.textContent = `
+        .media-controls {
+          display: none !important;
+          opacity: 0 !important;
+          scale: 0.95 !important;
+          pointer-events: none !important;
+          transition: opacity 0.3s ease, scale 0.3s ease, filter 0.3s ease !important;
+        }
+        :host([data-user-interacted="true"]) .media-controls {
+          display: flex !important;
+        }
+        :host([data-user-interacted="true"]:hover) .media-controls,
+        :host([data-user-interacted="true"]:focus-within) .media-controls,
+        :host([data-user-interacted="true"]) .media-controls[data-visible] {
+          opacity: 1 !important;
+          scale: 1 !important;
+          pointer-events: auto !important;
+          filter: none !important;
+        }
+      `;
+      skin.shadowRoot.appendChild(style);
+      skin.dataset.styled = 'true';
+
+      const setInteracted = () => {
+        skin.setAttribute('data-user-interacted', 'true');
+        skin.removeEventListener('pointerenter', setInteracted);
+        skin.removeEventListener('touchstart', setInteracted);
+      };
+      skin.addEventListener('pointerenter', setInteracted, { passive: true });
+      skin.addEventListener('touchstart', setInteracted, { passive: true });
+    }
+  };
 
   const initHeroTracking = () => {
     const isConsentAccepted = () => localStorage.getItem('cookie-consent') === 'accepted';
@@ -156,50 +210,20 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
         playOverlay.classList.remove('opacity-0', 'pointer-events-none');
       });
     }
+  };
 
-    // Dynamic style injection to hide controls unless hovered (desktop) or tapped (mobile)
-    if (skin && skin.shadowRoot && !skin.dataset.styled) {
-      const style = document.createElement('style');
-      style.textContent = `
-        .media-controls {
-          display: none !important;
-          opacity: 0 !important;
-          scale: 0.95 !important;
-          pointer-events: none !important;
-          transition: opacity 0.3s ease, scale 0.3s ease, filter 0.3s ease !important;
-        }
-        :host([data-user-interacted="true"]) .media-controls {
-          display: flex !important;
-        }
-        :host([data-user-interacted="true"]:hover) .media-controls,
-        :host([data-user-interacted="true"]:focus-within) .media-controls,
-        :host([data-user-interacted="true"]) .media-controls[data-visible] {
-          opacity: 1 !important;
-          scale: 1 !important;
-          pointer-events: auto !important;
-          filter: none !important;
-        }
-      `;
-      skin.shadowRoot.appendChild(style);
-      skin.dataset.styled = 'true';
-
-      const setInteracted = () => {
-        skin.setAttribute('data-user-interacted', 'true');
-        skin.removeEventListener('pointerenter', setInteracted);
-        skin.removeEventListener('touchstart', setInteracted);
-      };
-      skin.addEventListener('pointerenter', setInteracted, { passive: true });
-      skin.addEventListener('touchstart', setInteracted, { passive: true });
-    }
+  const handlePageLoad = () => {
+    initHeroTracking();
+    loadVideoPlayer();
   };
 
   if (document.readyState !== 'loading') {
-    initHeroTracking();
+    handlePageLoad();
   } else {
-    document.addEventListener('DOMContentLoaded', initHeroTracking, { once: true });
+    document.addEventListener('DOMContentLoaded', handlePageLoad, { once: true });
   }
 
-  document.addEventListener('astro:page-load', initHeroTracking);
+  document.addEventListener('astro:page-load', handlePageLoad);
 </script>
 
 <style>
