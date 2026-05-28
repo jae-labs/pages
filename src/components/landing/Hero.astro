@@ -71,17 +71,24 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
       <div class="relative group">
         <div class="absolute -inset-3 rounded-[2rem] bg-gradient-to-r from-[#f3eb2c]/15 via-[#00ffff]/10 to-[#f3eb2c]/15 blur-2xl opacity-70 transition-opacity duration-500 group-hover:opacity-100"></div>
         <div class="video-container relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#050505]/70 shadow-[0_0_40px_rgba(243,235,44,0.08)] backdrop-blur-sm aspect-video w-full">
-          <background-video-player id="hero-video-player">
-            <background-video-skin>
-              <background-video 
+          <video-player id="hero-video-player">
+            <video-skin>
+              <video 
+                slot="media"
+                id="hero-video"
                 src={import.meta.env.PUBLIC_VIDEO_URL || "https://media.justanother.engineer/lui-z-promo.mp4?v=2"} 
                 class="block w-full h-full object-cover"
                 aria-label="Promotional video for lui.z"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
               >
                 <track kind="captions" label="No dialogue" default />
-              </background-video>
-            </background-video-skin>
-          </background-video-player>
+              </video>
+            </video-skin>
+          </video-player>
         </div>
       </div>
     </div>
@@ -90,10 +97,9 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
 
 <script>
   import posthog from 'posthog-js';
-  import '@videojs/html/background/player';
-  import '@videojs/html/background/skin';
-  import '@videojs/html/background/video';
-  import '@videojs/html/background/skin.css';
+  import '@videojs/html/video/player';
+  import '@videojs/html/video/skin';
+  import '@videojs/html/video/skin.css';
 
   const initHeroTracking = () => {
     const isConsentAccepted = () => localStorage.getItem('cookie-consent') === 'accepted';
@@ -112,37 +118,18 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
       el.dataset.bound = 'true';
     });
 
-    const bgVideo = document.querySelector('background-video');
-    if (bgVideo && !bgVideo.dataset.bound) {
-      const initTracking = (innerVideo: HTMLVideoElement) => {
-        innerVideo.addEventListener('play', () => {
-          if (isConsentAccepted()) {
-            try {
-              posthog.capture('hero_video_played');
-            } catch {
-              // Ignore analytics capture failures silently
-            }
+    const video = document.getElementById('hero-video');
+    if (video instanceof HTMLVideoElement && !video.dataset.bound) {
+      video.addEventListener('play', () => {
+        if (isConsentAccepted()) {
+          try {
+            posthog.capture('hero_video_played');
+          } catch {
+            // Ignore analytics capture failures silently
           }
-        }, { once: true });
-      };
-
-      const innerVideo = bgVideo.shadowRoot?.querySelector('video');
-      if (innerVideo instanceof HTMLVideoElement) {
-        initTracking(innerVideo);
-        bgVideo.dataset.bound = 'true';
-      } else {
-        const observer = new MutationObserver((_, obs) => {
-          const loadedVideo = bgVideo.shadowRoot?.querySelector('video');
-          if (loadedVideo instanceof HTMLVideoElement) {
-            initTracking(loadedVideo);
-            bgVideo.dataset.bound = 'true';
-            obs.disconnect();
-          }
-        });
-        if (bgVideo.shadowRoot) {
-          observer.observe(bgVideo.shadowRoot, { childList: true, subtree: true });
         }
-      }
+      }, { once: true });
+      video.dataset.bound = 'true';
     }
   };
 
@@ -156,10 +143,20 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
 </script>
 
 <style>
-  background-video-player {
+  video-player {
     display: block;
     width: 100%;
     height: 100%;
+    /* Glitch Yellow Theme styles for Video.js controls */
+    --media-color-primary: #f3eb2c;
+    --media-slider-fill: #f3eb2c;
+    --media-volume-fill: #f3eb2c;
+    --media-surface-background-color: rgba(5, 5, 5, 0.78);
+    --media-surface-backdrop-filter: blur(12px);
+    --media-surface-outer-border-color: rgba(243, 235, 44, 0.2);
+    --media-surface-inner-border-color: rgba(255, 255, 255, 0.05);
+    --media-border-radius: 1rem;
+    --media-video-border-radius: 1.75rem;
   }
 
   .video-container {
