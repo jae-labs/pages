@@ -227,6 +227,14 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
     border-color: rgba(243, 235, 44, 0.3);
     box-shadow: 0 0 50px rgba(243, 235, 44, 0.16);
   }
+
+  /* Hide the play overlay on desktop devices with precise pointer */
+  @media (pointer: fine) {
+    #video-play-overlay {
+      display: none !important;
+    }
+  }
+
   .hero-cta {
     clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
   }
