@@ -40,3 +40,7 @@ coverage/
 # certificates and keys
 *.pem
 *.key
+
+# Brainstorming Visual Companion persistence
+.superpowers/
+
