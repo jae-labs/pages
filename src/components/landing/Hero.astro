@@ -108,10 +108,60 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
     const deferLoad = () => {
       // Load Google Cast Sender SDK for Chromecast support
       if (!document.querySelector('script[src*="cast_sender.js"]')) {
-        // Pre-define __onGCastApiAvailable to ensure Cast SDK initializes successfully
-        // even if it loads before the Video.js core modules are parsed.
-        // @ts-expect-error: Define global callback for Cast Sender SDK
-        window.__onGCastApiAvailable = window.__onGCastApiAvailable || (() => {});
+        // Setup a robust callback coordinator for __onGCastApiAvailable
+        // to prevent any race conditions between the Cast SDK loading and Video.js initializing.
+        // @ts-expect-error: Setup custom __onGCastApiAvailable queue
+        if (!window.__onGCastApiAvailable || !window.__onGCastApiAvailable.isCoordinator) {
+          const callbacks: Array<(...args: unknown[]) => void> = [];
+          let isCastApiAvailableCalled = false;
+          let castApiAvailableArgs: unknown[] | null = null;
+
+          const coordinator = function(...args: unknown[]) {
+            isCastApiAvailableCalled = true;
+            castApiAvailableArgs = args;
+            callbacks.forEach(cb => {
+              try { cb(...args); } catch (e) { console.error(e); }
+            });
+          };
+          // Mark it as a coordinator so we don't recreate it
+          coordinator.isCoordinator = true;
+
+          // @ts-expect-error: Check existing callback
+          const originalCallback = window.__onGCastApiAvailable;
+          if (typeof originalCallback === 'function') {
+            callbacks.push(originalCallback);
+          }
+
+          // @ts-expect-error: Define global callback for Cast Sender SDK
+          window.__onGCastApiAvailable = coordinator;
+
+          // Allow other libraries to assign to window.__onGCastApiAvailable by defining a getter/setter
+          let currentCallback = coordinator;
+          Object.defineProperty(window, '__onGCastApiAvailable', {
+            get() {
+              return currentCallback;
+            },
+            set(newCallback) {
+              if (newCallback && newCallback.isCoordinator) {
+                currentCallback = newCallback;
+                return;
+              }
+              if (typeof newCallback === 'function') {
+                callbacks.push(newCallback);
+                if (isCastApiAvailableCalled && castApiAvailableArgs) {
+                  try {
+                    newCallback(...castApiAvailableArgs);
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }
+              }
+            },
+            configurable: true,
+            enumerable: true
+          });
+        }
+
         const castScript = document.createElement('script');
         castScript.src = 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1';
         castScript.defer = true;
@@ -129,14 +179,32 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
         import('../../../node_modules/@videojs/core/dist/default/dom/media/video-host.js'),
         // @ts-expect-error: Untyped deep import from node_modules
         import('../../../node_modules/@videojs/core/dist/default/dom/media/google-cast/index.js'),
-        import('@videojs/html')
+        import('@videojs/html'),
+        import('@videojs/core')
       ]).then(([
         ,,,,
         { CustomMediaElement },
         { HTMLVideoElementHost },
         { GoogleCastMixin },
-        { MediaAttachMixin }
+        { MediaAttachMixin },
+        { CastButtonCore }
       ]) => {
+        // Override CastButtonCore.prototype.toggle to bypass the "available" guard
+        // so that the Cast Sender SDK is always prompted, even if local device discovery is pending
+        // or temporarily reporting "unavailable" in local development / non-secure contexts.
+        if (CastButtonCore && CastButtonCore.prototype) {
+          CastButtonCore.prototype.toggle = async function(media: unknown) {
+            try {
+              if (media && typeof media === 'object' && 'toggleRemotePlayback' in media && typeof (media as Record<string, unknown>).toggleRemotePlayback === 'function') {
+                // @ts-expect-error: Safe dynamic call to toggleRemotePlayback
+                await media.toggleRemotePlayback();
+              }
+            } catch (err) {
+              console.error('JAE Player Cast Button toggle failed:', err);
+            }
+          };
+        }
+
         if (!customElements.get('cast-video')) {
           class GoogleCastVideoHost extends GoogleCastMixin(HTMLVideoElementHost) {}
           class CastVideoElement extends MediaAttachMixin(CustomMediaElement('video', GoogleCastVideoHost)) {}
@@ -251,6 +319,23 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
   const handlePageLoad = () => {
     initHeroTracking();
     loadVideoPlayer();
+
+    /* eslint-disable no-console */
+    // Log player & cast environment status for easy console debugging
+    setTimeout(() => {
+      console.log('JAE Player Cast Debug:', {
+        // @ts-expect-error: chrome is a vendor property on window
+        chromeExists: typeof window.chrome !== 'undefined',
+        // @ts-expect-error: cast is a vendor property on window
+        castExists: typeof window.cast !== 'undefined',
+        // @ts-expect-error: Access dynamic cast property
+        castFrameworkExists: !!(window.cast && window.cast.framework),
+        // @ts-expect-error: Access dynamic cast property
+        castApiAvailable: !!(window.chrome && window.chrome.cast && window.chrome.cast.isAvailable),
+        isSecureContext: window.isSecureContext
+      });
+    }, 2000);
+    /* eslint-enable no-console */
   };
 
   if (document.readyState !== 'loading') {
@@ -260,6 +345,14 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
   }
 
   document.addEventListener('astro:page-load', handlePageLoad);
+
+  // Global error logger for player debugging
+  window.addEventListener('error', (e) => {
+    console.error('JAE Player Error:', e.message, e.filename, e.lineno);
+  });
+  window.addEventListener('unhandledrejection', (e) => {
+    console.error('JAE Player Promise Rejection:', e.reason);
+  });
 </script>
 
 <style>
