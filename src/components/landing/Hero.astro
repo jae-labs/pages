@@ -138,14 +138,18 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
       const style = document.createElement('style');
       style.textContent = `
         .media-controls {
+          display: none !important;
           opacity: 0 !important;
           scale: 0.95 !important;
           pointer-events: none !important;
           transition: opacity 0.3s ease, scale 0.3s ease, filter 0.3s ease !important;
         }
-        :host(:hover) .media-controls,
-        :host(:focus-within) .media-controls,
-        .media-controls[data-visible] {
+        :host([data-user-interacted="true"]) .media-controls {
+          display: flex !important;
+        }
+        :host([data-user-interacted="true"]:hover) .media-controls,
+        :host([data-user-interacted="true"]:focus-within) .media-controls,
+        :host([data-user-interacted="true"]) .media-controls[data-visible] {
           opacity: 1 !important;
           scale: 1 !important;
           pointer-events: auto !important;
@@ -154,6 +158,14 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
       `;
       skin.shadowRoot.appendChild(style);
       skin.dataset.styled = 'true';
+
+      const setInteracted = () => {
+        skin.setAttribute('data-user-interacted', 'true');
+        skin.removeEventListener('pointerenter', setInteracted);
+        skin.removeEventListener('touchstart', setInteracted);
+      };
+      skin.addEventListener('pointerenter', setInteracted, { passive: true });
+      skin.addEventListener('touchstart', setInteracted, { passive: true });
     }
   };
 
