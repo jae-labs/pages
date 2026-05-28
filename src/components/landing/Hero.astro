@@ -70,12 +70,12 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
     <div class="mt-12 w-full max-w-4xl">
       <div class="relative group">
         <div class="absolute -inset-3 rounded-[2rem] bg-gradient-to-r from-[#f3eb2c]/15 via-[#00ffff]/10 to-[#f3eb2c]/15 blur-2xl opacity-70 transition-opacity duration-500 group-hover:opacity-100"></div>
-        <div class="video-container relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#050505]/70 shadow-[0_0_40px_rgba(243,235,44,0.08)] backdrop-blur-sm">
+        <div class="video-container relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#050505]/70 shadow-[0_0_40px_rgba(243,235,44,0.08)] backdrop-blur-sm aspect-video w-full">
           <background-video-player id="hero-video-player">
             <background-video-skin>
               <background-video 
                 src={import.meta.env.PUBLIC_VIDEO_URL || "https://media.justanother.engineer/lui-z-promo.mp4?v=2"} 
-                class="block aspect-video w-full object-cover"
+                class="block w-full h-full object-cover"
                 aria-label="Promotional video for lui.z"
               >
                 <track kind="captions" label="No dialogue" default />
