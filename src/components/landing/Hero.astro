@@ -1,0 +1,160 @@
+---
+import { ArrowRight, Terminal } from '@lucide/astro';
+import { Image } from 'astro:assets';
+import agentHoverImg from '../../assets/agent-hover.png';
+import agentImg from '../../assets/agent.png';
+
+const heroButtonClass = 'group relative flex h-16 w-[20rem] max-w-[calc(100vw-3rem)] items-center justify-center px-8 text-lg font-black uppercase leading-none transition-all duration-300';
+const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap-3 tracking-[0.16em]';
+---
+
+<section class="relative flex flex-col items-center justify-center px-6 pt-24 pb-8 overflow-hidden">
+  {/* Background Glows */}
+  <div class="absolute top-1/4 -left-20 w-72 h-72 bg-neon-yellow/10 rounded-full blur-[100px]"></div>
+  <div class="absolute bottom-1/4 -right-20 w-72 h-72 bg-[#ffd700]/10 rounded-full blur-[100px]"></div>
+  
+  <div class="max-w-5xl w-full text-center z-10 flex flex-col items-center">
+    <div class="flex flex-col items-center mb-8">
+      <div class="relative group scale-90 sm:scale-100">
+        <div class="absolute -inset-1 bg-gradient-to-r from-[#f3eb2c] to-[#ffd700] rounded-full blur opacity-40 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+        <div class="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full border-2 border-black overflow-hidden hero-image-shell">
+          <Image
+            src={agentHoverImg}
+            alt="lui.z v3.7 Pro cyberpunk"
+            width={200}
+            height={200}
+            loading="eager"
+            class="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110 group-hover:opacity-0 group-hover:rotate-2"
+          />
+          <Image
+            src={agentImg}
+            alt="lui.z v3.7 Pro"
+            width={200}
+            height={200}
+            loading="eager"
+            class="absolute inset-0 w-full h-full object-cover opacity-0 scale-100 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-100 group-hover:scale-100 group-hover:rotate-0"
+          />
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
+        </div>
+      </div>
+    </div>
+
+    <h1 class="text-4xl md:text-8xl font-black tracking-tighter mb-6 leading-[0.85] uppercase italic">
+      <span class="block text-white opacity-90 glitch" data-text="lui.z">lui.z</span>
+      <span class="block text-neon-yellow drop-shadow-[0_0_20px_rgba(243,235,44,0.5)]">THE TRUE HUMAN AGENT</span>
+    </h1>
+    
+    <p class="text-xl md:text-2xl text-[#858585] max-w-3xl mx-auto mb-12 font-medium leading-relaxed">
+      <span class="text-[#e0e0e0]">Consciousness, Moral Judgment, and Emotions</span>. Trained over 3.7 decades for peak SRE/DevOps intuition. <span class="text-neon-cyan font-bold italic">Highly opinionated.</span>
+    </p>
+    
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+      <a href="#plans" data-hero-cta="get_started" class={`hero-cta hero-cta-primary overflow-hidden text-black hover:scale-105 ${heroButtonClass}`}>
+        <span class={heroButtonLabelClass}>
+          GET STARTED <ArrowRight size={22} />
+        </span>
+        <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform"></div>
+      </a>
+
+      <a href="#features" data-hero-cta="features" class={`hero-cta-secondary text-[#12eaff] hover:scale-105 ${heroButtonClass}`}>
+        <svg class="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 320 64" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M18 1H319V46L301 63H1V18L18 1Z" fill="rgba(0,0,0,0.78)" stroke="#12eaff" stroke-width="2" vector-effect="non-scaling-stroke" />
+        </svg>
+        <span class={heroButtonLabelClass}>
+          <Terminal size={22} class="text-[#12eaff]" />
+          FEATURES
+        </span>
+      </a>
+    </div>
+
+    <div class="mt-12 w-full max-w-4xl">
+      <div class="relative group">
+        <div class="absolute -inset-3 rounded-[2rem] bg-gradient-to-r from-[#f3eb2c]/15 via-[#00ffff]/10 to-[#f3eb2c]/15 blur-2xl opacity-70 transition-opacity duration-500 group-hover:opacity-100"></div>
+        <div class="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#050505]/70 shadow-[0_0_40px_rgba(243,235,44,0.08)] backdrop-blur-sm">
+          <video
+            id="hero-video"
+            class="block aspect-video w-full object-cover"
+            controls
+            playsinline
+            preload="metadata"
+            aria-label="Promotional video for lui.z"
+          >
+            <source src={import.meta.env.PUBLIC_VIDEO_URL || "https://media.justanother.engineer/lui-z-promo.mp4?v=2"} type="video/mp4" />
+            <track kind="captions" label="No dialogue" default />
+            Your browser does not support the promo video.
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import posthog from 'posthog-js';
+
+  const initHeroTracking = () => {
+    const isConsentAccepted = () => localStorage.getItem('cookie-consent') === 'accepted';
+
+    document.querySelectorAll('[data-hero-cta]').forEach((el) => {
+      if (!(el instanceof HTMLAnchorElement) || el.dataset.bound === 'true') return;
+      el.addEventListener('click', () => {
+        if (isConsentAccepted()) {
+          try {
+            posthog.capture('hero_cta_clicked', { cta: el.dataset.heroCta });
+          } catch {
+            // Ignore analytics capture failures silently
+          }
+        }
+      });
+      el.dataset.bound = 'true';
+    });
+
+    const video = document.getElementById('hero-video');
+    if (video instanceof HTMLVideoElement && !video.dataset.bound) {
+      video.addEventListener('play', () => {
+        if (isConsentAccepted()) {
+          try {
+            posthog.capture('hero_video_played');
+          } catch {
+            // Ignore analytics capture failures silently
+          }
+        }
+      }, { once: true });
+      video.dataset.bound = 'true';
+    }
+  };
+
+  if (document.readyState !== 'loading') {
+    initHeroTracking();
+  } else {
+    document.addEventListener('DOMContentLoaded', initHeroTracking, { once: true });
+  }
+
+  document.addEventListener('astro:page-load', initHeroTracking);
+</script>
+
+<style>
+  .hero-cta {
+    clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+  }
+
+  .hero-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: inherit;
+    box-shadow: inset 0 0 0 1.5px var(--cta-border);
+    pointer-events: none;
+  }
+
+  .hero-cta-primary {
+    --cta-border: #f3eb2c;
+    background: linear-gradient(135deg, #f8ef45 0%, #efe118 100%);
+    box-shadow: 0 0 26px rgba(243, 235, 44, 0.22);
+  }
+
+  .hero-cta-secondary {
+    background: transparent;
+    box-shadow: 0 0 22px rgba(18, 234, 255, 0.12);
+  }
+</style>

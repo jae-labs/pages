@@ -1,0 +1,385 @@
+---
+import { Bot, LoaderCircle, MessageCircle, RotateCcw, Send, X } from '@lucide/astro';
+---
+
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer async></script>
+
+<section id="lui-z-chat" class="fixed bottom-4 right-4 z-[900] flex w-[calc(100vw-2rem)] max-w-sm flex-col items-end sm:bottom-6 sm:right-6">
+  <button
+    id="chat-toggle"
+    type="button"
+    class="flex h-14 w-14 items-center justify-center rounded-full border border-neon-yellow bg-transparent text-neon-yellow transition-all duration-300 hover:scale-110 hover:bg-neon-yellow hover:text-black active:scale-95"
+    aria-expanded="false"
+    aria-controls="chat-panel"
+    aria-label="Open lui.z clone chat"
+  >
+    <MessageCircle size={24} stroke-width={1.8} />
+  </button>
+
+  <div
+    id="chat-panel"
+    class="order-first mb-3 hidden w-full overflow-hidden rounded-lg border border-neon-yellow/30 bg-[#050505]/95 shadow-[0_0_30px_rgba(0,255,255,0.12)] backdrop-blur-xl"
+  >
+    <div class="flex items-center justify-between border-b border-white/10 px-4 py-3">
+      <div class="flex items-center gap-2">
+        <span class="flex h-8 w-8 items-center justify-center rounded-full border border-neon-yellow/40 text-neon-yellow">
+          <Bot size={18} stroke-width={1.8} />
+        </span>
+        <div>
+          <h2 class="text-sm font-black uppercase tracking-[0.18em] text-neon-yellow">lui.z AI</h2>
+        </div>
+      </div>
+      <div class="flex items-center gap-1">
+        <button
+          id="chat-clear"
+          type="button"
+          class="flex h-8 w-8 items-center justify-center rounded border border-white/10 text-[#aaa] bg-transparent transition-all duration-300 hover:bg-neon-yellow hover:text-black hover:border-neon-yellow active:scale-90"
+          aria-label="Clear chat"
+        >
+          <RotateCcw size={16} stroke-width={1.8} />
+        </button>
+        <button
+          id="chat-close"
+          type="button"
+          class="flex h-8 w-8 items-center justify-center rounded border border-white/10 text-[#aaa] bg-transparent transition-all duration-300 hover:bg-neon-yellow hover:text-black hover:border-neon-yellow hover:shadow-[0_0_15px_rgba(243,235,44,0.4)] active:scale-90"
+          aria-label="Close lui.z clone chat"
+        >
+          <X size={16} stroke-width={1.8} />
+        </button>
+      </div>
+    </div>
+
+    <div class="border-b border-neon-yellow/20 bg-neon-yellow/10 px-4 py-3 text-xs leading-relaxed text-[#d8d8d8]">
+      Disclaimer: I am not the biological lui.z. I am a limited artificial clone with narrow capabilities, answering only from public-site facts. Outputs may be wrong, incomplete, unsafe, or outdated. Use at your own risk. Do not share secrets, private data, credentials, employer-confidential information, or personal information. By using this chat, you accept that messages may be processed by third-party AI infrastructure and may be used to improve or train lui.z systems. Luiz is not responsible for decisions, losses, damages, or actions taken from this chat.
+    </div>
+
+    <div id="chat-log" class="flex max-h-80 min-h-64 flex-col gap-3 overflow-y-auto px-4 py-4" aria-live="polite">
+      <p class="max-w-[85%] rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm leading-relaxed text-[#e0e0e0]">
+        How can I help you today?
+      </p>
+    </div>
+
+    <form id="chat-form" class="border-t border-white/10 p-3">
+      <div id="chat-turnstile" class="cf-turnstile mb-3 flex justify-center" data-theme="dark"></div>
+      <div class="flex gap-2">
+        <label class="sr-only" for="chat-message">Message</label>
+        <textarea
+          id="chat-message"
+          name="message"
+          rows="1"
+          maxlength="1200"
+          class="h-11 flex-1 resize-none rounded border border-white/10 bg-black/70 px-3 py-[10px] text-left text-sm text-white outline-none transition placeholder:text-[#777] focus:border-neon-cyan leading-normal"
+          placeholder="Type your message here"
+        ></textarea>
+        <button
+          id="chat-submit"
+          type="submit"
+          class="flex h-11 w-11 shrink-0 items-center justify-center rounded border border-neon-yellow bg-transparent text-neon-yellow transition-all duration-300 hover:bg-neon-yellow hover:text-black active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:border-neon-yellow/20 disabled:text-neon-yellow/30 disabled:bg-transparent"
+          aria-label="Send message"
+        >
+          <Send class="chat-send-icon" size={18} stroke-width={2} style="transform: translate(-1px, 1px);" />
+          <LoaderCircle class="chat-loading-icon hidden animate-spin" size={18} stroke-width={2} />
+        </button>
+      </div>
+      <p id="chat-character-count" class="mt-2 text-right text-[10px] uppercase tracking-[0.16em] text-[#777]">
+        0 / 1200
+      </p>
+    </form>
+  </div>
+</section>
+
+<script>
+  import posthog from 'posthog-js';
+
+  interface TurnstileOptions {
+    sitekey: string;
+    theme?: 'light' | 'dark' | 'auto';
+    callback?: (token: string) => void;
+    'expired-callback'?: () => void;
+    'error-callback'?: () => void;
+    'timeout-callback'?: () => void;
+  }
+
+  interface Turnstile {
+    render: (container: string | HTMLElement, options: TurnstileOptions) => string;
+    reset: (widgetId: string | null) => void;
+    getResponse: (widgetId: string | null) => string;
+  }
+
+  declare global {
+    interface Window {
+      turnstile?: Turnstile;
+    }
+  }
+
+  const initChatBot = () => {
+    const toggle = document.getElementById('chat-toggle');
+    const close = document.getElementById('chat-close');
+    const clear = document.getElementById('chat-clear');
+    const panel = document.getElementById('chat-panel');
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('chat-message');
+    const log = document.getElementById('chat-log');
+    const submit = document.getElementById('chat-submit');
+    const characterCount = document.getElementById('chat-character-count');
+    const sendIcon = submit?.querySelector('.chat-send-icon');
+    const loadingIcon = submit?.querySelector('.chat-loading-icon');
+
+    if (
+      !(toggle instanceof HTMLButtonElement)
+      || !(close instanceof HTMLButtonElement)
+      || !(clear instanceof HTMLButtonElement)
+      || !(panel instanceof HTMLDivElement)
+      || !(form instanceof HTMLFormElement)
+      || !(input instanceof HTMLTextAreaElement)
+      || !(log instanceof HTMLDivElement)
+      || !(submit instanceof HTMLButtonElement)
+      || !(characterCount instanceof HTMLParagraphElement)
+    ) return;
+
+    const maxLength = Number(input.maxLength);
+
+    const updateCharacterCount = () => {
+      characterCount.textContent = `${input.value.length} / ${maxLength}`;
+    };
+
+    const capturePostHog = (event: string, properties?: Record<string, unknown>) => {
+      if (localStorage.getItem('cookie-consent') === 'accepted') {
+        try {
+          posthog.capture(event, properties);
+        } catch {
+          // Ignore analytics capture failures silently
+        }
+      }
+    };
+
+    let turnstileWidgetId: string | null = null;
+    let isTurnstileVerified = false;
+    let clientSessionId: string | null = null;
+    let clientSessionSignature: string | null = null;
+
+    const renderTurnstile = () => {
+      const container = document.getElementById('chat-turnstile');
+
+      if (clientSessionSignature !== null) {
+        isTurnstileVerified = true;
+        if (container) {
+          container.classList.add('hidden');
+        }
+        if (!submit.dataset.loading) {
+          submit.disabled = false;
+        }
+        return;
+      }
+
+      if (container) {
+        container.classList.remove('hidden');
+      }
+
+      if (!window.turnstile) {
+        isTurnstileVerified = true;
+        submit.disabled = false;
+        return;
+      }
+
+      if (container && turnstileWidgetId === null) {
+        const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
+        try {
+          submit.disabled = true;
+          isTurnstileVerified = false;
+
+          turnstileWidgetId = window.turnstile.render(container, {
+            sitekey: siteKey,
+            theme: 'dark',
+            callback: () => {
+              isTurnstileVerified = true;
+              if (!submit.dataset.loading) {
+                submit.disabled = false;
+              }
+            },
+            'expired-callback': () => {
+              isTurnstileVerified = false;
+              submit.disabled = true;
+            },
+            'error-callback': () => {
+              isTurnstileVerified = false;
+              submit.disabled = true;
+            },
+            'timeout-callback': () => {
+              isTurnstileVerified = false;
+              submit.disabled = true;
+            }
+          });
+        } catch (err) {
+          console.error('[Turnstile] Render error:', err);
+          isTurnstileVerified = true;
+          submit.disabled = false;
+        }
+      }
+    };
+
+    const setOpen = (open: boolean) => {
+      panel.classList.toggle('hidden', !open);
+      toggle.setAttribute('aria-expanded', String(open));
+      if (open) {
+        input.focus();
+        capturePostHog('chatbot_opened');
+        if (clientSessionId === null) {
+          clientSessionId = `${Date.now()}:${crypto.randomUUID()}`;
+        }
+        renderTurnstile();
+      } else {
+        capturePostHog('chatbot_closed');
+      }
+    };
+
+    const appendMessage = (text: string, speaker: 'user' | 'clone') => {
+      const message = document.createElement('p');
+      message.className = speaker === 'user'
+        ? 'ml-auto max-w-[85%] rounded-lg border border-neon-cyan/30 bg-neon-cyan/10 px-3 py-2 text-sm leading-relaxed text-white'
+        : 'max-w-[85%] rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm leading-relaxed text-[#e0e0e0]';
+      message.textContent = text;
+      log.appendChild(message);
+      log.scrollTop = log.scrollHeight;
+    };
+
+    const setLoading = (loading: boolean) => {
+      submit.dataset.loading = loading ? 'true' : '';
+      submit.disabled = loading || !isTurnstileVerified;
+      input.disabled = loading;
+      sendIcon?.classList.toggle('hidden', loading);
+      loadingIcon?.classList.toggle('hidden', !loading);
+    };
+
+    if (toggle.dataset.bound !== 'true') {
+      toggle.addEventListener('click', () => setOpen(panel.classList.contains('hidden')));
+      close.addEventListener('click', () => setOpen(false));
+      clear.addEventListener('click', () => {
+        log.innerHTML = '';
+        appendMessage('How can I help you today?', 'clone');
+        input.value = '';
+        updateCharacterCount();
+        capturePostHog('chatbot_history_cleared');
+
+        clientSessionId = null;
+        clientSessionSignature = null;
+        if (window.turnstile && turnstileWidgetId !== null) {
+          try {
+            isTurnstileVerified = false;
+            window.turnstile.reset(turnstileWidgetId);
+          } catch (err) {
+            console.error('[Turnstile] Reset error:', err);
+            isTurnstileVerified = true;
+          }
+        }
+        renderTurnstile();
+      });
+      input.addEventListener('input', updateCharacterCount);
+      input.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' || event.shiftKey) return;
+
+        event.preventDefault();
+        if (isTurnstileVerified) {
+          form.requestSubmit();
+        }
+      });
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!isTurnstileVerified) return;
+
+        const message = input.value.trim();
+        if (!message) return;
+
+        let turnstileToken: string | undefined = undefined;
+        if (clientSessionSignature === null && window.turnstile && turnstileWidgetId !== null) {
+          turnstileToken = window.turnstile.getResponse(turnstileWidgetId);
+        }
+
+        capturePostHog('chatbot_message_sent', {
+          message_length: message.length
+        });
+
+        appendMessage(message, 'user');
+        input.value = '';
+        updateCharacterCount();
+        setLoading(true);
+
+        try {
+          const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              message,
+              'cf-turnstile-response': turnstileToken,
+              clientSessionId,
+              clientSessionSignature
+            })
+          });
+          const body = await response.json() as { reply?: string; error?: string; clientSessionSignature?: string };
+          if (response.ok && body.reply) {
+            if (body.clientSessionSignature) {
+              clientSessionSignature = body.clientSessionSignature;
+              const container = document.getElementById('chat-turnstile');
+              if (container) {
+                container.classList.add('hidden');
+              }
+            }
+            capturePostHog('chatbot_response_received', {
+              reply_length: body.reply.length
+            });
+            appendMessage(body.reply, 'clone');
+          } else {
+            capturePostHog('chatbot_error_encountered', {
+              error: body.error ?? 'Response not ok'
+            });
+            appendMessage(body.error ?? 'The clone is temporarily unavailable.', 'clone');
+
+            // Reset session on security verification errors
+            if (response.status === 400 && (body.error?.includes('verification') || body.error?.includes('Security'))) {
+              clientSessionId = null;
+              clientSessionSignature = null;
+              if (window.turnstile && turnstileWidgetId !== null) {
+                try {
+                  isTurnstileVerified = false;
+                  window.turnstile.reset(turnstileWidgetId);
+                } catch (err) {
+                  console.error('[Turnstile] Reset error:', err);
+                  isTurnstileVerified = true;
+                }
+              }
+              renderTurnstile();
+            }
+          }
+        } catch (err) {
+          const errorMessage = err instanceof Error ? err.message : 'Network exception';
+          capturePostHog('chatbot_error_encountered', {
+            error: errorMessage
+          });
+          appendMessage('The clone is temporarily unavailable.', 'clone');
+        } finally {
+          if (clientSessionSignature === null && window.turnstile && turnstileWidgetId !== null) {
+            try {
+              isTurnstileVerified = false;
+              window.turnstile.reset(turnstileWidgetId);
+            } catch (err) {
+              console.error('[Turnstile] Reset error:', err);
+              isTurnstileVerified = true;
+            }
+          }
+          setLoading(false);
+          input.focus();
+        }
+      });
+      toggle.dataset.bound = 'true';
+      updateCharacterCount();
+    }
+  };
+
+  if (document.readyState !== 'loading') {
+    initChatBot();
+  } else {
+    document.addEventListener('DOMContentLoaded', initChatBot, { once: true });
+  }
+
+  document.addEventListener('astro:page-load', initChatBot);
+</script>
