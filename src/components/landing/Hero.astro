@@ -70,7 +70,7 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
     <div class="mt-12 w-full max-w-4xl">
       <div class="relative group">
         <div class="absolute -inset-3 rounded-[2rem] bg-gradient-to-r from-[#f3eb2c]/15 via-[#00ffff]/10 to-[#f3eb2c]/15 blur-2xl opacity-70 transition-opacity duration-500 group-hover:opacity-100"></div>
-        <div class="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#050505]/70 shadow-[0_0_40px_rgba(243,235,44,0.08)] backdrop-blur-sm">
+        <div class="video-container relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#050505]/70 shadow-[0_0_40px_rgba(243,235,44,0.08)] backdrop-blur-sm">
           <background-video-player id="hero-video-player">
             <background-video-skin>
               <background-video 
@@ -90,6 +90,10 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
 
 <script>
   import posthog from 'posthog-js';
+  import '@videojs/html/background/player';
+  import '@videojs/html/background/skin';
+  import '@videojs/html/background/video';
+  import '@videojs/html/background/skin.css';
 
   const initHeroTracking = () => {
     const isConsentAccepted = () => localStorage.getItem('cookie-consent') === 'accepted';
@@ -108,18 +112,37 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
       el.dataset.bound = 'true';
     });
 
-    const video = document.getElementById('hero-video');
-    if (video instanceof HTMLVideoElement && !video.dataset.bound) {
-      video.addEventListener('play', () => {
-        if (isConsentAccepted()) {
-          try {
-            posthog.capture('hero_video_played');
-          } catch {
-            // Ignore analytics capture failures silently
+    const bgVideo = document.querySelector('background-video');
+    if (bgVideo && !bgVideo.dataset.bound) {
+      const initTracking = (innerVideo: HTMLVideoElement) => {
+        innerVideo.addEventListener('play', () => {
+          if (isConsentAccepted()) {
+            try {
+              posthog.capture('hero_video_played');
+            } catch {
+              // Ignore analytics capture failures silently
+            }
           }
+        }, { once: true });
+      };
+
+      const innerVideo = bgVideo.shadowRoot?.querySelector('video');
+      if (innerVideo instanceof HTMLVideoElement) {
+        initTracking(innerVideo);
+        bgVideo.dataset.bound = 'true';
+      } else {
+        const observer = new MutationObserver((_, obs) => {
+          const loadedVideo = bgVideo.shadowRoot?.querySelector('video');
+          if (loadedVideo instanceof HTMLVideoElement) {
+            initTracking(loadedVideo);
+            bgVideo.dataset.bound = 'true';
+            obs.disconnect();
+          }
+        });
+        if (bgVideo.shadowRoot) {
+          observer.observe(bgVideo.shadowRoot, { childList: true, subtree: true });
         }
-      }, { once: true });
-      video.dataset.bound = 'true';
+      }
     }
   };
 
@@ -133,6 +156,20 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
 </script>
 
 <style>
+  background-video-player {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .video-container {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .video-container:hover {
+    border-color: rgba(243, 235, 44, 0.3);
+    box-shadow: 0 0 50px rgba(243, 235, 44, 0.16);
+  }
   .hero-cta {
     clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
   }
