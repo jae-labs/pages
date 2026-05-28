@@ -131,6 +131,30 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
       }, { once: true });
       video.dataset.bound = 'true';
     }
+
+    // Dynamic style injection to hide controls unless hovered (desktop) or tapped (mobile)
+    const skin = document.querySelector('video-skin');
+    if (skin && skin.shadowRoot && !skin.dataset.styled) {
+      const style = document.createElement('style');
+      style.textContent = `
+        .media-controls {
+          opacity: 0 !important;
+          scale: 0.95 !important;
+          pointer-events: none !important;
+          transition: opacity 0.3s ease, scale 0.3s ease, filter 0.3s ease !important;
+        }
+        :host(:hover) .media-controls,
+        :host(:focus-within) .media-controls,
+        .media-controls[data-visible] {
+          opacity: 1 !important;
+          scale: 1 !important;
+          pointer-events: auto !important;
+          filter: none !important;
+        }
+      `;
+      skin.shadowRoot.appendChild(style);
+      skin.dataset.styled = 'true';
+    }
   };
 
   if (document.readyState !== 'loading') {
