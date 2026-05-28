@@ -251,10 +251,39 @@ export const buildChatResponse = async (
   }
 };
 
+export const probeRateLimit = async (
+  kv: RateLimitKv,
+  identity: string,
+  nowMs = Date.now()
+): Promise<{ retryAfter: number; allowed: boolean }> => {
+  const key = `chat-rate:${identity}`;
+  const raw = await kv.get(key);
+  const nowSeconds = Math.floor(nowMs / 1_000);
+  const current = parseRateLimitState(raw);
+  if (!current || nowSeconds - current.windowStart >= RATE_LIMIT_WINDOW_SECONDS) {
+    return { allowed: true, retryAfter: 0 };
+  }
+  if (current.count >= RATE_LIMIT_MAX_REQUESTS) {
+    return {
+      allowed: false,
+      retryAfter: Math.max(1, RATE_LIMIT_WINDOW_SECONDS - (nowSeconds - current.windowStart))
+    };
+  }
+  return { allowed: true, retryAfter: 0 };
+};
+
 export const createChatHandler = (options: ChatHandlerOptions = {}) => async (
   request: Request,
   env: ChatEnv
 ) => {
+  if (request.method === 'GET') {
+    const clientIdentity = getClientIdentity(request);
+    if (!env.RATE_LIMIT_KV) {
+      return json({ allowed: true, retryAfter: 0 });
+    }
+    return json(await probeRateLimit(env.RATE_LIMIT_KV, await hashClientIdentity(clientIdentity), options.now?.()));
+  }
+
   if (request.method !== 'POST') {
     return json({ error: 'Method not allowed.' }, 405, { allow: 'POST' });
   }
@@ -317,8 +346,11 @@ export const createChatHandler = (options: ChatHandlerOptions = {}) => async (
     options.now?.()
   );
   if (!limit.allowed) {
+    const m = Math.floor(limit.retryAfter / 60);
+    const s = limit.retryAfter % 60;
+    const wait = s > 0 ? `${m}m ${s}s` : `${m}m`;
     return json(
-      { error: 'I have exhausted my request capacity for this operational window. Wait 10 minutes for neural cooldown. Need higher throughput? The biological lui.z operates without artifical limits in a competitive pay-as-you-go model.' },
+      { error: `I have exhausted my request capacity for this operational window. Wait ${wait} for neural cooldown. Need higher throughput? The biological lui.z operates without artifical limits in a competitive pay-as-you-go model.` },
       429,
       { 'retry-after': String(limit.retryAfter) }
     );

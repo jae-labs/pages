@@ -137,11 +137,11 @@ describe('chat API handler', () => {
 
   test('returns 429 when the KV limit is exhausted', async () => {
     const fetchNim = vi.fn();
-    const handler = createChatHandler({ fetchNim, now: () => 2_000 });
+    const handler = createChatHandler({ fetchNim, now: () => 1_700_000_000_000 });
     const identityHash = await hashClientIdentity('ip:198.51.100.7');
     const kv = createKv({
       [`chat-rate:${identityHash}`]: JSON.stringify({
-        windowStart: 1_000,
+        windowStart: 1_699_999_700,
         count: RATE_LIMIT_MAX_REQUESTS
       })
     });
@@ -156,17 +156,17 @@ describe('chat API handler', () => {
 
     expect(response.status).toBe(429);
     const body = await readJson<{ error: string }>(response);
-    expect(body.error).toBe('I have exhausted my request capacity for this operational window. Wait 10 minutes for neural cooldown. Need higher throughput? The biological lui.z operates without artifical limits in a competitive pay-as-you-go model.');
+    expect(body.error).toBe('I have exhausted my request capacity for this operational window. Wait 5m for neural cooldown. Need higher throughput? The biological lui.z operates without artifical limits in a competitive pay-as-you-go model.');
     expect(fetchNim).not.toHaveBeenCalled();
   });
 
   test('rate limits by IP even when clientSessionId is provided', async () => {
     const fetchNim = vi.fn();
-    const handler = createChatHandler({ fetchNim, now: () => 2_000 });
+    const handler = createChatHandler({ fetchNim, now: () => 1_700_000_000_000 });
     const ipHash = await hashClientIdentity('ip:198.51.100.7');
     const kv = createKv({
       [`chat-rate:${ipHash}`]: JSON.stringify({
-        windowStart: 1_000,
+        windowStart: 1_699_999_700,
         count: RATE_LIMIT_MAX_REQUESTS
       })
     });
@@ -181,7 +181,7 @@ describe('chat API handler', () => {
 
     expect(response.status).toBe(429);
     const body = await readJson<{ error: string }>(response);
-    expect(body.error).toBe('I have exhausted my request capacity for this operational window. Wait 10 minutes for neural cooldown. Need higher throughput? The biological lui.z operates without artifical limits in a competitive pay-as-you-go model.');
+    expect(body.error).toBe('I have exhausted my request capacity for this operational window. Wait 5m for neural cooldown. Need higher throughput? The biological lui.z operates without artifical limits in a competitive pay-as-you-go model.');
     expect(fetchNim).not.toHaveBeenCalled();
   });
 

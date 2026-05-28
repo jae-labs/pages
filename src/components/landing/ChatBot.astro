@@ -157,6 +157,66 @@ import { Bot, LoaderCircle, MessageCircle, RotateCcw, Send, X } from '@lucide/as
     let isTurnstileVerified = false;
     let clientSessionId: string | null = null;
     let clientSessionSignature: string | null = null;
+    let rateLimitUntil = 0;
+    let rateLimitTimer: ReturnType<typeof setInterval> | null = null;
+    let cooldownEl: HTMLElement | null = null;
+    let isCheckingRateLimit = false;
+    const COOLDOWN_KEY = 'chat_cooldown_until';
+
+    const restoreCooldown = () => {
+      try {
+        const cached = localStorage.getItem(COOLDOWN_KEY);
+        if (cached) {
+          const expiration = Number(cached);
+          if (!isNaN(expiration) && expiration > Date.now()) {
+            const secondsLeft = Math.round((expiration - Date.now()) / 1000);
+            if (secondsLeft > 0) {
+              startCooldown(secondsLeft);
+            }
+          } else {
+            localStorage.removeItem(COOLDOWN_KEY);
+          }
+        }
+      } catch {
+        // Ignore localStorage issues gracefully
+      }
+    };
+
+    const probeRateLimit = async () => {
+      if (rateLimitUntil > Date.now()) return;
+
+      isCheckingRateLimit = true;
+      setLoading(false);
+
+      try {
+        const res = await fetch('/api/chat');
+        if (!res.ok) return;
+        const { allowed, retryAfter } = await res.json() as { allowed: boolean; retryAfter: number };
+        if (!allowed && retryAfter > 0) {
+          startCooldown(retryAfter);
+        } else {
+          try {
+            localStorage.removeItem(COOLDOWN_KEY);
+          } catch {
+            // Ignore localStorage issues gracefully
+          }
+          rateLimitUntil = 0;
+          if (rateLimitTimer) {
+            clearInterval(rateLimitTimer);
+            rateLimitTimer = null;
+          }
+          if (cooldownEl && cooldownEl.isConnected) {
+            cooldownEl.remove();
+          }
+          cooldownEl = null;
+        }
+      } catch {
+        // silently ignore probe failures
+      } finally {
+        isCheckingRateLimit = false;
+        setLoading(false);
+      }
+    };
 
     const renderTurnstile = () => {
       const container = document.getElementById('chat-turnstile');
@@ -245,10 +305,61 @@ import { Bot, LoaderCircle, MessageCircle, RotateCcw, Send, X } from '@lucide/as
 
     const setLoading = (loading: boolean) => {
       submit.dataset.loading = loading ? 'true' : '';
-      submit.disabled = loading || !isTurnstileVerified;
-      input.disabled = loading;
+      const isBlocked = (rateLimitUntil > Date.now()) || isCheckingRateLimit;
+      submit.disabled = loading || isBlocked || !isTurnstileVerified;
+      input.disabled = loading || isBlocked;
       sendIcon?.classList.toggle('hidden', loading);
       loadingIcon?.classList.toggle('hidden', !loading);
+    };
+
+    const formatCooldown = (seconds: number) => {
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return s > 0 ? `${m}m ${s}s` : `${m}m`;
+    };
+
+    const startCooldown = (seconds: number) => {
+      rateLimitUntil = Date.now() + seconds * 1_000;
+      try {
+        localStorage.setItem(COOLDOWN_KEY, String(rateLimitUntil));
+      } catch {
+        // Ignore localStorage issues gracefully
+      }
+      if (rateLimitTimer) clearInterval(rateLimitTimer);
+
+      if (!cooldownEl || !cooldownEl.isConnected) {
+        cooldownEl = document.createElement('p');
+        cooldownEl.className = 'max-w-[85%] rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm leading-relaxed text-[#ff6666]';
+        log.appendChild(cooldownEl);
+      }
+      log.scrollTop = log.scrollHeight;
+
+      setLoading(false);
+
+      const tick = () => {
+        const left = Math.max(0, Math.round((rateLimitUntil - Date.now()) / 1_000));
+        if (left <= 0) {
+          if (rateLimitTimer) clearInterval(rateLimitTimer);
+          rateLimitTimer = null;
+          rateLimitUntil = 0;
+          try {
+            localStorage.removeItem(COOLDOWN_KEY);
+          } catch {
+            // Ignore localStorage issues gracefully
+          }
+          if (cooldownEl && cooldownEl.isConnected) {
+            cooldownEl.textContent = 'Cooldown complete. The clone is ready for more questions.';
+          }
+          setLoading(false);
+          return;
+        }
+        if (cooldownEl && cooldownEl.isConnected) {
+          cooldownEl.textContent = `Neural cooldown in progress. Resume in ${formatCooldown(left)}.`;
+        }
+      };
+
+      tick();
+      rateLimitTimer = setInterval(tick, 1_000);
     };
 
     if (toggle.dataset.bound !== 'true') {
@@ -256,7 +367,27 @@ import { Bot, LoaderCircle, MessageCircle, RotateCcw, Send, X } from '@lucide/as
       close.addEventListener('click', () => setOpen(false));
       clear.addEventListener('click', () => {
         log.innerHTML = '';
+        const wasRateLimited = rateLimitUntil > Date.now();
+        const secondsLeft = wasRateLimited ? Math.round((rateLimitUntil - Date.now()) / 1000) : 0;
+
         appendMessage('How can I help you today?', 'clone');
+
+        if (wasRateLimited && secondsLeft > 0) {
+          cooldownEl = null;
+          startCooldown(secondsLeft);
+        } else {
+          cooldownEl = null;
+          if (rateLimitTimer) {
+            clearInterval(rateLimitTimer);
+            rateLimitTimer = null;
+          }
+          rateLimitUntil = 0;
+          try {
+            localStorage.removeItem(COOLDOWN_KEY);
+          } catch {
+            // Ignore localStorage issues gracefully
+          }
+        }
         input.value = '';
         updateCharacterCount();
         capturePostHog('chatbot_history_cleared');
@@ -332,7 +463,14 @@ import { Bot, LoaderCircle, MessageCircle, RotateCcw, Send, X } from '@lucide/as
             capturePostHog('chatbot_error_encountered', {
               error: body.error ?? 'Response not ok'
             });
-            appendMessage(body.error ?? 'The clone is temporarily unavailable.', 'clone');
+
+            if (response.status === 429) {
+              const retryAfter = response.headers.get('retry-after');
+              const seconds = retryAfter ? parseInt(retryAfter, 10) : 600;
+              startCooldown(seconds);
+            } else {
+              appendMessage(body.error ?? 'The clone is temporarily unavailable.', 'clone');
+            }
 
             // Reset session on security verification errors
             if (response.status === 400 && (body.error?.includes('verification') || body.error?.includes('Security'))) {
@@ -372,6 +510,12 @@ import { Bot, LoaderCircle, MessageCircle, RotateCcw, Send, X } from '@lucide/as
       });
       toggle.dataset.bound = 'true';
       updateCharacterCount();
+
+      restoreCooldown();
+      probeRateLimit();
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') probeRateLimit();
+      });
     }
   };
 
