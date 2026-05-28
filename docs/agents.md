@@ -57,6 +57,7 @@ flowchart TD
 
 - Astro static output.
 - Tailwind CSS v4 through `@tailwindcss/vite`.
+- Video.js v10 Beta (`@videojs/core` and `@videojs/html`) for high-performance looping background video.
 - TypeScript strict Astro config.
 - ESLint flat config with Astro support.
 - Vitest for data and logic tests.
