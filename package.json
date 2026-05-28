@@ -26,6 +26,8 @@
     "@sentry/astro": "^10.53.1",
     "@sentry/cloudflare": "^10.53.1",
     "@tailwindcss/vite": "^4.3.0",
+    "@videojs/core": "10.0.0-beta.24",
+    "@videojs/html": "10.0.0-beta.24",
     "astro": "^6.4.0",
     "posthog-js": "^1.376.3",
     "tailwindcss": "^4.3.0"
