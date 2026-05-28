@@ -103,14 +103,42 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
 <script>
   import posthog from 'posthog-js';
 
-  // Asynchronously load the Video.js player engine and styles to optimize initial page load times
+  // Asynchronously load the Video.js player engine, styles, and Chromecast Cast SDK
   const loadVideoPlayer = () => {
     const deferLoad = () => {
+      // Load Google Cast Sender SDK for Chromecast support
+      if (!document.querySelector('script[src*="cast_sender.js"]')) {
+        const castScript = document.createElement('script');
+        castScript.src = 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1';
+        castScript.defer = true;
+        document.head.appendChild(castScript);
+      }
+
       Promise.all([
         import('@videojs/html/video/player'),
         import('@videojs/html/video/skin'),
-        import('@videojs/html/video/skin.css')
-      ]).then(() => {
+        import('@videojs/html/video/skin.css'),
+        import('@videojs/html/ui/cast-button'),
+        // @ts-expect-error: Untyped deep import from node_modules
+        import('../../../node_modules/@videojs/core/dist/default/dom/media/custom-media-element/index.js'),
+        // @ts-expect-error: Untyped deep import from node_modules
+        import('../../../node_modules/@videojs/core/dist/default/dom/media/video-host.js'),
+        // @ts-expect-error: Untyped deep import from node_modules
+        import('../../../node_modules/@videojs/core/dist/default/dom/media/google-cast/index.js'),
+        import('@videojs/html')
+      ]).then(([
+        ,,,,
+        { CustomMediaElement },
+        { HTMLVideoElementHost },
+        { GoogleCastMixin },
+        { MediaAttachMixin }
+      ]) => {
+        if (!customElements.get('cast-video')) {
+          class GoogleCastVideoHost extends GoogleCastMixin(HTMLVideoElementHost) {}
+          class CastVideoElement extends MediaAttachMixin(CustomMediaElement('video', GoogleCastVideoHost)) {}
+          customElements.define('cast-video', CastVideoElement as unknown as CustomElementConstructor);
+        }
+
         // Once registered, inject our custom styling and interactions gate
         injectCustomControlsStyle();
       }).catch(() => {});
