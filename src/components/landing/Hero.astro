@@ -73,7 +73,7 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
         <div class="video-container relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#050505]/70 shadow-[0_0_40px_rgba(243,235,44,0.08)] backdrop-blur-sm aspect-video w-full">
           <video-player id="hero-video-player">
             <video-skin>
-              <video 
+              <cast-video 
                 slot="media"
                 id="hero-video"
                 src={import.meta.env.PUBLIC_VIDEO_URL || "https://media.justanother.engineer/lui-z-promo.mp4?v=2"} 
@@ -83,7 +83,7 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
                 preload="metadata"
               >
                 <track kind="captions" src="/media/lui-z-promo.vtt" srclang="en" label="English" default />
-              </video>
+              </cast-video>
               <!-- Glowing Yellow Play Overlay in center -->
               <div id="video-play-overlay" class="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer transition-opacity duration-300 z-20">
                 <div class="w-16 h-16 rounded-full bg-[#f3eb2c] flex items-center justify-center shadow-[0_0_20px_rgba(243,235,44,0.4)] transition-transform duration-300 hover:scale-110">
@@ -209,7 +209,7 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
     const playOverlay = document.getElementById('video-play-overlay');
     const skin = document.querySelector('video-skin');
 
-    if (video instanceof HTMLVideoElement && !video.dataset.bound) {
+    if (video && !video.dataset.bound) {
       video.addEventListener('play', () => {
         if (isConsentAccepted()) {
           try {
@@ -223,9 +223,9 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
     }
 
     // Connect play overlay with video controls
-    if (video instanceof HTMLVideoElement && playOverlay) {
+    if (video && playOverlay) {
       playOverlay.addEventListener('click', () => {
-        video.play().catch(() => {});
+        (video as HTMLVideoElement).play().catch(() => {});
       });
 
       video.addEventListener('play', () => {

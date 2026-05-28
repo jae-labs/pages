@@ -13,13 +13,20 @@ const site = process.env.SITE_URL ?? (owner ? `https://${owner}.github.io` : 'ht
 const base = process.env.SITE_BASE
   ?? (process.env.SITE_URL ? '/' : repository && !isUserOrOrgPages ? `/${repository}` : '/');
 
+import { fileURLToPath, URL } from 'url';
+
 // https://astro.build/config
 export default defineConfig({
   site,
   base,
   output: 'static',
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        '@videojs/core/dist/': fileURLToPath(new URL('./node_modules/@videojs/core/dist/', import.meta.url))
+      }
+    }
   },
 
   integrations: [
