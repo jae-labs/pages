@@ -79,14 +79,19 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
                 src={import.meta.env.PUBLIC_VIDEO_URL || "https://media.justanother.engineer/lui-z-promo.mp4?v=2"} 
                 class="block w-full h-full object-cover"
                 aria-label="Promotional video for lui.z"
-                autoplay
-                muted
-                loop
                 playsinline
                 preload="metadata"
               >
                 <track kind="captions" src="/media/lui-z-promo.vtt" srclang="en" label="English" default />
               </video>
+              <!-- Glowing Yellow Play Overlay in center -->
+              <div id="video-play-overlay" class="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer transition-opacity duration-300 z-20">
+                <div class="w-16 h-16 rounded-full bg-[#f3eb2c] flex items-center justify-center shadow-[0_0_20px_rgba(243,235,44,0.4)] transition-transform duration-300 hover:scale-110">
+                  <svg class="w-8 h-8 text-[#050505] ml-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </div>
             </video-skin>
           </video-player>
         </div>
@@ -119,6 +124,9 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
     });
 
     const video = document.getElementById('hero-video');
+    const playOverlay = document.getElementById('video-play-overlay');
+    const skin = document.querySelector('video-skin');
+
     if (video instanceof HTMLVideoElement && !video.dataset.bound) {
       video.addEventListener('play', () => {
         if (isConsentAccepted()) {
@@ -132,8 +140,24 @@ const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap
       video.dataset.bound = 'true';
     }
 
+    // Connect play overlay with video controls
+    if (video instanceof HTMLVideoElement && playOverlay) {
+      playOverlay.addEventListener('click', () => {
+        video.play().catch(() => {});
+      });
+
+      video.addEventListener('play', () => {
+        playOverlay.classList.add('opacity-0', 'pointer-events-none');
+        // Activate user interaction gate as soon as video starts playing
+        if (skin) skin.setAttribute('data-user-interacted', 'true');
+      });
+
+      video.addEventListener('pause', () => {
+        playOverlay.classList.remove('opacity-0', 'pointer-events-none');
+      });
+    }
+
     // Dynamic style injection to hide controls unless hovered (desktop) or tapped (mobile)
-    const skin = document.querySelector('video-skin');
     if (skin && skin.shadowRoot && !skin.dataset.styled) {
       const style = document.createElement('style');
       style.textContent = `
