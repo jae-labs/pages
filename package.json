@@ -27,7 +27,7 @@
     "@sentry/cloudflare": "^10.53.1",
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.3.6",
-    "posthog-js": "^1.376.0",
+    "posthog-js": "^1.376.3",
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
