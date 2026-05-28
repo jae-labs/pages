@@ -1,0 +1,126 @@
+---
+const planButtonClass = 'group relative flex h-16 w-full items-center justify-center px-8 text-lg font-black uppercase leading-none tracking-[0.16em] transition-all duration-300 hover:scale-105';
+const calendlyPopupUrl = 'https://calendly.com/luiz1361/30min?background_color=000000&text_color=fff700&primary_color=00f6ff';
+
+const plans = [
+  {
+    name: "Community",
+    price: "$0",
+    desc: "Pro-bono integration for non-profits, charities, and open-source contributions.",
+    features: ["Full human agent capability", "Subject to bio-unit availability"],
+    cta: "Contact Us",
+    contactHref: calendlyPopupUrl,
+    color: "border-[#12eaff]/30",
+    tenancy: "Shared Tenancy",
+    tenancyColor: "bg-[#12eaff] text-black"
+  },
+  {
+    name: "Enterprise",
+    price: "Contact Us",
+    desc: "Single-tenant provisioning for high-scale, mission-critical environments.",
+    features: ["Self-hosted (eu-west-1), Hybrid or Cloud", "Flexible pricing", "Dedicated processing power", "Subagent failover sync", "Custom skill injection", "Reduced cancellation fee during probation", "Additional On-Call bundles available", "Direct API access"],
+    cta: "Contact Us",
+    contactHref: calendlyPopupUrl,
+    color: "border-neon-yellow",
+    popular: true,
+    urgency: "ONLY 1 LICENSE LEFT",
+    tenancy: "Single Tenant",
+    tenancyColor: "bg-neon-yellow text-black"
+  }
+];
+---
+
+<section id="plans" class="py-12 px-6 relative overflow-hidden border-y border-white/5 bg-black">
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-16 relative">
+      <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-12 bg-neon-yellow"></div>
+      <h2 class="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter glitch" data-text="PLANS">PLANS</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+      {plans.map((t) => (
+        <div class={`relative p-8 rounded-3xl border ${t.color} bg-black flex flex-col`}>
+          {t.tenancy && (
+            <div class={`absolute -top-4 left-1/2 -translate-x-1/2 ${t.tenancyColor} text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.1)]`}>
+              {t.tenancy}
+            </div>
+          )}
+
+          <div class="h-6 mb-4">
+            {t.urgency && (
+              <div class="flex items-center gap-2">
+                <span class="flex h-2 w-2 rounded-full bg-[#ff0000] animate-pulse shadow-[0_0_8px_#ff0000]"></span>
+                <span class="text-[10px] font-black text-[#ff0000] tracking-widest animate-pulse">
+                  {t.urgency}
+                </span>
+              </div>
+            )}
+          </div>
+          
+          <div class="mb-8">
+            <h3 class="text-2xl font-black text-white mb-2">{t.name}</h3>
+            <div class="text-4xl font-black text-white mb-4 italic">{t.price}</div>
+            <p class="text-[#aaa] text-sm leading-relaxed">{t.desc}</p>
+          </div>
+
+          <ul class="space-y-4 mb-12 flex-1">
+            {t.features.map((f) => (
+              <li class="flex items-center gap-3 text-sm text-[#e0e0e0]">
+                <div class="w-1.5 h-1.5 rounded-full bg-[#f3eb2c] shadow-[0_0_5px_#f3eb2c]"></div>
+                {f}
+              </li>
+            ))}
+          </ul>
+
+          {t.popular ? (
+            <a
+              href={t.contactHref}
+              data-calendly-url={t.contactHref}
+              class={`plan-cta plan-cta-primary overflow-hidden text-black ${planButtonClass}`}
+            >
+              <span class="relative z-10">{t.cta}</span>
+              <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform"></div>
+            </a>
+          ) : (
+            <a
+              href={t.contactHref}
+              data-calendly-url={t.contactHref}
+              class={`plan-cta-secondary text-[#12eaff] ${planButtonClass}`}
+            >
+              <svg class="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 320 64" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M18 1H319V46L301 63H1V18L18 1Z" fill="rgba(0,0,0,0.78)" stroke="#12eaff" stroke-width="2" vector-effect="non-scaling-stroke" />
+              </svg>
+              <span class="relative z-10">{t.cta}</span>
+            </a>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .plan-cta {
+    clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+  }
+
+  .plan-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: inherit;
+    box-shadow: inset 0 0 0 1.5px var(--cta-border);
+    pointer-events: none;
+  }
+
+  .plan-cta-primary {
+    --cta-border: #f3eb2c;
+    background: linear-gradient(135deg, #f8ef45 0%, #efe118 100%);
+    box-shadow: 0 0 26px rgba(243, 235, 44, 0.22);
+  }
+
+  .plan-cta-secondary {
+    background: transparent;
+    box-shadow: 0 0 22px rgba(18, 234, 255, 0.12);
+  }
+</style>

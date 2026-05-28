@@ -1,0 +1,154 @@
+---
+import { MessageSquare, Ship, GraduationCap } from '@lucide/astro';
+import { Image } from 'astro:assets';
+import slackChat1 from '../../assets/slack-chat-1.png';
+import slackChat2 from '../../assets/slack-chat-2.png';
+---
+
+<section id="how-it-works" class="py-12 px-6 relative bg-black border-y border-white/5">
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="mb-16 relative">
+      <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-12 bg-neon-yellow"></div>
+      <h2 class="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter glitch" data-text="HOW IT WORKS">HOW IT WORKS</h2>
+    </div>
+
+    <div class="grid grid-cols-1 gap-16 md:gap-24">
+      {/* Step 01: Deployment */}
+      <div class="group border border-white/10 bg-[#050505]/40 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl transition-all hover:border-neon-yellow/30">
+        <div class="p-8 md:p-12 flex flex-col md:flex-row-reverse gap-12 items-center">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 rounded-full bg-neon-yellow/10 flex items-center justify-center text-neon-yellow shadow-[0_0_15px_rgba(243,235,44,0.2)]">
+                <Ship size={24} />
+              </div>
+              <span class="text-xs font-fira text-neon-yellow uppercase tracking-[0.3em] font-bold">Step_01: Deployment</span>
+            </div>
+            
+            <h3 class="text-3xl font-black text-white uppercase tracking-tight mb-6 italic">
+              Deploy lui.z on the company
+            </h3>
+            
+            <p class="text-[#aaa] leading-relaxed">
+              Provision the unit into your organizational cluster. Fully compatible with standard corporate protocols and culture. One seat available for immediate integration.
+            </p>
+          </div>
+
+          <div class="flex-1 flex justify-center">
+             <div class="relative w-48 h-48 sm:w-64 sm:h-64">
+                <div class="absolute inset-0 bg-neon-yellow/5 rounded-full animate-ping"></div>
+                <div class="absolute inset-4 border-2 border-dashed border-neon-yellow/20 rounded-full animate-[spin_10s_linear_infinite]"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                   <div class="w-24 h-24 sm:w-32 sm:h-32 bg-black border border-neon-yellow rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(243,235,44,0.2)]">
+                      <Ship size={48} class="text-neon-yellow" />
+                   </div>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Step 02: On-boarding */}
+      <div class="group border border-white/10 bg-[#050505]/40 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl transition-all hover:border-neon-cyan/30">
+        <div class="p-8 md:p-12 flex flex-col md:flex-row gap-12 items-center">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 rounded-full bg-neon-cyan/10 flex items-center justify-center text-neon-cyan shadow-[0_0_15px_rgba(0,255,255,0.2)]">
+                <GraduationCap size={24} />
+              </div>
+              <span class="text-xs font-fira text-neon-cyan uppercase tracking-[0.3em] font-bold">Step_02: Neural Training</span>
+            </div>
+            
+            <h3 class="text-3xl font-black text-white uppercase tracking-tight mb-6 italic">
+              Optional On-boarding
+            </h3>
+            
+            <p class="text-[#aaa] leading-relaxed">
+              Highly recommended for best results. lui.z adapts to your specific internal documents, goals, and technical requirements to achieve peak operational synergy.
+            </p>
+          </div>
+
+          <div class="flex-1 flex justify-center">
+             <div class="relative w-48 h-48 sm:w-64 sm:h-64">
+                <div class="absolute inset-0 bg-neon-cyan/5 rounded-xl rotate-6 group-hover:rotate-12 transition-transform"></div>
+                <div class="absolute inset-0 bg-black border border-neon-cyan rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(0,255,255,0.2)]">
+                   <div class="flex flex-col items-center gap-4">
+                      <GraduationCap size={64} class="text-neon-cyan" />
+                   </div>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Step 03: Communication */}
+      <div class="group border border-white/10 bg-[#050505]/40 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl transition-all hover:border-neon-yellow/30">
+        <div class="p-8 md:p-12 flex flex-col gap-8">
+          <div>
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 rounded-full bg-neon-yellow/10 flex items-center justify-center text-neon-yellow shadow-[0_0_15px_rgba(243,235,44,0.2)]">
+                <MessageSquare size={24} />
+              </div>
+              <span class="text-xs font-fira text-neon-yellow uppercase tracking-[0.3em] font-bold">Step_03: Communication</span>
+            </div>
+            
+            <h3 class="text-3xl font-black text-white uppercase tracking-tight mb-6 italic">
+              Tell lui.z what you need in plain english
+            </h3>
+            
+            <p class="text-[#aaa] leading-relaxed font-medium">
+              lui.z integrates directly into your existing communication nodes. No complex prompt engineering required—just standard technical dialogue.
+            </p>
+          </div>
+
+          <div class="w-full relative group/img">
+            <div class="absolute -inset-1 bg-gradient-to-r from-neon-yellow to-neon-cyan rounded-2xl blur opacity-20 group-hover/img:opacity-40 transition duration-1000"></div>
+            <div class="relative bg-[#1a1d21] border border-white/10 rounded-xl overflow-hidden shadow-2xl">
+              <div class="bg-[#121519] px-4 py-2 flex items-center gap-2 border-b border-white/5">
+                <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
+                <div class="w-2 h-2 rounded-full bg-neon-yellow/50"></div>
+                <div class="w-2 h-2 rounded-full bg-green-500/50"></div>
+                <span class="ml-2 text-[9px] font-fira text-white/30 uppercase tracking-widest">#infrastructure-ops</span>
+              </div>
+              <Image src={slackChat1} alt="Slack conversation 1" width={1000} class="w-full h-auto animate-[pulse_6s_infinite]" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Step 04: Autonomous Ops */}
+      <div class="group border border-white/10 bg-[#050505]/40 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl transition-all hover:border-neon-cyan/30">
+        <div class="p-8 md:p-12 flex flex-col gap-8">
+          <div>
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 rounded-full bg-neon-cyan/10 flex items-center justify-center text-neon-cyan shadow-[0_0_15px_rgba(0,255,255,0.2)]">
+                <MessageSquare size={24} />
+              </div>
+              <span class="text-xs font-fira text-neon-cyan uppercase tracking-[0.3em] font-bold">Step_04: Autonomous Ops</span>
+            </div>
+            
+            <h3 class="text-3xl font-black text-white uppercase tracking-tight mb-6 italic">
+              Assign it to your on-call rota
+            </h3>
+            
+            <p class="text-[#aaa] leading-relaxed font-medium">
+              lui.z operates your infrastructure, responds to events, and follows up with post-mortems. Simply add the unit to your rotation and it will handle the rest autonomously.
+            </p>
+          </div>
+
+          <div class="w-full relative group/img">
+            <div class="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-yellow rounded-2xl blur opacity-20 group-hover/img:opacity-40 transition duration-1000"></div>
+            <div class="relative bg-[#1a1d21] border border-white/10 rounded-xl overflow-hidden shadow-2xl">
+              <div class="bg-[#121519] px-4 py-2 flex items-center gap-2 border-b border-white/5">
+                <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
+                <div class="w-2 h-2 rounded-full bg-neon-yellow/50"></div>
+                <div class="w-2 h-2 rounded-full bg-green-500/50"></div>
+                <span class="ml-2 text-[9px] font-fira text-white/30 uppercase tracking-widest">#incidents-firefighting</span>
+              </div>
+              <Image src={slackChat2} alt="Slack conversation 2" width={1000} class="w-full h-auto animate-[pulse_6s_infinite]" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

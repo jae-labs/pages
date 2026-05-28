@@ -1,0 +1,75 @@
+---
+import { deploymentEntries } from '../../config/portfolio';
+---
+
+<section id="deployments" class="py-12 px-6 bg-[#050505] border-y border-white/5 relative">
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-16 relative">
+      <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-12 bg-neon-cyan"></div>
+      <h2 class="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter glitch" data-text="DEPLOYMENTS">DEPLOYMENTS</h2>
+    </div>
+
+    <div class="space-y-16">
+      {deploymentEntries.map((d) => (
+        <div class="relative group border border-white/5 bg-[#050505]/40 backdrop-blur-sm p-8 rounded-2xl overflow-hidden">
+
+          
+          <div class="mb-8 border-b border-white/10 pb-4 relative">
+             <div class="flex items-center gap-4 mb-4">
+                 <span class="text-[10px] font-fira text-[#f3eb2c] border border-[#f3eb2c]/30 px-2 py-0.5 rounded bg-[#f3eb2c]/5 uppercase font-bold">
+                   Release {d.release}
+                 </span>
+                 <span class="text-[10px] font-fira text-[#00ffff] border border-[#00ffff]/30 px-2 py-0.5 rounded bg-[#00ffff]/5 uppercase">
+                   Region: {d.region}
+                 </span>
+                 <span class="text-[10px] font-fira text-[#858585] border border-[#858585]/30 px-2 py-0.5 rounded bg-[#858585]/5 uppercase">
+                    Time: {d.period}
+                 </span>
+                 <span class={`text-[10px] font-fira px-2 py-0.5 rounded border ${d.status === 'CURRENT' ? 'border-[#00ff00]/30 text-[#00ff00] bg-[#00ff00]/5' : 'border-[#858585]/30 text-[#858585] bg-[#858585]/5'} uppercase font-bold`}>
+                  {d.status}
+                 </span>
+              </div>
+             <h3 class="text-4xl font-black uppercase tracking-tight">
+                <a
+                  href={d.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-white transition-colors hover:text-neon-yellow focus-visible:text-neon-yellow focus-visible:outline-none"
+                  aria-label={`Open ${d.org} website`}
+                >
+                  {d.org}
+                </a>
+              </h3>
+             </div>
+
+             <div class="space-y-12 pl-4">
+              {d.roles.map((r) => (
+               <div class="relative font-fira">
+                 <div class="flex items-center gap-4 mb-4">
+                    <span class="text-[10px] font-fira text-neon-yellow border border-neon-yellow/30 px-2 py-0.5 rounded bg-neon-yellow/5 uppercase font-bold">
+                      Version {r.version}
+                    </span>
+                    <div class="h-[1px] flex-1 bg-white/5"></div>
+                    <span class="text-xs text-[#999] uppercase tracking-[0.2em]">{r.date}</span>
+                 </div>
+
+                <div class="bg-[#0a0a0a] border border-white/5 rounded-lg p-8 group-hover:border-neon-yellow/20 transition-all shadow-inner">
+                   <h3 class="text-neon-cyan font-black text-base mb-4 uppercase tracking-wide">
+                      {r.title}
+                   </h3>
+
+                   <div class="space-y-2 text-sm leading-relaxed text-[#aaa]">
+                      <div class="flex gap-3">
+                         <span class="text-neon-yellow shrink-0">•</span>
+                         <span>{r.summary}</span>
+                      </div>
+                   </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

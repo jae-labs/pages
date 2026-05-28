@@ -1,0 +1,54 @@
+---
+import { logos } from '../../config/portfolio';
+---
+
+<section class="py-10 px-6 border-y border-white/5 bg-black/60">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-5 text-center">
+      <p class="text-[10px] font-black uppercase tracking-[0.25em] text-neon-yellow">Trusted by</p>
+    </div>
+
+    <div class="relative overflow-hidden marquee group rounded-xl border border-white/10 bg-[#050505]/60">
+        <div class="marquee-track flex items-center gap-14 py-5 px-6 w-max">
+          {[...logos, ...logos].map((logo, index) => (
+          <a
+            href={logo.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Open ${logo.name} website`}
+            class="shrink-0 h-10 sm:h-12 flex items-center justify-center transition-all duration-300 opacity-100 px-4 py-2 hover:opacity-80 focus-visible:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-yellow/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-lg"
+          >
+            <img
+              src={logo.src}
+              alt={`${logo.name} logo`}
+              class={`w-auto object-contain ${logo.large ? 'max-h-14 sm:max-h-16' : 'max-h-7 sm:max-h-8'}`}
+              loading={index >= logos.length ? 'lazy' : 'eager'}
+              decoding="async"
+            />
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .marquee-track {
+    animation: marquee-scroll 26s linear infinite;
+    will-change: transform;
+  }
+
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+</style>

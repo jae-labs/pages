@@ -1,0 +1,11 @@
+pre-commit:
+  jobs:
+    - name: lint
+      run: npm run lint
+    - name: typecheck
+      run: npm run typecheck
+
+pre-push:
+  jobs:
+    - name: check
+      run: npm run check
