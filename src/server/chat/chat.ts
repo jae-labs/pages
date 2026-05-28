@@ -3,7 +3,7 @@ import { benchmarks, deploymentEntries, faqs, features, reviews } from '../../co
 export const CHAT_MODEL = 'openai/gpt-oss-120b';
 export const NIM_CHAT_COMPLETIONS_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
 export const RATE_LIMIT_MAX_REQUESTS = 10;
-export const RATE_LIMIT_WINDOW_SECONDS = 300;
+export const RATE_LIMIT_WINDOW_SECONDS = 600;
 export const MAX_MESSAGE_CHARS = 1_200;
 const FETCH_TIMEOUT_MS = 20_000;
 
@@ -310,7 +310,7 @@ export const createChatHandler = (options: ChatHandlerOptions = {}) => async (
     console.warn('[Turnstile] TURNSTILE_SECRET_KEY is not defined. Gracefully bypassing verification.');
   }
 
-  const rateLimitIdentity = parsed.clientSessionId || clientIdentity;
+  const rateLimitIdentity = clientIdentity;
   const limit = await checkRateLimit(
     env.RATE_LIMIT_KV,
     await hashClientIdentity(rateLimitIdentity),
@@ -318,7 +318,7 @@ export const createChatHandler = (options: ChatHandlerOptions = {}) => async (
   );
   if (!limit.allowed) {
     return json(
-      { error: 'Session message limit exceeded. The clone requires a 5-minute cooldown cycle.' },
+      { error: 'Rate limit exceeded for this IP. Try again in 10 minutes.' },
       429,
       { 'retry-after': String(limit.retryAfter) }
     );

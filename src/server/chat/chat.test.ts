@@ -156,24 +156,23 @@ describe('chat API handler', () => {
 
     expect(response.status).toBe(429);
     const body = await readJson<{ error: string }>(response);
-    expect(body.error).toBe('Session message limit exceeded. The clone requires a 5-minute cooldown cycle.');
+    expect(body.error).toBe('Rate limit exceeded for this IP. Try again in 10 minutes.');
     expect(fetchNim).not.toHaveBeenCalled();
   });
 
-  test('uses clientSessionId as rate limit key when provided', async () => {
+  test('rate limits by IP even when clientSessionId is provided', async () => {
     const fetchNim = vi.fn();
     const handler = createChatHandler({ fetchNim, now: () => 2_000 });
-    const sessionId = 'session-12345';
-    const sessionHash = await hashClientIdentity(sessionId);
+    const ipHash = await hashClientIdentity('ip:198.51.100.7');
     const kv = createKv({
-      [`chat-rate:${sessionHash}`]: JSON.stringify({
+      [`chat-rate:${ipHash}`]: JSON.stringify({
         windowStart: 1_000,
         count: RATE_LIMIT_MAX_REQUESTS
       })
     });
 
     const response = await handler(
-      jsonRequest({ message: 'hello', clientSessionId: sessionId }, { 'cf-connecting-ip': '198.51.100.7' }),
+      jsonRequest({ message: 'hello', clientSessionId: 'session-12345' }, { 'cf-connecting-ip': '198.51.100.7' }),
       {
         NVIDIA_NIM_TOKEN: 'token',
         RATE_LIMIT_KV: kv
@@ -182,7 +181,7 @@ describe('chat API handler', () => {
 
     expect(response.status).toBe(429);
     const body = await readJson<{ error: string }>(response);
-    expect(body.error).toBe('Session message limit exceeded. The clone requires a 5-minute cooldown cycle.');
+    expect(body.error).toBe('Rate limit exceeded for this IP. Try again in 10 minutes.');
     expect(fetchNim).not.toHaveBeenCalled();
   });
 
