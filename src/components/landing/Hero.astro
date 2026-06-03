@@ -1,0 +1,184 @@
+---
+import { ArrowRight, Terminal } from '@lucide/astro';
+import { Image, getImage } from 'astro:assets';
+import agentHoverImg from '../../assets/agent-hover.png';
+import agentImg from '../../assets/agent.png';
+import heroVideoPoster from '../../assets/hero-video-poster.png';
+
+const optimizedPoster = await getImage({
+  src: heroVideoPoster,
+  width: 1024,
+  format: 'webp',
+  quality: 80
+});
+
+const heroButtonClass = 'group relative flex h-16 w-[20rem] max-w-[calc(100vw-3rem)] items-center justify-center px-8 text-lg font-black uppercase leading-none transition-all duration-300';
+const heroButtonLabelClass = 'relative z-10 flex items-center justify-center gap-3 tracking-[0.16em]';
+const defaultHeroVideoHlsUrl = 'https://media.justanother.engineer/master.m3u8';
+const heroVideoHlsUrl = import.meta.env.PUBLIC_VIDEO_HLS_URL || defaultHeroVideoHlsUrl;
+---
+
+<section class="relative flex flex-col items-center justify-center px-6 pt-24 pb-8 overflow-hidden">
+  {/* Background Glows */}
+  <div class="absolute top-1/4 -left-20 w-72 h-72 bg-neon-yellow/10 rounded-full blur-[100px]"></div>
+  <div class="absolute bottom-1/4 -right-20 w-72 h-72 bg-[#ffd700]/10 rounded-full blur-[100px]"></div>
+  
+  <div class="max-w-5xl xl:max-w-[1000px] 2xl:max-w-[1150px] w-full text-center z-10 flex flex-col items-center">
+    <div class="flex flex-col items-center mb-8">
+      <div class="relative group scale-90 sm:scale-100">
+        <div class="absolute -inset-1 bg-gradient-to-r from-[#f3eb2c] to-[#ffd700] rounded-full blur opacity-40 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+        <div class="relative w-32 h-32 sm:w-40 sm:h-40 xl:w-44 xl:h-44 2xl:w-56 2xl:h-56 rounded-full border-2 border-black overflow-hidden hero-image-shell">
+          <Image
+            src={agentHoverImg}
+            alt="lui.z v3.7 Pro cyberpunk"
+            width={300}
+            height={300}
+            loading="eager"
+            class="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110 group-hover:opacity-0 group-hover:rotate-2"
+          />
+          <Image
+            src={agentImg}
+            alt="lui.z v3.7 Pro"
+            width={300}
+            height={300}
+            loading="eager"
+            class="absolute inset-0 w-full h-full object-cover opacity-0 scale-100 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-100 group-hover:scale-100 group-hover:rotate-0"
+          />
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
+        </div>
+      </div>
+    </div>
+
+    <h1 class="text-4xl md:text-7xl lg:text-[5vw] xl:text-[5.4vw] 2xl:text-[5.6vw] font-black tracking-tighter mb-6 leading-[0.88] uppercase italic">
+      <span class="block text-white opacity-90 glitch" data-text="lui.z">lui.z</span>
+      <span class="block text-neon-yellow drop-shadow-[0_0_20px_rgba(243,235,44,0.5)]">THE TRUE HUMAN AGENT</span>
+    </h1>
+    
+    <p class="text-xl md:text-2xl xl:text-3xl text-[#858585] max-w-3xl xl:max-w-4xl mx-auto mb-12 font-medium leading-relaxed">
+      <span class="text-[#e0e0e0]">Consciousness, Moral Judgment, and Emotions</span>. Trained over 3.7 decades for peak SRE/DevOps intuition. <span class="text-neon-cyan font-bold italic">Highly opinionated.</span>
+    </p>
+    
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+      <a href="#plans" data-hero-cta="get_started" class={`hero-cta hero-cta-primary overflow-hidden text-black hover:scale-105 ${heroButtonClass}`}>
+        <span class={heroButtonLabelClass}>
+          GET STARTED <ArrowRight size={22} />
+        </span>
+        <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform"></div>
+      </a>
+
+      <a href="#features" data-hero-cta="features" class={`hero-cta-secondary text-[#12eaff] hover:scale-105 ${heroButtonClass}`}>
+        <svg class="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 320 64" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M18 1H319V46L301 63H1V18L18 1Z" fill="rgba(0,0,0,0.78)" stroke="#12eaff" stroke-width="2" vector-effect="non-scaling-stroke" />
+        </svg>
+        <span class={heroButtonLabelClass}>
+          <Terminal size={22} class="text-[#12eaff]" />
+          FEATURES
+        </span>
+      </a>
+    </div>
+
+    <div class="mt-12 w-full max-w-4xl xl:max-w-[960px] 2xl:max-w-[1100px]">
+      <div class="relative group">
+        <div class="absolute -inset-3 rounded-[2rem] bg-gradient-to-r from-[#f3eb2c]/15 via-[#00ffff]/10 to-[#f3eb2c]/15 blur-2xl opacity-70 transition-opacity duration-500 group-hover:opacity-100"></div>
+        <div class="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#050505]/70 shadow-[0_0_40px_rgba(243,235,44,0.08)] backdrop-blur-sm">
+          <media-player
+            id="hero-video"
+            class="block aspect-video w-full"
+            load="play"
+            poster={optimizedPoster.src}
+            crossorigin
+            playsinline
+            aria-label="Promotional video for lui.z"
+          >
+            <media-poster
+              class="vds-poster"
+              alt="Preview image for the lui.z promotional video"
+            ></media-poster>
+            <media-provider>
+              <source src={heroVideoHlsUrl} type="application/x-mpegurl" />
+              <track kind="captions" src="/lui-z-promo.vtt" label="English" srclang="en" default />
+            </media-provider>
+            <media-video-layout></media-video-layout>
+          </media-player>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import 'vidstack/player/styles/default/theme.css';
+  import 'vidstack/player/styles/default/layouts/video.css';
+  import 'vidstack/player';
+  import 'vidstack/player/layouts';
+  import 'vidstack/player/ui';
+  import '../../scripts/landing/hero-player';
+</script>
+
+<style>
+  *:not(:defined) {
+    opacity: 0;
+  }
+
+  .hero-cta {
+    clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+  }
+
+  .hero-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: inherit;
+    box-shadow: inset 0 0 0 1.5px var(--cta-border);
+    pointer-events: none;
+  }
+
+  .hero-cta-primary {
+    --cta-border: #f3eb2c;
+    background: linear-gradient(135deg, #f8ef45 0%, #efe118 100%);
+    box-shadow: 0 0 26px rgba(243, 235, 44, 0.22);
+  }
+
+  .hero-cta-secondary {
+    background: transparent;
+    box-shadow: 0 0 22px rgba(18, 234, 255, 0.12);
+  }
+</style>
+
+<style is:global>
+  [data-media-player][data-load='play']:not([data-started]) .vds-video-layout .vds-load-container {
+    pointer-events: auto !important;
+  }
+
+  [data-media-player][data-load='play']:not([data-started]) .vds-video-layout .vds-load-container .vds-play-button {
+    position: absolute !important;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    transform: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    opacity: 0 !important;
+    background: transparent !important;
+  }
+
+  [data-media-player]:not([data-started]) .vds-video-layout[data-sm] .vds-controls .vds-play-button {
+    opacity: 0 !important;
+    background: transparent !important;
+  }
+
+  @media (pointer: coarse) {
+    .vds-video-layout .vds-gesture[action='toggle:paused'] {
+      display: block !important;
+    }
+  }
+
+  /* Hide the video duration display and divider */
+  .vds-time[data-type="duration"],
+  .vds-time[type="duration"],
+  .vds-duration,
+  .vds-time-divider {
+    display: none !important;
+  }
+</style>

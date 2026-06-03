@@ -1,0 +1,7 @@
+# Security Headers and CSP
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com https://eu.i.posthog.com https://eu-assets.i.posthog.com https://assets.calendly.com https://challenges.cloudflare.com https://static.cloudflareinsights.com https://www.gstatic.com 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://assets.calendly.com; img-src 'self' data: https://media.justanother.engineer https://*.posthog.com https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://media.justanother.engineer https://eu.i.posthog.com https://www.google-analytics.com https://*.sentry.io https://*.ingest.sentry.io https://*.posthog.com https://challenges.cloudflare.com https://static.cloudflareinsights.com https://www.gstatic.com; frame-src https://calendly.com https://challenges.cloudflare.com; font-src 'self'; media-src 'self' https://media.justanother.engineer blob:; worker-src 'self' blob:;
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(self), geolocation=()
