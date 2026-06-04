@@ -24,7 +24,7 @@
     "@fontsource-variable/inter": "^5.2.8",
     "@lucide/astro": "^1.17.0",
     "@sentry/astro": "^10.53.1",
-    "@sentry/cloudflare": "^10.53.1",
+    "@sentry/cloudflare": "^10.56.0",
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.4.0",
     "hls.js": "^1.6.16",
