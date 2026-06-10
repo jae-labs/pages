@@ -1,0 +1,78 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/landing/Navbar.astro';
+import Hero from '../components/landing/Hero.astro';
+import TrustedBy from '../components/landing/TrustedBy.astro';
+import Features from '../components/landing/Features.astro';
+import HowItWorks from '../components/landing/HowItWorks.astro';
+import Benchmarks from '../components/landing/Benchmarks.astro';
+import Subagents from '../components/landing/Subagents.astro';
+import Sponsor from '../components/landing/Sponsor.astro';
+import Reviews from '../components/landing/Reviews.astro';
+import Deployments from '../components/landing/Deployments.astro';
+import FAQ from '../components/landing/FAQ.astro';
+import Pricing from '../components/landing/Pricing.astro';
+import ChatBot from '../components/landing/ChatBot.astro';
+import { Coffee } from '@lucide/astro';
+import GitHubIcon from '../components/icons/GitHubIcon.astro';
+import LinkedInIcon from '../components/icons/LinkedInIcon.astro';
+import SlackIcon from '../components/icons/SlackIcon.astro';
+import PingdomIcon from '../components/icons/PingdomIcon.astro';
+---
+
+<Layout
+  title="lui.z | THE TRUE HUMAN AGENT..."
+  description="THE TRUE HUMAN AGENT. Consciousness, moral judgment, and emotions. Trained over 3.7 decades for peak SRE/DevOps intuition. Highly opinionated."
+>
+  <Navbar />
+  <main class="relative">
+    <Hero />
+    <TrustedBy />
+    <Features />
+    <HowItWorks />
+    <Benchmarks />
+    <Subagents />
+    <Sponsor />
+    <Reviews />
+    <Deployments />
+    <Pricing />
+    <FAQ />
+  </main>
+  <ChatBot />
+
+  <footer class="py-12 border-t border-[#f3eb2c]/20 bg-[#050505] px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col items-center gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex items-center justify-center gap-2 text-center lg:justify-start lg:text-left">
+          <span class="font-bold text-xl tracking-tighter text-[#f3eb2c]">lui.z</span>
+          <span class="text-[10px] xl:text-xs text-[#999] font-fira ml-4">© 2026 lui.z</span>
+        </div>
+
+        <p class="max-w-3xl text-center text-[10px] xl:text-[11px] 2xl:text-xs leading-relaxed text-[#999] lg:flex-1 lg:text-left">
+          <span class="font-fira font-bold uppercase tracking-[0.24em] text-[#f3eb2c]">Disclaimer</span>
+          <span class="ml-2">
+            The views, content, jokes, and questionable benchmarks here are entirely my own and do not represent any current or former employer. Reviews and deployment entries are real and based on information shared on my LinkedIn profile.
+          </span>
+        </p>
+
+        <div class="flex justify-center gap-2 text-neutral-400">
+          <a href="https://github.com/luiz1361" class="p-3 hover:text-[#f3eb2c] transition-colors" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
+            <GitHubIcon size="100%" class="w-[20px] h-[20px] xl:w-[22px] xl:h-[22px] 2xl:w-[24px] 2xl:h-[24px]" />
+          </a>
+          <a href="https://join.slack.com/t/justanotherengineer/shared_invite/zt-23m74nwgy-STbP1b2nskLTz5Ql3NRtTQ" class="p-3 hover:text-[#f3eb2c] transition-colors" target="_blank" rel="noopener noreferrer" aria-label="Slack Community Invite">
+            <SlackIcon size="100%" class="w-[20px] h-[20px] xl:w-[22px] xl:h-[22px] 2xl:w-[24px] 2xl:h-[24px]" />
+          </a>
+          <a href="https://www.linkedin.com/in/luiz1361/" class="p-3 hover:text-[#00ffff] transition-colors" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
+            <LinkedInIcon size="100%" class="w-[20px] h-[20px] xl:w-[22px] xl:h-[22px] 2xl:w-[24px] 2xl:h-[24px]" />
+          </a>
+          <a href="https://buymeacoffee.com/luiz1361" class="p-3 hover:text-[#f3eb2c] transition-colors" target="_blank" rel="noopener noreferrer" aria-label="Buy Me A Coffee">
+            <Coffee size="100%" class="w-[20px] h-[20px] xl:w-[22px] xl:h-[22px] 2xl:w-[24px] 2xl:h-[24px]" stroke-width={1.5} />
+          </a>
+          <a href="https://stats.pingdom.com/ieq3v42yov76/4989186" class="p-3 hover:text-[#f3eb2c] transition-colors" target="_blank" rel="noopener noreferrer" aria-label="Pingdom Public Status Page">
+            <PingdomIcon size="100%" class="w-[20px] h-[20px] xl:w-[22px] xl:h-[22px] 2xl:w-[24px] 2xl:h-[24px]" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</Layout>

@@ -1,0 +1,134 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  socialImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = 'lui.z: cyberpunk-styled human agent portfolio focused on SRE, DevOps, platform engineering, and reliability.',
+  socialImage = '/agent-hover.png',
+  noindex = false
+} = Astro.props;
+const pageTitle = title;
+const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : Astro.url.toString();
+const socialImageURL = /^(https?:)?\/\//.test(socialImage)
+  ? socialImage
+  : new URL(socialImage, Astro.site ?? Astro.url).toString();
+const websiteURL = Astro.site ? new URL(import.meta.env.BASE_URL, Astro.site).toString() : canonicalURL;
+const robotsContent = noindex
+  ? 'noindex, nofollow'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'lui.z',
+  url: websiteURL,
+  description,
+  inLanguage: 'en'
+};
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="robots" content={robotsContent} />
+    <meta name="author" content="Luiz F. C. Martins" />
+    <meta name="theme-color" content="#050505" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="lui.z" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+    <script is:inline src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+    <script>
+      import '../scripts/layout/cookie-consent';
+      import '../scripts/layout/calendly';
+    </script>
+    <title>{pageTitle}</title>
+    <ClientRouter />
+  </head>
+  <body class="bg-black text-[#e0e0e0] font-inter antialiased overflow-x-hidden cyber-grid scroll-smooth">
+    {/* Visual FX Layers */}
+    <div class="scanline"></div>
+    
+    {/* Global HUD Frame */}
+    <div class="fixed inset-0 pointer-events-none z-[100] border border-white/5">
+       
+    </div>
+
+    <slot />
+
+    <div id="cookie-banner" class="hidden fixed bottom-4 left-4 right-4 z-[950]">
+      <div class="mx-auto max-w-4xl border border-neon-yellow/40 bg-black/95 backdrop-blur-xl p-4 sm:p-5 shadow-[0_0_30px_rgba(255,140,0,0.2)]">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="text-[10px] uppercase tracking-[0.2em] text-neon-yellow font-black mb-1">Notice</p>
+            <p class="text-sm text-[#bfbfbf] leading-relaxed">
+              This website uses cookies and advanced analytics (Google Analytics & PostHog) to optimize performance, capture heatmaps, and record sessions. We require your consent before loading non-essential cookies.
+            </p>
+          </div>
+          <div class="flex gap-3 shrink-0">
+            <button id="cookie-decline" type="button" class="cookie-btn-secondary inline-flex items-center justify-center px-5 py-2.5 text-[#12eaff] hover:scale-105 text-xs font-black uppercase tracking-widest transition-all duration-300">
+              <svg class="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 160 36" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M9 1H159V26L151 35H1V9L9 1Z" fill="rgba(0,0,0,0.78)" stroke="#12eaff" stroke-width="2" vector-effect="non-scaling-stroke" />
+              </svg>
+              <span class="relative z-10">Decline</span>
+            </button>
+            <button id="cookie-accept" type="button" class="group cookie-btn cookie-btn-primary overflow-hidden text-black hover:scale-105 text-xs font-black uppercase tracking-widest transition-all duration-300">
+              <span class="relative z-10">Accept</span>
+              <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      .cookie-btn {
+        position: relative;
+        clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+        padding: 8px 16px;
+      }
+
+      .cookie-btn::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        clip-path: inherit;
+        box-shadow: inset 0 0 0 1.5px var(--cta-border);
+        pointer-events: none;
+      }
+
+      .cookie-btn-primary {
+        --cta-border: #f3eb2c;
+        background: linear-gradient(135deg, #f8ef45 0%, #efe118 100%);
+        box-shadow: 0 0 15px rgba(243, 235, 44, 0.22);
+      }
+
+      .cookie-btn-secondary {
+        position: relative;
+        background: transparent;
+        box-shadow: 0 0 15px rgba(18, 234, 255, 0.12);
+      }
+    </style>
+  </body>
+</html>
