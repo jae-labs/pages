@@ -30,7 +30,7 @@
     "astro": "^6.4.0",
     "hls.js": "^1.6.16",
     "posthog-js": "^1.376.3",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.0",
     "tailwindcss": "^4.3.0",
     "vidstack": "^1.15.2"
   },
