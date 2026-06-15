@@ -36,7 +36,7 @@ export default defineConfig({
                 thumbnail_loc: `${parsedUrl.origin}/agent-hover.png`,
                 title: 'lui.z: The True Human Agent',
                 description: 'Consciousness, Moral Judgment, and Emotions. Trained over 3.7 decades for peak SRE/DevOps intuition.',
-                content_loc: 'https://media.justanother.engineer/lui-z-promo.mp4',
+                content_loc: 'https://media.justanother.engineer/master.m3u8',
                 publication_date: '2026-05-29T00:00:00Z',
               }
             ];
