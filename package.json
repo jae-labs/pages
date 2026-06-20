@@ -23,7 +23,7 @@
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource-variable/fira-code": "^5.2.7",
     "@fontsource-variable/inter": "^5.2.8",
-    "@lucide/astro": "^1.17.0",
+    "@lucide/astro": "^1.21.0",
     "@sentry/astro": "^10.57.0",
     "@sentry/cloudflare": "^10.57.0",
     "@tailwindcss/vite": "^4.3.0",
@@ -37,7 +37,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@eslint/js": "^10.0.1",
-    "eslint": "^10.4.0",
+    "eslint": "^10.5.0",
     "eslint-plugin-astro": "^1.7.0",
     "lefthook": "^2.1.8",
     "typescript": "^6.0.3",

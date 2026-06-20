@@ -35,7 +35,7 @@ Under the joke: career history, public recommendations, operating style, sponsor
 - OCI Object Storage for large media files
 - GitHub Actions CI/CD with Doppler-synced secrets
 
-## Local Development
+## Quick Start
 
 Requires Node.js `22.12.0` or newer.
 
@@ -144,6 +144,20 @@ The site includes a satirical clone chatbot that answers questions based on the 
 
 To avoid committing large binary files to the repository and keep static builds lightweight for deployment to Cloudflare Pages, large media assets (like the hero video) are stored in OCI Object Storage. They are served behind a Cloudflare Worker CDN and delivered via adaptive HLS (HTTP Live Streaming) to optimize bandwidth and performance.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Agent Notes
+
+See [AGENTS.md](AGENTS.md).
+
 ## License
 
-MIT.
+See [LICENSE](LICENSE).
+
+## Stars
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=jae-labs/pages&type=date&legend=top-left)](https://www.star-history.com/#jae-labs/pages&type=date&legend=top-left)
