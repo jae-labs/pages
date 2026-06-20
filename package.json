@@ -27,7 +27,7 @@
     "@sentry/astro": "^10.57.0",
     "@sentry/cloudflare": "^10.57.0",
     "@tailwindcss/vite": "^4.3.0",
-    "astro": "^6.4.0",
+    "astro": "^6.4.8",
     "hls.js": "^1.6.16",
     "posthog-js": "^1.386.3",
     "sharp": "^0.35.0",
