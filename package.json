@@ -1,0 +1,51 @@
+{
+  "name": "justanother-engineer",
+  "private": true,
+  "type": "module",
+  "version": "0.0.1",
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "check": "pnpm run lint && pnpm run typecheck && pnpm run test:run && pnpm run build",
+    "lint": "eslint .",
+    "prepare": "lefthook install",
+    "preview": "astro preview",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "typecheck": "astro check",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource-variable/fira-code": "^5.2.7",
+    "@fontsource-variable/inter": "^5.2.8",
+    "@lucide/astro": "^1.21.0",
+    "@sentry/astro": "^10.57.0",
+    "@sentry/cloudflare": "^10.57.0",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.4.8",
+    "hls.js": "^1.6.16",
+    "posthog-js": "^1.390.2",
+    "sharp": "^0.35.0",
+    "tailwindcss": "^4.3.0",
+    "vidstack": "^1.15.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.5.0",
+    "eslint-plugin-astro": "^1.7.0",
+    "lefthook": "^2.1.8",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.1",
+    "vitest": "^4.1.7"
+  },
+  "overrides": {
+    "yaml": "^2.9.0",
+    "vite": "^7.3.5"
+  }
+}

@@ -1,0 +1,311 @@
+---
+import { Coffee } from '@lucide/astro';
+import CyborgBrainLogo from '../branding/CyborgBrainLogo.astro';
+import GitHubIcon from '../icons/GitHubIcon.astro';
+import PingdomIcon from '../icons/PingdomIcon.astro';
+import LinkedInIcon from '../icons/LinkedInIcon.astro';
+import SlackIcon from '../icons/SlackIcon.astro';
+import { menuItems } from '../../config/portfolio';
+
+const mobileItems = menuItems;
+---
+
+<nav id="main-nav" aria-label="Main Navigation" class="fixed top-0 w-full z-[500] bg-black/80 backdrop-blur-xl border-b border-[#f3eb2c]/20 px-6 py-3 transition-colors duration-300">
+  <div class="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto relative z-[600] flex items-center justify-center min-h-10">
+    <a href="/" class="absolute left-0 flex items-center gap-3 group cursor-pointer logo-link">
+      <CyborgBrainLogo class="h-10 w-10 shrink-0 transition-transform duration-300 group-hover:scale-105" />
+      <div class="flex flex-col">
+        <span class="font-black text-xl tracking-tighter text-white leading-none glitch" data-text="lui.z">lui.z</span>
+      </div>
+    </a>
+    
+    <div class="hidden 2xl:flex items-center gap-3 2xl:gap-5">
+      {/* Desktop Links - Horizontal List with Separators */}
+      <div class="flex items-center gap-2 lg:gap-3 text-[11px] xl:text-xs 2xl:text-[13px] font-black uppercase tracking-[0.12em] text-[#858585]">
+         {menuItems.map((item) => (
+            <div class="flex items-center gap-2 lg:gap-3">
+               <a href={`#${item.id}`} data-nav-item={item.name} class="hover:text-white transition-all py-1 border-b border-transparent hover:border-neon-yellow whitespace-nowrap">
+                 {item.name}
+                </a>
+              <span class="text-[#444] opacity-50" aria-hidden="true">|</span>
+            </div>
+         ))}
+         <button
+           data-search-trigger
+           class="hover:text-white transition-all py-1 border-b border-transparent hover:border-neon-yellow whitespace-nowrap text-[11px] xl:text-xs 2xl:text-[13px] font-black uppercase tracking-[0.12em] text-[#858585] flex items-center gap-1"
+           aria-label="Search"
+         >
+           <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+           <span>⌘K</span>
+         </button>
+      </div>
+    </div>
+
+    <div class="absolute right-0 hidden 2xl:flex items-center gap-4 text-[#858585]">
+      <a href="https://github.com/luiz1361" target="_blank" rel="noopener noreferrer" data-social="github" class="relative group hover:text-neon-yellow transition-colors flex items-center justify-center" aria-label="GitHub profile">
+        <GitHubIcon size="100%" class="w-[18px] h-[18px] xl:w-[20px] xl:h-[20px] 2xl:w-[22px] 2xl:h-[22px]" />
+        <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center pointer-events-none z-[999]" role="tooltip">
+          <div class="w-1.5 h-1.5 bg-[#0f0f0f] border-l border-t border-white/10 rotate-45 -mb-[3px] z-10"></div>
+          <div class="bg-[#0f0f0f] border border-white/10 rounded-md px-2 py-1 text-[10px] text-[#bbb] shadow-[0_4px_15px_rgba(0,0,0,0.5)] whitespace-nowrap">
+            GitHub
+          </div>
+        </div>
+      </a>
+
+      <a href="https://join.slack.com/t/justanotherengineer/shared_invite/zt-23m74nwgy-STbP1b2nskLTz5Ql3NRtTQ" target="_blank" rel="noopener noreferrer" data-social="slack" class="relative group hover:text-neon-yellow transition-colors flex items-center justify-center" aria-label="Slack channel">
+        <SlackIcon size="100%" class="w-[18px] h-[18px] xl:w-[20px] xl:h-[20px] 2xl:w-[22px] 2xl:h-[22px]" />
+        <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center pointer-events-none z-[999]" role="tooltip">
+          <div class="w-1.5 h-1.5 bg-[#0f0f0f] border-l border-t border-white/10 rotate-45 -mb-[3px] z-10"></div>
+          <div class="bg-[#0f0f0f] border border-white/10 rounded-md px-2 py-1 text-[10px] text-[#bbb] shadow-[0_4px_15px_rgba(0,0,0,0.5)] whitespace-nowrap">
+            Slack
+          </div>
+        </div>
+      </a>
+
+      <a href="https://linkedin.com/in/luiz1361" target="_blank" rel="noopener noreferrer" data-social="linkedin" class="relative group hover:text-neon-cyan transition-colors flex items-center justify-center" aria-label="LinkedIn profile">
+        <LinkedInIcon size="100%" class="w-[18px] h-[18px] xl:w-[20px] xl:h-[20px] 2xl:w-[22px] 2xl:h-[22px]" />
+        <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center pointer-events-none z-[999]" role="tooltip">
+          <div class="w-1.5 h-1.5 bg-[#0f0f0f] border-l border-t border-white/10 rotate-45 -mb-[3px] z-10"></div>
+          <div class="bg-[#0f0f0f] border border-white/10 rounded-md px-2 py-1 text-[10px] text-[#bbb] shadow-[0_4px_15px_rgba(0,0,0,0.5)] whitespace-nowrap">
+            LinkedIn
+          </div>
+        </div>
+      </a>
+
+      <a href="https://buymeacoffee.com/luiz1361" target="_blank" rel="noopener noreferrer" data-social="buymeacoffee" class="relative group hover:text-neon-yellow transition-colors flex items-center justify-center" aria-label="Buy me a coffee">
+        <Coffee size="100%" class="w-[18px] h-[18px] xl:w-[20px] xl:h-[20px] 2xl:w-[22px] 2xl:h-[22px]" stroke-width={1.5} />
+        <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center pointer-events-none z-[999]" role="tooltip">
+          <div class="w-1.5 h-1.5 bg-[#0f0f0f] border-l border-t border-white/10 rotate-45 -mb-[3px] z-10"></div>
+          <div class="bg-[#0f0f0f] border border-white/10 rounded-md px-2 py-1 text-[10px] text-[#bbb] shadow-[0_4px_15px_rgba(0,0,0,0.5)] whitespace-nowrap">
+            Buy Me A Coffee
+          </div>
+        </div>
+      </a>
+
+      <a href="https://stats.pingdom.com/ieq3v42yov76/4989186" target="_blank" rel="noopener noreferrer" data-social="pingdom" class="relative group hover:text-neon-yellow transition-colors flex items-center justify-center" aria-label="Pingdom Status">
+        <PingdomIcon size="100%" class="w-[18px] h-[18px] xl:w-[20px] xl:h-[20px] 2xl:w-[22px] 2xl:h-[22px]" />
+        <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center pointer-events-none z-[999]" role="tooltip">
+          <div class="w-1.5 h-1.5 bg-[#0f0f0f] border-l border-t border-white/10 rotate-45 -mb-[3px] z-10"></div>
+          <div class="bg-[#0f0f0f] border border-white/10 rounded-md px-2 py-1 text-[10px] text-[#bbb] shadow-[0_4px_15px_rgba(0,0,0,0.5)] whitespace-nowrap">
+            Pingdom Status
+          </div>
+        </div>
+      </a>
+    </div>
+
+    {/* Mobile Search Button */}
+    <button
+      data-search-trigger
+      class="2xl:hidden absolute right-12 w-10 h-10 flex items-center justify-center text-[#858585] hover:text-neon-yellow transition-colors z-[700]"
+      aria-label="Search"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    </button>
+
+    {/* Sandwich Menu Toggle - Mobile Only */}
+    <button
+      id="menu-toggle"
+      class="2xl:hidden absolute right-0 w-10 h-10 flex items-center justify-center text-white hover:text-neon-yellow transition-colors group z-[700]"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+    >
+       <div class="space-y-1.5 pointer-events-none">
+          <div class="w-6 h-0.5 bg-current transition-all group-[.open]:rotate-45 group-[.open]:translate-y-2"></div>
+          <div class="w-6 h-0.5 bg-current transition-all group-[.open]:opacity-0"></div>
+          <div class="w-6 h-0.5 bg-current transition-all group-[.open]:-rotate-45 group-[.open]:-translate-y-2"></div>
+       </div>
+    </button>
+  </div>
+</nav>
+
+{/* Fullscreen Mobile Menu - Optimized Centering & Spacing */}
+<div
+  id="nav-menu"
+  role="dialog"
+  aria-label="Mobile Navigation"
+  class="2xl:hidden fixed inset-0 bg-black z-[400] translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-y-auto"
+>
+  <div class="absolute inset-0 cyber-grid opacity-20 pointer-events-none"></div>
+  
+  <div class="flex flex-col items-center justify-center min-h-screen py-16 px-6">
+    <nav class="flex flex-col items-center w-full relative z-10">
+      {mobileItems.map((item) => (
+        <a href={`#${item.id}`} class="nav-link w-full py-3.5 border-b border-white/5 flex flex-col items-center group hover:bg-white/[0.02] transition-all first:border-t">
+           <span class="text-xl font-black uppercase tracking-[0.2em] text-[#858585] group-hover:text-white transition-colors">{item.name}</span>
+        </a>
+      ))}
+    </nav>
+ 
+    <div class="absolute bottom-8 left-0 right-0 w-full text-center flex flex-col items-center z-10">
+       <div class="flex gap-10 text-[#444]">
+          <a href="https://github.com/luiz1361" target="_blank" rel="noopener noreferrer" class="hover:text-neon-yellow transition-colors" aria-label="GitHub profile" title="GitHub">
+            <GitHubIcon size={24} />
+          </a>
+          <a href="https://join.slack.com/t/justanotherengineer/shared_invite/zt-23m74nwgy-STbP1b2nskLTz5Ql3NRtTQ" target="_blank" rel="noopener noreferrer" class="hover:text-neon-yellow transition-colors" aria-label="Slack channel" title="Slack">
+            <SlackIcon size={24} />
+          </a>
+          <a href="https://linkedin.com/in/luiz1361" target="_blank" rel="noopener noreferrer" class="hover:text-neon-cyan transition-colors" aria-label="LinkedIn profile" title="LinkedIn">
+            <LinkedInIcon size={24} />
+          </a>
+          <a href="https://buymeacoffee.com/luiz1361" target="_blank" rel="noopener noreferrer" class="hover:text-neon-yellow transition-colors" aria-label="Buy me a coffee" title="Buy Me A Coffee">
+            <Coffee size={24} stroke-width={1.5} />
+          </a>
+          <a href="https://stats.pingdom.com/ieq3v42yov76/4989186" target="_blank" rel="noopener noreferrer" class="hover:text-neon-yellow transition-colors" aria-label="Pingdom Status" title="Pingdom Status">
+            <PingdomIcon size={24} />
+          </a>
+       </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const initNavbar = () => {
+    type NavbarWindow = Window & typeof globalThis & {
+      __cleanupNavbarEscape?: () => void;
+    };
+
+    const navbarWindow = window as NavbarWindow;
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('nav-menu');
+    const nav = document.getElementById('main-nav');
+    const links = document.querySelectorAll('.nav-link');
+
+    if (!toggle || !menu || !nav) return;
+
+    // Prevent duplicate event listener registration on Astro page-load / DomContentLoaded
+    if (toggle.dataset.bound === 'true') return;
+    toggle.dataset.bound = 'true';
+
+    const toggleMenu = () => {
+      const isOpen = toggle.classList.toggle('open');
+      nav.classList.toggle('menu-open', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      menu.classList.toggle('translate-x-full');
+      document.body.classList.toggle('overflow-hidden');
+      
+      const chatWidget = document.getElementById('lui-z-chat');
+      if (chatWidget) {
+        chatWidget.classList.toggle('hidden', isOpen);
+      }
+
+      if (isOpen) {
+        nav.classList.remove('bg-black/80');
+        nav.classList.add('bg-black');
+      } else {
+        nav.classList.remove('bg-black');
+        nav.classList.add('bg-black/80');
+      }
+    };
+
+    const closeMenu = () => {
+      toggle.classList.remove('open');
+      nav.classList.remove('menu-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      menu.classList.add('translate-x-full');
+      document.body.classList.remove('overflow-hidden');
+      nav.classList.remove('bg-black');
+      nav.classList.add('bg-black/80');
+
+      const chatWidget = document.getElementById('lui-z-chat');
+      if (chatWidget) {
+        chatWidget.classList.remove('hidden');
+      }
+    };
+
+    toggle.addEventListener('click', toggleMenu);
+
+    links.forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeMenu();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+
+    // Save escape handler reference globally to clean it up before ClientRouter swaps the DOM
+    navbarWindow.__cleanupNavbarEscape = () => {
+      window.removeEventListener('keydown', handleEscape);
+    };
+  };
+
+  if (document.readyState !== 'loading') {
+    initNavbar();
+  } else {
+    document.addEventListener('DOMContentLoaded', initNavbar, { once: true });
+  }
+
+  document.addEventListener('astro:page-load', initNavbar);
+
+  // Clean up global listeners to prevent leaks
+  document.addEventListener('astro:before-preparation', () => {
+    const navbarWindow = window as Window & typeof globalThis & {
+      __cleanupNavbarEscape?: () => void;
+    };
+
+    if (typeof navbarWindow.__cleanupNavbarEscape === 'function') {
+      navbarWindow.__cleanupNavbarEscape();
+    }
+  });
+</script>
+
+<script>
+  import { capturePostHogIfConsented, isConsentAccepted } from '../../scripts/layout/analytics';
+
+  const initNavbarTracking = () => {
+    document.querySelectorAll('[data-nav-item]').forEach((el) => {
+      if (!(el instanceof HTMLAnchorElement) || el.dataset.trackBound === 'true') return;
+      el.addEventListener('click', () => {
+        if (isConsentAccepted()) {
+          capturePostHogIfConsented('nav_item_clicked', { item: el.dataset.navItem });
+        }
+      });
+      el.dataset.trackBound = 'true';
+    });
+
+    document.querySelectorAll('[data-social]').forEach((el) => {
+      if (!(el instanceof HTMLAnchorElement) || el.dataset.trackBound === 'true') return;
+      el.addEventListener('click', () => {
+        if (isConsentAccepted()) {
+          capturePostHogIfConsented('social_link_clicked', { platform: el.dataset.social, location: 'navbar' });
+        }
+      });
+      el.dataset.trackBound = 'true';
+    });
+  };
+
+  if (document.readyState !== 'loading') {
+    initNavbarTracking();
+  } else {
+    document.addEventListener('DOMContentLoaded', initNavbarTracking, { once: true });
+  }
+
+  document.addEventListener('astro:page-load', initNavbarTracking);
+</script>
+
+<style>
+  .logo-link {
+    transition: opacity 0.3s ease;
+  }
+
+  #main-nav.menu-open {
+    background-color: transparent !important;
+    border-bottom-color: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  #main-nav.menu-open .logo-link {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #main-nav.menu-open [data-search-trigger] {
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>

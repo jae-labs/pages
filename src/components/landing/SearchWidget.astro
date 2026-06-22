@@ -1,0 +1,292 @@
+<div
+  id="search-widget"
+  class="hidden fixed inset-0 z-[800] bg-transparent flex justify-center items-start pt-[12vh] px-6"
+>
+  <div
+    class="w-full max-w-xl bg-[#080808]/95 border border-neon-yellow/30 rounded-xl p-4 shadow-[0_0_50px_rgba(243,235,44,0.15)] flex flex-col gap-2.5 font-fira relative z-50"
+  >
+    <div class="flex items-center gap-1.5 text-sm border border-white/10 rounded-lg px-3.5 py-2.5 bg-[#0c0c0c] focus-within:border-neon-yellow/60 transition-colors">
+      <span class="text-neon-yellow/70 font-black tracking-tight select-none">: /</span>
+      <input
+        type="text"
+        id="search-input"
+        placeholder="insert search string or regex here"
+        class="bg-transparent text-white border-none outline-none flex-1 py-0.5 text-sm placeholder:text-neutral-600 font-mono w-full min-w-0"
+        autocomplete="off"
+      />
+      <span class="text-neon-cyan/70 font-black tracking-tight select-none mr-2">/ gi</span>
+      <span
+        id="search-counter"
+        class="hidden text-[10px] font-mono text-neutral-400 bg-neutral-900 border border-neutral-800 rounded-md px-2 py-0.5 whitespace-nowrap"
+      >
+        0 / 0
+      </span>
+    </div>
+    
+    <div class="flex justify-end items-center text-[9px] text-neutral-500 select-none px-1">
+      <span>[Enter] =&gt; next_match() &nbsp;•&nbsp; [Shift+Enter] =&gt; prev_match() &nbsp;•&nbsp; [Esc] =&gt; exit(0)</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  let isOpen = false;
+  let highlights: HTMLElement[] = [];
+  let activeIndex = -1;
+
+  const widget = document.getElementById('search-widget');
+  const input = document.getElementById('search-input') as HTMLInputElement;
+  const counter = document.getElementById('search-counter');
+
+  if (widget && input && counter) {
+    const toggleSearchWidget = () => {
+      if (isOpen) {
+        closeSearchWidget();
+      } else {
+        openSearchWidget();
+      }
+    };
+
+    // Listen for click events on search trigger elements
+    window.addEventListener('click', (e) => {
+      const trigger = (e.target as HTMLElement).closest('[data-search-trigger]');
+      if (trigger) {
+        e.preventDefault();
+        toggleSearchWidget();
+      }
+    });
+
+    const openSearchWidget = () => {
+      widget.classList.remove('hidden');
+      input.focus();
+      isOpen = true;
+    };
+
+    const closeSearchWidget = () => {
+      widget.classList.add('hidden');
+      input.value = '';
+      clearHighlights();
+      isOpen = false;
+    };
+
+    // Close when clicking overlay backdrop
+    widget.addEventListener('click', (e) => {
+      if (e.target === widget) {
+        closeSearchWidget();
+      }
+    });
+
+    // Toggle search on Cmd+K or Ctrl+K
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        toggleSearchWidget();
+      }
+    });
+
+    // Close search on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        closeSearchWidget();
+      }
+    });
+
+    const getRegexForQuery = (query: string): RegExp | null => {
+      if (!query.trim()) return null;
+      try {
+        return new RegExp(query, 'gi');
+      } catch {
+        // Fallback: escape special regex chars to treat as literal search
+        const escaped = query.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+        return new RegExp(escaped, 'gi');
+      }
+    };
+
+    const clearHighlights = () => {
+      const marks = document.querySelectorAll('.search-highlight');
+      const parentsToNormalize = new Set<HTMLElement>();
+
+      marks.forEach((mark) => {
+        const parent = mark.parentNode as HTMLElement | null;
+        if (parent) {
+          const textNode = document.createTextNode(mark.textContent || '');
+          parent.replaceChild(textNode, mark);
+          parentsToNormalize.add(parent);
+        }
+      });
+
+      parentsToNormalize.forEach((parent) => {
+        parent.normalize();
+      });
+
+      highlights = [];
+      activeIndex = -1;
+      counter.classList.add('hidden');
+      counter.textContent = '0 / 0';
+    };
+
+    const highlightTextNode = (node: Text, regex: RegExp): HTMLElement[] => {
+      const text = node.nodeValue || '';
+      regex.lastIndex = 0;
+
+      if (!text || !regex.test(text)) return [];
+      
+      regex.lastIndex = 0; // reset after test
+      const parent = node.parentNode as HTMLElement | null;
+      if (!parent) return [];
+
+      const fragment = document.createDocumentFragment();
+      const newMarks: HTMLElement[] = [];
+      let match;
+      let lastIndex = 0;
+      let matchCount = 0;
+
+      while ((match = regex.exec(text)) !== null) {
+        if (match[0].length === 0) {
+          regex.lastIndex++;
+          continue;
+        }
+
+        const matchText = match[0];
+        const matchIndex = match.index;
+
+        if (matchIndex > lastIndex) {
+          fragment.appendChild(document.createTextNode(text.substring(lastIndex, matchIndex)));
+        }
+
+        const mark = document.createElement('mark');
+        mark.className = 'search-highlight px-0.5 rounded-xs bg-neon-yellow/20 text-white border-b border-neon-yellow/60 transition-colors duration-200';
+        mark.textContent = matchText;
+        fragment.appendChild(mark);
+        newMarks.push(mark);
+
+        lastIndex = regex.lastIndex;
+        matchCount++;
+        if (matchCount > 500) break; // Sanity safeguard
+      }
+
+      if (lastIndex < text.length) {
+        fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
+      }
+
+      parent.replaceChild(fragment, node);
+      return newMarks;
+    };
+
+    const performSearch = () => {
+      clearHighlights();
+      const query = input.value;
+      const regex = getRegexForQuery(query);
+
+      if (!regex) return;
+
+      const mainContent = document.querySelector('main') || document.body;
+      const walker = document.createTreeWalker(
+        mainContent,
+        NodeFilter.SHOW_TEXT,
+        {
+          acceptNode: (node) => {
+            const parent = node.parentNode as HTMLElement | null;
+            if (!parent) return NodeFilter.FILTER_REJECT;
+
+            const tag = parent.tagName.toLowerCase();
+            if (['script', 'style', 'noscript', 'iframe', 'textarea', 'input', 'select', 'template'].includes(tag)) {
+              return NodeFilter.FILTER_REJECT;
+            }
+
+            if (parent.closest('#lui-z-chat') || parent.closest('#search-widget') || parent.closest('#cookie-banner')) {
+              return NodeFilter.FILTER_REJECT;
+            }
+
+            if (!node.nodeValue || !node.nodeValue.trim()) {
+              return NodeFilter.FILTER_REJECT;
+            }
+
+            return NodeFilter.FILTER_ACCEPT;
+          }
+        }
+      );
+
+      const textNodes: Text[] = [];
+      let currentNode;
+      while ((currentNode = walker.nextNode())) {
+        textNodes.push(currentNode as Text);
+      }
+
+      // Perform matching and node splits
+      textNodes.forEach((node) => {
+        const marks = highlightTextNode(node, regex);
+        highlights.push(...marks);
+      });
+
+      if (highlights.length > 0) {
+        activeIndex = 0;
+        updateActiveHighlight();
+        counter.classList.remove('hidden');
+      } else {
+        counter.classList.add('hidden');
+      }
+    };
+
+    const updateActiveHighlight = () => {
+      if (highlights.length === 0) return;
+
+      // Reset previous active highlight styles
+      highlights.forEach((h) => {
+        h.classList.remove('search-highlight-active', 'bg-neon-cyan/40', 'border-neon-cyan', 'shadow-[0_0_10px_rgba(0,255,255,0.4)]');
+        h.classList.add('bg-neon-yellow/20', 'border-neon-yellow/60');
+      });
+
+      const activeMark = highlights[activeIndex];
+      if (activeMark) {
+        activeMark.classList.remove('bg-neon-yellow/20', 'border-neon-yellow/60');
+        activeMark.classList.add(
+          'search-highlight-active',
+          'bg-neon-cyan/40',
+          'border-neon-cyan',
+          'shadow-[0_0_10px_rgba(0,255,255,0.4)]'
+        );
+
+        activeMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      counter.textContent = `${activeIndex + 1} / ${highlights.length}`;
+    };
+
+    input.addEventListener('input', performSearch);
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (highlights.length === 0) return;
+
+        if (e.shiftKey) {
+          // Go to previous match
+          activeIndex = (activeIndex - 1 + highlights.length) % highlights.length;
+        } else {
+          // Go to next match
+          activeIndex = (activeIndex + 1) % highlights.length;
+        }
+        updateActiveHighlight();
+      }
+    });
+  }
+</script>
+
+<style is:global>
+  .search-highlight {
+    background-color: rgba(243, 235, 44, 0.2);
+    color: #ffffff;
+    border-bottom: 2px solid var(--color-neon-yellow);
+    border-radius: 2px;
+    transition: all 0.2s ease;
+  }
+  
+  .search-highlight-active {
+    background-color: rgba(0, 255, 255, 0.4) !important;
+    border-bottom-color: var(--color-neon-cyan) !important;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    color: #ffffff !important;
+    z-index: 10;
+  }
+</style>
