@@ -31,7 +31,7 @@
     "hls.js": "^1.6.16",
     "posthog-js": "^1.390.2",
     "sharp": "^0.35.0",
-    "tailwindcss": "^4.3.0",
+    "tailwindcss": "^4.3.2",
     "vidstack": "^1.15.2"
   },
   "devDependencies": {
