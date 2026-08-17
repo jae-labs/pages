@@ -1,0 +1,208 @@
+---
+import { benchmarks } from '../../config/portfolio';
+---
+
+<section id="benchmarks" class="py-12 px-6 relative border-y border-white/5 bg-black">
+  <div class="max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
+    <div class="mb-16 relative">
+      <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-12 bg-neon-yellow"></div>
+      <h2 class="text-4xl md:text-7xl xl:text-7xl 2xl:text-8xl font-black text-white italic uppercase tracking-tighter glitch" data-text="BENCHMARKS">BENCHMARKS</h2>
+    </div>
+
+    <!-- LiveBench Dashboard Mockup Container -->
+    <div class="border border-neon-yellow/20 bg-[#050505] shadow-[0_0_30px_rgba(243,235,44,0.15)] rounded-2xl overflow-hidden relative z-10">
+      <!-- Scrollable Table Viewport -->
+      <div class="p-4 sm:p-6 overflow-x-auto bg-black font-mono">
+        <table class="w-full border-collapse text-left text-xs sm:text-sm text-[#e0e0e0] min-w-[800px]">
+          <thead>
+            <tr class="border-b-2 border-white/10 text-[#888] text-[10px] sm:text-xs uppercase tracking-wider">
+              <th class="p-3 px-2 font-bold font-mono">Model / Unit</th>
+              <th class="p-3 px-2 font-bold font-mono">Type</th>
+              <th class="p-3 px-2 font-bold font-mono text-center">Reasoning Avg</th>
+              <th class="p-3 px-2 font-bold font-mono">Context Window</th>
+              <th class="p-3 px-2 font-bold font-mono text-right">Latency (TTFT)</th>
+              <th class="p-3 px-2 font-bold font-mono text-right">Active Session Limit</th>
+              <th class="p-3 px-2 font-bold font-mono text-right">Pricing</th>
+            </tr>
+          </thead>
+          <tbody>
+            {benchmarks.map((m) => (
+              <tr 
+                data-benchmark-row 
+                data-target={m.reasoningAvg}
+                class={m.primary 
+                  ? "border-b border-neon-yellow/30 bg-neon-yellow/[0.04] text-white font-bold hover:bg-neon-yellow/[0.08] transition-colors duration-150" 
+                  : "border-b border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors duration-150"
+                }
+              >
+                <!-- Model Name -->
+                <td class={`p-4 px-2 font-mono ${m.primary ? 'text-neon-yellow' : 'text-[#e0e0e0]'}`}>
+                  {m.name}
+                </td>
+
+                <!-- Model Type -->
+                <td class={`p-4 px-2 font-mono ${m.primary ? 'text-[#00ffff] font-italic' : 'text-[#888]'}`}>
+                  {m.type}
+                </td>
+
+                <!-- Reasoning Progress Visual -->
+                <td class="p-4 px-2 text-center font-mono">
+                  <div class="inline-flex items-center justify-center gap-3">
+                    <span class={m.primary ? 'text-neon-yellow' : 'text-white'}>
+                      <span data-benchmark-score>0.0</span>%
+                    </span>
+                    <div class="w-12 sm:w-16 bg-white/10 h-1.5 rounded-full overflow-hidden">
+                      <div 
+                        data-benchmark-bar 
+                        class={`h-full origin-left transition-all duration-300 ease-out ${
+                          m.primary 
+                            ? 'bg-neon-yellow shadow-[0_0_8px_#f3eb2c]' 
+                            : 'bg-[#888]'
+                        }`}
+                        style="width: 0%;"
+                      ></div>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Context Window -->
+                <td class={`p-4 px-2 font-mono ${m.primary ? 'text-white' : m.name === 'Deep-Green R1' || m.name === 'Twin-G 2.5 Spark' ? 'text-[#ff9f0a]' : m.name === 'Twin-G 2.5 Elite' ? 'text-[#00ffff]' : 'text-[#aaa]'}`}>
+                  {m.contextWindow}
+                </td>
+
+                <!-- Latency (TTFT) -->
+                <td class={`p-4 px-2 text-right font-mono ${
+                  m.primary 
+                    ? 'text-[#00ff00]' 
+                    : m.name === 'Deep-Green R1' || m.name === 'o-Prime 3' 
+                      ? 'text-[#ff9f0a]' 
+                      : 'text-[#aaa]'
+                }`}>
+                  {m.latency}
+                </td>
+
+                <!-- Active Session Limit (No parenthesis details) -->
+                <td class={`p-4 px-2 text-right font-mono ${m.primary ? 'text-[#00ff00]' : 'text-[#ff3b30]'}`}>
+                  {m.sessionLimit}
+                </td>
+
+                <!-- Pricing -->
+                <td class={`p-4 px-2 text-right font-mono ${m.primary ? 'text-neon-yellow' : 'text-[#aaa]'}`}>
+                  {m.pricing}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mt-12 text-center text-neon-yellow/70 text-[10px] font-mono italic relative z-10">
+      * All benchmarks are part of a fictional marketing parody. No biological units were measured for this data.
+    </div>
+  </div>
+</section>
+
+<script>
+  const initBenchmarks = () => {
+    const benchmarkSection = document.getElementById('benchmarks');
+    if (!benchmarkSection) return;
+
+    const benchmarkRows = Array.from(
+      benchmarkSection.querySelectorAll('[data-benchmark-row]')
+    );
+
+    const setBenchmarkValue = (row: Element, value: number) => {
+      const bar = row.querySelector('[data-benchmark-bar]');
+      const score = row.querySelector('[data-benchmark-score]');
+      const safeValue = Math.max(0, Math.min(100, value));
+
+      if (bar instanceof HTMLElement) {
+        bar.style.width = `${safeValue}%`;
+      }
+
+      if (score instanceof HTMLElement) {
+        score.textContent = safeValue.toFixed(1);
+      }
+    };
+
+    const setFinalBenchmarkValues = () => {
+      benchmarkRows.forEach((row) => {
+        const target = Number.parseFloat(row.getAttribute('data-target') ?? '0');
+        setBenchmarkValue(row, target);
+      });
+    };
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setFinalBenchmarkValues();
+    } else {
+      benchmarkRows.forEach((row) => setBenchmarkValue(row, 0));
+
+      let hasAnimated = false;
+      let observer: IntersectionObserver | undefined;
+      const isSectionVisible = () => {
+        const rect = benchmarkSection.getBoundingClientRect();
+        return rect.top < window.innerHeight * 0.9 && rect.bottom > window.innerHeight * 0.1;
+      };
+
+      const animateBenchmarks = () => {
+        if (hasAnimated) return;
+        hasAnimated = true;
+
+        benchmarkRows.forEach((row, index) => {
+          const target = Number.parseFloat(row.getAttribute('data-target') ?? '0');
+          const duration = 900 + Math.min(target * 4, 400);
+          const delay = index * 55;
+
+          window.setTimeout(() => {
+            const start = performance.now();
+
+            const step = (now: number) => {
+              const progress = Math.min((now - start) / duration, 1);
+              const easedProgress = 1 - Math.pow(1 - progress, 3);
+              setBenchmarkValue(row, target * easedProgress);
+
+              if (progress < 1) {
+                window.requestAnimationFrame(step);
+              } else {
+                setBenchmarkValue(row, target);
+              }
+            };
+
+            window.requestAnimationFrame(step);
+          }, delay);
+        });
+
+        observer?.disconnect();
+      };
+
+      if (isSectionVisible()) {
+        animateBenchmarks();
+      } else if (!('IntersectionObserver' in window)) {
+        setFinalBenchmarkValues();
+      } else {
+        observer = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+              animateBenchmarks();
+            }
+          },
+          {
+            threshold: 0.05,
+            rootMargin: '0px 0px -5% 0px'
+          }
+        );
+
+        observer.observe(benchmarkSection);
+      }
+    }
+  };
+
+  if (document.readyState !== 'loading') {
+    initBenchmarks();
+  } else {
+    document.addEventListener('DOMContentLoaded', initBenchmarks, { once: true });
+  }
+
+  document.addEventListener('astro:page-load', initBenchmarks);
+</script>

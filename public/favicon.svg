@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="cyborg-brain-frame" x1="10" y1="10" x2="54" y2="54" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f3eb2c" />
+      <stop offset="0.52" stop-color="#fff36a" />
+      <stop offset="1" stop-color="#00ffff" />
+    </linearGradient>
+    <linearGradient id="cyborg-brain-lobe-left" x1="15.5" y1="18" x2="31" y2="43.5" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#271122" />
+      <stop offset="1" stop-color="#090d13" />
+    </linearGradient>
+    <linearGradient id="cyborg-brain-lobe-right" x1="48.5" y1="18" x2="33" y2="43.5" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111c24" />
+      <stop offset="1" stop-color="#090d13" />
+    </linearGradient>
+    <radialGradient id="cyborg-brain-core" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(32 32) rotate(90) scale(28)">
+      <stop stop-color="#0d1620" />
+      <stop offset="1" stop-color="#040404" />
+    </radialGradient>
+    <filter id="cyborg-brain-glow" x="0" y="0" width="64" height="64" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.35" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect x="5" y="5" width="54" height="54" rx="16" fill="url(#cyborg-brain-core)" />
+  <rect x="6.5" y="6.5" width="51" height="51" rx="14.5" stroke="url(#cyborg-brain-frame)" stroke-width="1.5" />
+
+  <g opacity="0.95" stroke-linecap="round">
+    <path d="M12 22H8.5M12 32H8.5M12 42H8.5" stroke="#00ffff" stroke-width="2" />
+    <path d="M55.5 22H52M55.5 32H52M55.5 42H52" stroke="#00ffff" stroke-width="2" />
+    <path d="M22 12V8.5M32 11V7.5M42 12V8.5" stroke="#f3eb2c" stroke-width="2" />
+    <path d="M22 55.5V52M32 56.5V53M42 55.5V52" stroke="#f3eb2c" stroke-width="2" />
+  </g>
+
+  <g filter="url(#cyborg-brain-glow)">
+    <path
+      d="M23.5 18C18.8 18 15 21.8 15 26.5C15 28.2 15.5 29.8 16.4 31.1C15.8 32.3 15.5 33.6 15.5 35C15.5 39.7 19.3 43.5 24 43.5H30V22.3C28.6 19.5 26.4 18 23.5 18Z"
+      fill="url(#cyborg-brain-lobe-left)"
+      stroke="#f3eb2c"
+      stroke-width="2.2"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M40.5 18C45.2 18 49 21.8 49 26.5C49 28.2 48.5 29.8 47.6 31.1C48.2 32.3 48.5 33.6 48.5 35C48.5 39.7 44.7 43.5 40 43.5H34V22.3C35.4 19.5 37.6 18 40.5 18Z"
+      fill="url(#cyborg-brain-lobe-right)"
+      stroke="#00ffff"
+      stroke-width="2.2"
+      stroke-linejoin="round"
+    />
+    <path d="M32 22V44" stroke="url(#cyborg-brain-frame)" stroke-width="2.2" stroke-linecap="round" />
+    <path d="M21 27H27.5M20 35H27.5M20 40H27.5" stroke="#fff36a" stroke-width="1.9" stroke-linecap="round" />
+    <path d="M43 27H36.5M44 35H36.5M44 40H36.5" stroke="#6ffcff" stroke-width="1.9" stroke-linecap="round" />
+    <path d="M27.5 27H32M27.5 35H32M27.5 40H32M36.5 27H32M36.5 35H32M36.5 40H32" stroke="#9efcff" stroke-width="1.5" stroke-linecap="round" />
+    <circle cx="21" cy="27" r="2.1" fill="#f3eb2c" />
+    <circle cx="20" cy="35" r="2.1" fill="#f3eb2c" />
+    <circle cx="20" cy="40" r="2.1" fill="#fff36a" />
+    <circle cx="43" cy="27" r="2.1" fill="#00ffff" />
+    <circle cx="44" cy="35" r="2.1" fill="#00ffff" />
+    <circle cx="44" cy="40" r="2.1" fill="#6ffcff" />
+    <circle cx="32" cy="19.5" r="2.2" fill="#f3eb2c" />
+    <circle cx="32" cy="46.5" r="2.2" fill="#00ffff" />
+  </g>
+</svg>

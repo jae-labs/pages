@@ -1,0 +1,11 @@
+pre-commit:
+  jobs:
+    - name: lint
+      run: pnpm lint
+    - name: typecheck
+      run: pnpm typecheck
+
+pre-push:
+  jobs:
+    - name: check
+      run: pnpm check

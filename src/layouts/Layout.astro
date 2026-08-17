@@ -1,0 +1,82 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import CookieBanner from '../components/layout/CookieBanner.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  socialImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = 'lui.z: cyberpunk-styled human agent portfolio focused on SRE, DevOps, platform engineering, and reliability.',
+  socialImage = '/agent-hover.png',
+  noindex = false
+} = Astro.props;
+const pageTitle = title;
+const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : Astro.url.toString();
+const socialImageURL = /^(https?:)?\/\//.test(socialImage)
+  ? socialImage
+  : new URL(socialImage, Astro.site ?? Astro.url).toString();
+const websiteURL = Astro.site ? new URL(import.meta.env.BASE_URL, Astro.site).toString() : canonicalURL;
+const robotsContent = noindex
+  ? 'noindex, nofollow'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'lui.z',
+  url: websiteURL,
+  description,
+  inLanguage: 'en'
+};
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="robots" content={robotsContent} />
+    <meta name="author" content="Luiz F. C. Martins" />
+    <meta name="theme-color" content="#050505" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="lui.z" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+    <script>
+      import '../scripts/layout/cookie-consent';
+      import '../scripts/layout/calendly';
+    </script>
+    <title>{pageTitle}</title>
+    <ClientRouter />
+  </head>
+  <body class="bg-black text-[#e0e0e0] font-inter antialiased overflow-x-hidden cyber-grid scroll-smooth">
+    {/* Visual FX Layers */}
+    <div class="scanline"></div>
+    
+    {/* Global HUD Frame */}
+    <div class="fixed inset-0 pointer-events-none z-[100] border border-white/5">
+       
+    </div>
+
+    <slot />
+
+    <CookieBanner />
+  </body>
+</html>

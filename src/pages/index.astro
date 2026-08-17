@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/landing/Navbar.astro';
+import Hero from '../components/landing/Hero.astro';
+import TrustedBy from '../components/landing/TrustedBy.astro';
+import Features from '../components/landing/Features.astro';
+import HowItWorks from '../components/landing/HowItWorks.astro';
+import Benchmarks from '../components/landing/Benchmarks.astro';
+import Subagents from '../components/landing/Subagents.astro';
+import Sponsor from '../components/landing/Sponsor.astro';
+import Reviews from '../components/landing/Reviews.astro';
+import Deployments from '../components/landing/Deployments.astro';
+import FAQ from '../components/landing/FAQ.astro';
+import Pricing from '../components/landing/Pricing.astro';
+import ChatBot from '../components/landing/ChatBot.astro';
+import SearchWidget from '../components/landing/SearchWidget.astro';
+import Footer from '../components/landing/Footer.astro';
+---
+
+<Layout
+  title="lui.z | THE TRUE HUMAN AGENT..."
+  description="THE TRUE HUMAN AGENT. Consciousness, moral judgment, and emotions. Trained over 3.7 decades for peak SRE/DevOps intuition. Highly opinionated."
+>
+  <Navbar />
+  <main class="relative">
+    <Hero />
+    <TrustedBy />
+    <Features />
+    <HowItWorks />
+    <Benchmarks />
+    <Subagents />
+    <Sponsor />
+    <Reviews />
+    <Deployments />
+    <Pricing />
+    <FAQ />
+  </main>
+  <ChatBot />
+  <SearchWidget />
+  <Footer />
+</Layout>

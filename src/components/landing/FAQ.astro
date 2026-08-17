@@ -1,0 +1,57 @@
+---
+import { CircleQuestionMark, ChevronRight } from '@lucide/astro';
+import { faqs } from '../../config/portfolio';
+---
+
+<section id="faq" class="py-12 px-6 relative bg-black border-y border-white/5">
+  <div class="max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto relative z-10">
+    <div class="mb-16 relative">
+      <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-12 bg-neon-yellow"></div>
+      <h2 class="text-4xl md:text-7xl xl:text-7xl 2xl:text-8xl font-black text-white italic uppercase tracking-tighter glitch" data-text="FAQ">FAQ</h2>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6">
+      {faqs.map((faq) => (
+        <div data-faq-question={faq.q} class="faq-card group border border-white/5 bg-[#050505]/40 backdrop-blur-sm p-8 rounded-2xl hover:border-neon-yellow/30 transition-all duration-500 relative">
+          <div class="flex gap-6">
+            <div class="shrink-0 w-10 h-10 rounded-lg bg-neon-yellow/10 flex items-center justify-center text-neon-yellow group-hover:shadow-[0_0_15px_rgba(243,235,44,0.3)] transition-all">
+              <CircleQuestionMark size={24} />
+            </div>
+            <div class="flex-1">
+              <h3 class="text-xl font-black text-white uppercase tracking-tight mb-4 flex items-center gap-2 italic">
+                <ChevronRight size={16} class="text-neon-cyan" />
+                {faq.q}
+              </h3>
+              <p class="text-sm xl:text-base 2xl:text-lg text-[#aaa] leading-relaxed font-medium group-hover:text-[#ccc] transition-colors">
+                {faq.a}
+              </p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { capturePostHogIfConsented } from '../../scripts/layout/analytics';
+
+  const initFaqTracking = () => {
+    document.querySelectorAll('.faq-card').forEach((card) => {
+      if (!(card instanceof HTMLDivElement) || card.dataset.bound === 'true') return;
+      card.addEventListener('click', () => {
+        const question = card.dataset.faqQuestion;
+        if (question) capturePostHogIfConsented('faq_interacted', { question });
+      });
+      card.dataset.bound = 'true';
+    });
+  };
+
+  if (document.readyState !== 'loading') {
+    initFaqTracking();
+  } else {
+    document.addEventListener('DOMContentLoaded', initFaqTracking, { once: true });
+  }
+
+  document.addEventListener('astro:page-load', initFaqTracking);
+</script>
