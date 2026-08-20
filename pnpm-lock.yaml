@@ -2726,6 +2726,13 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
+  synckit@0.11.13:
+    resolution: {integrity: sha512-eNRKgb3z66Yp3D2CixVujOUvXLFUTij/zVnV8KRyvFdQwpz7I5DS8UfRkTeLzb64u+dkzDSdelE24izu+zSSUg==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+
+  tailwindcss@4.3.0:
+    resolution: {integrity: sha512-y6nxMGB1nMW9R6k96e5gdIFzcfL/gTJRNaqGes1YvkLnPVXzWgbqFF2yLC0T8G774n24cx3Pe8XrKoniCOAH+Q==}
+
   tailwindcss@4.3.2:
     resolution: {integrity: sha512-WtctNNSH8A9jlMIqxzuYumOHU5uGZyRv0Q5svQl+oEPy5w84YpBxdb7MdqyiSPQge5jTJ6zFQLq0PFygdccSBA==}
 
@@ -5833,6 +5840,12 @@ snapshots:
       csso: 5.0.5
       picocolors: 1.1.1
       sax: 1.6.0
+
+  synckit@0.11.13:
+    dependencies:
+      '@pkgr/core': 0.3.6
+
+  tailwindcss@4.3.0: {}
 
   tailwindcss@4.3.2: {}
 
