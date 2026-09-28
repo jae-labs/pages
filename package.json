@@ -28,7 +28,7 @@
     "@sentry/cloudflare": "^10.63.0",
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^7.2.8",
-    "hls.js": "^1.6.16",
+    "hls.js": "^1.7.3",
     "posthog-js": "^1.396.4",
     "sharp": "^0.35.4",
     "tailwindcss": "^4.3.2",
@@ -42,7 +42,7 @@
     "lefthook": "^2.1.8",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.62.1",
-    "vitest": "^4.1.7"
+    "vitest": "^5.0.2"
   },
   "overrides": {
     "yaml": "^2.9.0",
