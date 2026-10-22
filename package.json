@@ -29,7 +29,7 @@
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^7.2.8",
     "hls.js": "^1.7.3",
-    "posthog-js": "^1.396.4",
+    "posthog-js": "^1.438.12",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.3.2",
     "vidstack": "^1.15.2"
