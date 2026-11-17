@@ -5,3 +5,5 @@ export { features } from './portfolio/features';
 export { logos } from './portfolio/logos';
 export { menuItems } from './portfolio/menu';
 export { reviews } from './portfolio/reviews';
+export { calendlyPopupUrl } from './portfolio/contact';
+export { plans } from './portfolio/plans';

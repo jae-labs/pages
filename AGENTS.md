@@ -8,20 +8,14 @@
 
 ## Start Here
 
-- Install dependencies: `pnpm install`
-- Install hooks: `pnpm prepare`
-- Start dev server: `pnpm dev`
-- Optional hook gate: `lefthook run pre-commit`
-- Full local gate before completion: `pnpm check`
+- Use the Node version in `.nvmrc` and the pnpm version in `package.json`.
+- Install dependencies with `pnpm install --frozen-lockfile`.
+- Install hooks with `pnpm prepare` if needed.
+- Start the static site locally with `pnpm dev`.
 
 ## Required Verification
 
-- Run in order when code changes may affect them:
-  - `pnpm lint`
-  - `pnpm typecheck`
-  - `pnpm test:run`
-  - `pnpm build`
-- `pnpm check` is the minimum completion gate.
+For code changes, run `pnpm check` once before completion. It runs lint, type checking, tests, and the static build in order. See [Quality Gates](docs/runbooks/quality-gates.md) for targeted checks and Pages smoke tests.
 
 ## Routing
 
@@ -47,15 +41,15 @@
 - Preserve static output. Do not introduce SSR unless explicitly requested.
 - Use `src/assets/` for optimized imports and `public/` for unchanged public files.
 - Keep chatbot provider wording vendor-generic in docs and copy unless exact env var names are required.
-- Do not persist chat messages. Only short-lived rate-limit identities belong in KV.
+- Do not persist chat messages. Store only short-lived rate-limit counters keyed by hashed identities in KV. Exclude the chat widget from session replay.
 - Do not add migration scripts unless explicitly requested.
-- Do not commit large media. Use `media.justanother.engineer` / OCI-backed delivery for large public assets.
+- Do not commit large media. Use the external media delivery path at `media.justanother.engineer` for large public assets.
 
 ## Update Triggers
 
 - If UI behavior changes, update the relevant tests in the same change.
 - If content contracts change, update `src/config/portfolio/`, `src/config/portfolio.ts`, `src/types/portfolio.ts`, and tests together.
-- If docs-affecting behavior changes, update `README.md`, `public/llms.txt`, `public/robots.txt`, and affected files in `docs/` together.
+- Update the README and affected docs when behavior changes their claims. Update `public/llms.txt` when public discovery content changes and `public/robots.txt` when crawler policy or the sitemap URL changes.
 - If workflows, config syntax, dependencies, or external APIs change, check current official docs before editing.
 
 ## High-Risk Changes

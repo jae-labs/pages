@@ -9,6 +9,7 @@ if (dsn) {
       Sentry.replayIntegration({
         maskAllText: true,
         blockAllMedia: true,
+        block: ['#lui-z-chat'],
       }),
     ],
     // Performance Monitoring

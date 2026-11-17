@@ -62,3 +62,13 @@ export interface FAQ {
   q: string;
   a: string;
 }
+
+export interface PortfolioPlan {
+  name: string;
+  price: string;
+  desc: string;
+  features: string[];
+  cta: string;
+  tenancy: string;
+  popular?: boolean;
+}

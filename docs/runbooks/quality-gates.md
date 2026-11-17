@@ -1,38 +1,20 @@
 # Quality Gates
 
-Run these checks before completion when code changes may affect them.
+Run `pnpm check` before completing code changes. CI uses the same command after a frozen install.
 
-## Commands
+## Checks
 
-```bash
-pnpm prepare
-lefthook run pre-commit
-pnpm lint
-pnpm typecheck
-pnpm test:run
-pnpm build
-pnpm check
-```
+| Command | What it checks |
+| --- | --- |
+| `pnpm lint` | ESLint diagnostics |
+| `pnpm typecheck` | Astro and TypeScript diagnostics |
+| `pnpm test:run` | Repository tests |
+| `pnpm build` | Static build in `dist/` |
 
-## Expectations
+Use individual commands for diagnosis. `pnpm check` runs them in this order. `pnpm prepare` installs the Lefthook hooks. The pre-commit hook runs lint and type checks. The pre-push hook runs the full gate.
 
-- `pnpm prepare`
-  - installs local Git hooks
-- `lefthook run pre-commit`
-  - runs the local hook-defined pre-commit checks without needing a commit
-- `pnpm lint`
-  - ESLint passes without new violations
-- `pnpm typecheck`
-  - Astro and TypeScript diagnostics pass
-- `pnpm test:run`
-  - colocated contract and logic tests pass
-- `pnpm build`
-  - static production build completes without asset or resolution failures
-- `pnpm check`
-  - consolidated gate passes end to end
+## Extra validation
 
-## When To Run Extra Validation
-
-- Run `pnpm preview` for layout, SEO, asset, or deployment-sensitive changes.
-- Smoke test the chatbot path when changing `src/server/chat/`, `functions/`, or `src/components/landing/ChatBot.astro`.
-- Re-check crawler-facing files when editing `public/robots.txt`, `public/llms.txt`, metadata, or sitemap behavior.
+- Run `pnpm preview` after building to review static layout, metadata, and assets.
+- For chat changes, run the [Pages smoke test](../deployment.md#chat-smoke-test). Astro preview serves static output. Local Functions testing requires Wrangler and local bindings.
+- Recheck the built sitemap, canonical URL, and crawler files when their public URLs or indexing policy change.

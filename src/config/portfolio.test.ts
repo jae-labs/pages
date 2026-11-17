@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, test } from 'vitest';
-import { benchmarks, deploymentEntries, faqs, features, logos, menuItems, reviews } from './portfolio';
+import { calendlyPopupUrl, plans, benchmarks, deploymentEntries, faqs, features, logos, menuItems, reviews } from './portfolio';
 
 describe('portfolio content', () => {
   test('menu items target sections rendered by the landing page', () => {
@@ -46,6 +46,11 @@ describe('portfolio content', () => {
     expect(reviews.length).toBeGreaterThanOrEqual(1);
     expect(faqs.length).toBeGreaterThanOrEqual(5);
     expect(faqs.some((faq) => faq.q === 'Does lui.z make mistakes?')).toBe(true);
+  });
+
+  test('plans share a public booking destination', () => {
+    expect(plans.map((plan) => plan.name)).toEqual(['Community', 'Enterprise']);
+    expect(new URL(calendlyPopupUrl).origin).toBe('https://calendly.com');
   });
 
   test('public company logo assets exist', () => {

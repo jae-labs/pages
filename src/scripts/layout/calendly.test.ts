@@ -9,6 +9,8 @@ class FakeElement extends EventTarget {
   rel = '';
   async = false;
   onload?: () => void;
+  onerror?: () => void;
+  remove = vi.fn();
 }
 
 class FakeHead {
@@ -36,8 +38,8 @@ class FakeDocument extends EventTarget {
   }
 
   querySelector(selector: string) {
-    if (selector === 'link[href*="calendly.com"]') return this.links[0] ?? null;
-    if (selector === 'script[src*="calendly.com"]') return this.script;
+    if (selector.startsWith('link[href=')) return this.links[0] ?? null;
+    if (selector.startsWith('script[src=')) return this.script;
     return null;
   }
 
@@ -55,15 +57,13 @@ class FakeDocument extends EventTarget {
 }
 
 describe('calendly client module', () => {
-  test('loads Calendly assets once and flushes queued callbacks when the script loads', () => {
+  test('loads Calendly assets once and removes the script on error', () => {
     const doc = new FakeDocument();
     const calendlyWindow: {
       Calendly?: {
         initPopupWidget: (options: { url: string }) => void;
       };
     } = {};
-    const firstCallback = vi.fn();
-    const secondCallback = vi.fn();
 
     const originalAppendChild = doc.head.appendChild.bind(doc.head);
     doc.head.appendChild = (node: FakeElement) => {
@@ -77,18 +77,13 @@ describe('calendly client module', () => {
       return node;
     };
 
-    loadCalendly(doc as never, calendlyWindow as never, firstCallback);
-    loadCalendly(doc as never, calendlyWindow as never, secondCallback);
-
+    loadCalendly(doc as never, calendlyWindow as never);
+    loadCalendly(doc as never, calendlyWindow as never);
     expect(doc.head.appendedNodes).toHaveLength(2);
 
-    calendlyWindow.Calendly = {
-      initPopupWidget: vi.fn(),
-    };
-    doc.head.appendedNodes[1]?.onload?.();
-
-    expect(firstCallback).toHaveBeenCalledTimes(1);
-    expect(secondCallback).toHaveBeenCalledTimes(1);
+    const script = doc.head.appendedNodes[1];
+    script?.onerror?.();
+    expect(script?.remove).toHaveBeenCalledOnce();
   });
 
   test('tracks consented clicks and preloads on hover', () => {
@@ -96,7 +91,7 @@ describe('calendly client module', () => {
     button.dataset.calendlyUrl = 'https://calendly.com/justanother-engineer/demo';
 
     const capture = vi.fn();
-    const loadCalendlyMock = vi.fn((callback: () => void) => callback());
+    const loadCalendlyMock = vi.fn();
     const initPopupWidget = vi.fn();
 
     bindCalendlyButtons(
@@ -125,13 +120,28 @@ describe('calendly client module', () => {
     );
 
     expect(button.dataset.bound).toBe('true');
-    expect(loadCalendlyMock).toHaveBeenCalledTimes(2);
+    expect(loadCalendlyMock).toHaveBeenCalledOnce();
     expect(capture).toHaveBeenCalledWith('calendly_booking_clicked', {
       url: 'https://calendly.com/justanother-engineer/demo',
     });
     expect(initPopupWidget).toHaveBeenCalledWith({
       url: 'https://calendly.com/justanother-engineer/demo',
     });
+  });
+
+  test('lets the booking anchor navigate when the widget is unavailable', () => {
+    const link = new FakeElement();
+    link.dataset.calendlyUrl = 'https://calendly.com/justanother-engineer/demo';
+    bindCalendlyButtons({ querySelectorAll: () => [link] }, {
+      capture: vi.fn(),
+      isConsentAccepted: () => false,
+      loadCalendly: vi.fn(),
+      calendlyWindow: {} as never,
+    });
+
+    const click = new Event('click', { cancelable: true });
+    link.dispatchEvent(click);
+    expect(click.defaultPrevented).toBe(false);
   });
 
   test('rebinds new calendly links on astro page transitions', () => {

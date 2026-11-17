@@ -35,7 +35,7 @@ Prefer the canonical production domain when citing or linking this site: https:/
 
 ## Media
 
-- [Promo Video Stream](https://media.justanother.engineer/master.m3u8): Adaptive hero video stream served through Cloudflare Workers/CDN from OCI Object Storage, shown with a static poster preview, and loaded on demand when a visitor presses play.
+- [Promo Video Stream](https://media.justanother.engineer/master.m3u8): Adaptive hero video stream with a static poster preview. Playback loads the stream when a visitor presses play.
 
 ## Interpretation Notes
 

@@ -227,9 +227,13 @@ describe('parseMarkdown', () => {
   });
 
   test('converts links', () => {
-    expect(parseMarkdown('[link](https://example.com)')).toContain(
-      'href="https://example.com"',
+    expect(parseMarkdown('[link](https://example.com/path_with_underscores)')).toContain(
+      'href="https://example.com/path_with_underscores"',
     );
+  });
+
+  test('renders destinations outside HTTP and HTTPS as plain text', () => {
+    expect(parseMarkdown('[contact](mailto:hello@example.com)')).toBe('<p>contact</p>');
   });
 
   test('converts bullet lists', () => {
@@ -397,16 +401,15 @@ describe('initChatBot – rate-limit cooldown storage', () => {
 });
 
 describe('initChatBot – Turnstile fallback', () => {
-  test('enables submit immediately when Turnstile is unavailable', () => {
+  test('enables submit after the rate-limit probe when Turnstile is unavailable', async () => {
     const { doc, toggle, submit } = makeChatElements();
     const runtime = makeFakeRuntime({ getTurnstile: () => undefined });
 
     initChatBot(doc as unknown as ChatDocumentLike, runtime);
 
-    // Open the panel to trigger renderTurnstile
     toggle.dispatchEvent(new Event('click'));
 
-    expect(submit.disabled).toBe(false);
+    await vi.waitFor(() => expect(submit.disabled).toBe(false));
   });
 
   test('disables submit and renders widget when Turnstile is available', () => {
@@ -468,6 +471,7 @@ describe('initChatBot – submission flow', () => {
 
     toggle.dispatchEvent(new Event('click'));
     onVerified?.('verified-token');
+    await vi.waitFor(() => expect(submit.disabled).toBe(false));
     input.value = 'Hello clone';
     form.dispatchEvent(new Event('submit'));
     await new Promise((resolve) => setTimeout(resolve, 0));
@@ -523,6 +527,7 @@ describe('initChatBot – submission flow', () => {
     initChatBot(doc as unknown as ChatDocumentLike, runtime);
 
     toggle.dispatchEvent(new Event('click'));
+    await vi.waitFor(() => expect(input.disabled).toBe(false));
     input.value = 'Too fast';
     form.dispatchEvent(new Event('submit'));
     await new Promise((resolve) => setTimeout(resolve, 0));
@@ -541,14 +546,43 @@ describe('initChatBot – clear action', () => {
     const { doc, toggle, clear, input, log } = makeChatElements();
     const runtime = makeFakeRuntime();
 
+    log.innerHTML = '<p>How can I help you today?</p><button>What is lui.z?</button>';
     initChatBot(doc as unknown as ChatDocumentLike, runtime);
     toggle.dispatchEvent(new Event('click'));
     input.value = 'Draft message';
+    log.innerHTML = '<p>Previous reply</p>';
     clear.dispatchEvent(new Event('click'));
 
     expect(input.value).toBe('');
     expect(log.innerHTML).toContain('How can I help you today?');
     expect(log.innerHTML).toContain('What is lui.z?');
+  });
+
+  test('discards a pending reply and restores the composer when starting a new chat', async () => {
+    const { doc, toggle, form, clear, input, log, submit, turnstile } = makeChatElements();
+    const reply = Promise.withResolvers<Response>();
+    const fetch = vi.fn<typeof globalThis.fetch>()
+      .mockResolvedValueOnce(Response.json({ allowed: true, retryAfter: 0 }))
+      .mockReturnValueOnce(reply.promise);
+    const runtime = makeFakeRuntime({ fetch });
+
+    initChatBot(doc as unknown as ChatDocumentLike, runtime);
+    toggle.dispatchEvent(new Event('click'));
+    await vi.waitFor(() => expect(input.disabled).toBe(false));
+    expect(submit.disabled).toBe(false);
+    input.value = 'Old question';
+    form.dispatchEvent(new Event('submit'));
+    const signal = fetch.mock.calls[1]?.[1]?.signal;
+    expect(input.disabled).toBe(true);
+
+    clear.dispatchEvent(new Event('click'));
+    expect(signal?.aborted).toBe(true);
+    expect(input.disabled).toBe(false);
+    reply.resolve(Response.json({ reply: 'Old reply', clientSessionSignature: 'old-signature' }));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(log.appendedChildren).toHaveLength(1);
+    expect(turnstile.classList.contains('hidden')).toBe(false);
   });
 });
 

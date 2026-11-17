@@ -94,6 +94,7 @@ describe('layout analytics module', () => {
       autocapture: true,
       session_recording: {
         maskAllInputs: true,
+        blockSelector: '#lui-z-chat',
       },
     });
   });

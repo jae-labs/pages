@@ -143,23 +143,38 @@ export const escapeHtml = (text: string): string =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 
+const formatInlineMarkdown = (text: string): string => {
+  const inline = /`([^`]+)`|\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|__([^_]+)__|\*([^*]+)\*|_([^_]+)_/g;
+  let html = '';
+  let end = 0;
+
+  for (const match of text.matchAll(inline)) {
+    const [source, code, label, href, boldA, boldB, emphasisA, emphasisB] = match;
+    html += escapeHtml(text.slice(end, match.index));
+    end = match.index + source.length;
+
+    if (code !== undefined) {
+      html += `<code class="bg-white/10 px-1 py-0.5 rounded text-xs font-mono text-neon-cyan">${escapeHtml(code)}</code>`;
+    } else if (label !== undefined && href !== undefined) {
+      const url = URL.canParse(href) ? new URL(href) : null;
+      if (url?.protocol === 'https:' || url?.protocol === 'http:') {
+        html += `<a href="${escapeHtml(url.href)}" target="_blank" rel="noopener noreferrer" class="text-neon-cyan hover:underline hover:text-neon-cyan/80 transition duration-300">${escapeHtml(label)}</a>`;
+      } else {
+        html += escapeHtml(label);
+      }
+    } else {
+      const bold = boldA ?? boldB;
+      html += bold !== undefined
+        ? `<strong class="font-bold text-white">${escapeHtml(bold)}</strong>`
+        : `<em class="italic">${escapeHtml(emphasisA ?? emphasisB ?? '')}</em>`;
+    }
+  }
+
+  return html + escapeHtml(text.slice(end));
+};
+
 export const parseMarkdown = (markdown: string): string => {
-  let html = escapeHtml(markdown);
-
-  html = html.replace(
-    /`([^`]+)`/g,
-    '<code class="bg-white/10 px-1 py-0.5 rounded text-xs font-mono text-neon-cyan">$1</code>',
-  );
-  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-bold text-white">$1</strong>');
-  html = html.replace(/__([^_]+)__/g, '<strong class="font-bold text-white">$1</strong>');
-  html = html.replace(/\*([^*]+)\*/g, '<em class="italic">$1</em>');
-  html = html.replace(/_([^_]+)_/g, '<em class="italic">$1</em>');
-  html = html.replace(
-    /\[([^\]]+)\]\(([^)]+)\)/g,
-    '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-neon-cyan hover:underline hover:text-neon-cyan/80 transition duration-300">$1</a>',
-  );
-
-  const lines = html.split('\n');
+  const lines = markdown.split('\n');
   let inList = false;
   const processedLines: string[] = [];
 
@@ -172,7 +187,7 @@ export const parseMarkdown = (markdown: string): string => {
         inList = true;
         processedLines.push('<ul class="list-disc pl-5 my-1.5 space-y-1">');
       }
-      processedLines.push(`<li>${listMatch[1]}</li>`);
+      processedLines.push(`<li>${formatInlineMarkdown(listMatch[1])}</li>`);
     } else {
       if (inList) {
         inList = false;
@@ -181,7 +196,7 @@ export const parseMarkdown = (markdown: string): string => {
       if (trimmed === '') {
         processedLines.push('<div class="h-2"></div>');
       } else {
-        processedLines.push(`<p>${trimmed}</p>`);
+        processedLines.push(`<p>${formatInlineMarkdown(trimmed)}</p>`);
       }
     }
   }
@@ -290,6 +305,7 @@ export const initChatBot = (
 
   if (toggle.dataset.bound === 'true') return;
 
+  const initialGreeting = log.innerHTML;
   const maxLength = Number(input.maxLength);
 
   const updateCharacterCount = () => {
@@ -304,6 +320,7 @@ export const initChatBot = (
   let rateLimitTimer: ReturnType<typeof setInterval> | null = null;
   let cooldownEl: (ChatCreatedElementLike & { isConnected: boolean }) | null = null;
   let isCheckingRateLimit = false;
+  let activeRequest: AbortController | undefined;
 
   const setLoading = (loading: boolean) => {
     submit.dataset.loading = loading ? 'true' : '';
@@ -376,7 +393,7 @@ export const initChatBot = (
   };
 
   const probeRateLimit = async () => {
-    if (rateLimitUntil > Date.now()) return;
+    if (activeRequest || isCheckingRateLimit || rateLimitUntil > Date.now()) return;
 
     isCheckingRateLimit = true;
     setLoading(false);
@@ -426,7 +443,7 @@ export const initChatBot = (
     if (clientSessionSignature !== null) {
       isTurnstileVerified = true;
       container?.classList.add('hidden');
-      if (!submit.dataset.loading) submit.disabled = false;
+      setLoading(Boolean(activeRequest));
       return;
     }
 
@@ -435,37 +452,37 @@ export const initChatBot = (
     const turnstile = runtime.getTurnstile();
     if (!turnstile) {
       isTurnstileVerified = true;
-      submit.disabled = false;
+      setLoading(Boolean(activeRequest));
       return;
     }
 
     if (container && turnstileWidgetId === null) {
       try {
-        submit.disabled = true;
         isTurnstileVerified = false;
+        setLoading(Boolean(activeRequest));
         turnstileWidgetId = turnstile.render(container as unknown as Element, {
           sitekey: runtime.turnstileSiteKey,
           theme: 'dark',
           callback: () => {
             isTurnstileVerified = true;
-            if (!submit.dataset.loading) submit.disabled = false;
+            setLoading(Boolean(activeRequest));
           },
           'expired-callback': () => {
             isTurnstileVerified = false;
-            submit.disabled = true;
+            setLoading(Boolean(activeRequest));
           },
           'error-callback': () => {
             isTurnstileVerified = false;
-            submit.disabled = true;
+            setLoading(Boolean(activeRequest));
           },
           'timeout-callback': () => {
             isTurnstileVerified = false;
-            submit.disabled = true;
+            setLoading(Boolean(activeRequest));
           },
         });
       } catch {
         isTurnstileVerified = true;
-        submit.disabled = false;
+        setLoading(Boolean(activeRequest));
       }
     }
   };
@@ -485,23 +502,6 @@ export const initChatBot = (
     log.scrollTop = log.scrollHeight;
   };
 
-  const resetGreeting = () => {
-    log.innerHTML = `
-      <div class="flex-1 min-h-0" id="chat-spacer"></div>
-      <div class="flex flex-col gap-2 chat-greeting-group">
-        <p class="max-w-[85%] rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm leading-relaxed text-[#e0e0e0]">
-          How can I help you today?
-        </p>
-        <div class="flex flex-col gap-2 items-start pl-2 mt-1">
-          <span class="text-[10px] uppercase tracking-[0.16em] text-[#777] font-semibold">Try asking:</span>
-          <button type="button" class="chat-suggest-btn text-xs px-3 py-1.5 rounded-full border border-neon-cyan/30 bg-neon-cyan/5 text-neon-cyan transition duration-300 hover:bg-neon-cyan hover:text-black active:scale-95 text-left">What is lui.z?</button>
-          <button type="button" class="chat-suggest-btn text-xs px-3 py-1.5 rounded-full border border-neon-cyan/30 bg-neon-cyan/5 text-neon-cyan transition duration-300 hover:bg-neon-cyan hover:text-black active:scale-95 text-left">Any session or usage limits?</button>
-          <button type="button" class="chat-suggest-btn text-xs px-3 py-1.5 rounded-full border border-neon-cyan/30 bg-neon-cyan/5 text-neon-cyan transition duration-300 hover:bg-neon-cyan hover:text-black active:scale-95 text-left">Does lui.z make mistakes?</button>
-        </div>
-      </div>
-    `;
-  };
-
   const resetTurnstile = () => {
     const turnstile = runtime.getTurnstile();
     if (turnstile && turnstileWidgetId !== null) {
@@ -515,7 +515,7 @@ export const initChatBot = (
   };
 
   const submitMessage = async (messageText: string) => {
-    if (!isTurnstileVerified || submit.disabled) return;
+    if (activeRequest || !isTurnstileVerified || submit.disabled) return;
 
     const suggestionContainer = log.querySelector('.chat-greeting-group div');
     if (suggestionContainer) suggestionContainer.remove();
@@ -531,11 +531,14 @@ export const initChatBot = (
     appendMessage(messageText, 'user');
     input.value = '';
     updateCharacterCount();
+    const request = new AbortController();
+    activeRequest = request;
     setLoading(true);
 
     try {
       const response = await runtime.fetch('/api/chat', {
         method: 'POST',
+        signal: request.signal,
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
           message: messageText,
@@ -551,6 +554,8 @@ export const initChatBot = (
         clientSessionSignature?: string;
       };
 
+      if (activeRequest !== request) return;
+
       if (response.ok && body.reply) {
         if (body.clientSessionSignature) {
           clientSessionSignature = body.clientSessionSignature;
@@ -562,7 +567,7 @@ export const initChatBot = (
         appendMessage(body.reply, 'clone');
       } else {
         captureIfConsented(runtime, 'chatbot_error_encountered', {
-          error: body.error ?? 'Response not ok',
+          status: response.status,
         });
 
         if (response.status === 429) {
@@ -577,20 +582,24 @@ export const initChatBot = (
           response.status === 400 &&
           (body.error?.includes('verification') || body.error?.includes('Security'))
         ) {
-          clientSessionId = null;
+          clientSessionId = `${Date.now()}:${runtime.randomUUID()}`;
           clientSessionSignature = null;
           resetTurnstile();
           renderTurnstile();
         }
       }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Network exception';
-      captureIfConsented(runtime, 'chatbot_error_encountered', { error: errorMessage });
+    } catch {
+      if (activeRequest !== request) return;
+
+      captureIfConsented(runtime, 'chatbot_error_encountered', { error: 'request_failed' });
       appendMessage('The clone is temporarily unavailable.', 'clone');
     } finally {
-      if (clientSessionSignature === null) resetTurnstile();
-      setLoading(false);
-      input.focus();
+      if (activeRequest === request) {
+        activeRequest = undefined;
+        if (clientSessionSignature === null) resetTurnstile();
+        setLoading(false);
+        input.focus();
+      }
     }
   };
 
@@ -653,7 +662,9 @@ export const initChatBot = (
   close.addEventListener('click', () => setOpen(false));
 
   clear.addEventListener('click', () => {
-    resetGreeting();
+    activeRequest?.abort();
+    activeRequest = undefined;
+    log.innerHTML = initialGreeting;
     const wasRateLimited = rateLimitUntil > Date.now();
     const secondsLeft = wasRateLimited ? Math.round((rateLimitUntil - Date.now()) / 1000) : 0;
 
@@ -676,10 +687,11 @@ export const initChatBot = (
     input.value = '';
     updateCharacterCount();
     captureIfConsented(runtime, 'chatbot_history_cleared');
-    clientSessionId = null;
+    clientSessionId = `${Date.now()}:${runtime.randomUUID()}`;
     clientSessionSignature = null;
     resetTurnstile();
     renderTurnstile();
+    setLoading(false);
   });
 
   input.addEventListener('input', updateCharacterCount);

@@ -6,6 +6,15 @@ export const UPSTREAM_CHAT_COMPLETIONS_URL =
 
 const FETCH_TIMEOUT_MS = 20_000;
 
+export class ChatInferenceError extends Error {
+  constructor(
+    readonly kind: "timeout" | "transport" | "http" | "invalid_response",
+    readonly upstreamStatus?: number,
+  ) {
+    super(kind);
+  }
+}
+
 interface UpstreamMessage {
   role: "system" | "user";
   content: string;
@@ -40,17 +49,21 @@ export const buildChatResponse = async (
       signal: controller.signal,
     });
 
-    if (!response.ok)
-      throw new Error(`Upstream request failed with ${response.status}`);
+    if (!response.ok) throw new ChatInferenceError("http", response.status);
 
-    const payload = (await response.json()) as {
-      choices?: Array<{ message?: { content?: unknown } }>;
-    };
-    const content = payload.choices?.[0]?.message?.content;
-    if (typeof content !== "string" || !content.trim())
-      throw new Error("Upstream response missing content");
+    const payload = (await response.json().catch(() => {
+      throw new ChatInferenceError("invalid_response", response.status);
+    })) as { choices?: Array<{ message?: { content?: unknown } }> } | null;
+    const content = payload?.choices?.[0]?.message?.content;
+    if (typeof content !== "string" || !content.trim()) {
+      throw new ChatInferenceError("invalid_response", response.status);
+    }
 
     return content.trim();
+  } catch (error) {
+    if (controller.signal.aborted) throw new ChatInferenceError("timeout");
+    if (error instanceof ChatInferenceError) throw error;
+    throw new ChatInferenceError("transport");
   } finally {
     clearTimeout(timeout);
   }

@@ -9,7 +9,7 @@
 <a href="https://github.com/jae-labs/pages/issues"><img src="https://img.shields.io/github/issues/jae-labs/pages" alt="GitHub issues"></a>
 <a href="https://github.com/jae-labs/pages/stargazers"><img src="https://img.shields.io/github/stars/jae-labs/pages" alt="GitHub stars"></a>
 <a href="https://github.com/jae-labs/pages/network"><img src="https://img.shields.io/github/forks/jae-labs/pages" alt="GitHub forks"></a>
-<a href="https://astro.build"><img src="https://img.shields.io/badge/Astro-6-ff5d01?logo=astro&logoColor=white" alt="Astro 6"></a>
+<a href="https://astro.build"><img src="https://img.shields.io/badge/Astro-7-ff5d01?logo=astro&logoColor=white" alt="Astro 7"></a>
 <a href="https://pages.cloudflare.com"><img src="https://img.shields.io/badge/Cloudflare%20Pages-deployed-f38020?logo=cloudflare&logoColor=white" alt="Cloudflare Pages"></a>
 <a href="https://buymeacoffee.com/luiz1361"><img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-donate-orange.svg?logo=buymeacoffee" alt="Buy Me A Coffee"></a>
 </p>
@@ -18,31 +18,35 @@ lui.z the true human agent.
 
 Trained over 3.7 decades on production incidents, questionable dashboards, network cables, CI pipelines, cloud bills, human emotions, and the occasional moral judgment.
 
-This repository powers [justanother.engineer](https://justanother.engineer): a cyberpunk-styled personal Single Page Application (SPA) that treats Luiz F. C. Martins like a highly opinionated SRE/DevOps model you can deploy into teams, platforms, incidents, and awkward architecture meetings.
+This repository powers [justanother.engineer](https://justanother.engineer): a cyberpunk-styled static personal landing page that treats Luiz F. C. Martins like a highly opinionated SRE/DevOps model you can deploy into teams, platforms, incidents, and awkward architecture meetings.
 
 Under the joke: career history, public recommendations, operating style, sponsorship options, contact paths, and enough blinking yellow to void at least one design warranty.
 
 ## Stack
 
-- Astro 6 static Single Page Application (SPA)
+- Astro 7 with static output
 - Tailwind CSS 4 with CSS-first theme tokens
 - TypeScript
 - Lucide Astro icons
 - Cloudflare Pages
 - Cloudflare Pages Functions for the public lui.z clone chat API
 - Cloudflare KV for chat rate limiting
-- Cloudflare Workers/CDN for public media
-- OCI Object Storage for large media files
-- GitHub Actions CI/CD with Doppler-synced secrets
+- External HLS delivery for the hero video
+- GitHub Actions for CI and deployment
+- Sentry for browser and Pages Functions error monitoring and tracing
+- Honeycomb Buildevents for GitHub Actions telemetry
+- PostHog and Google Analytics for consent-based site analytics
+- [Pingdom](https://stats.pingdom.com/ieq3v42yov76/4989186) for uptime monitoring
+- [incident.io](https://status.justanother.engineer) for the public status page and incident updates
 
 ## Quick Start
 
-Requires Node.js `22.12.0` or newer.
+Requires Node.js `22.23.4` or newer and pnpm `9.15.4`. The CI Node version comes from `.nvmrc`.
 
 1. Install dependencies.
 
    ```bash
-   pnpm install
+   pnpm install --frozen-lockfile
    ```
 
 2. Install Lefthook Git hooks.
@@ -54,7 +58,7 @@ Requires Node.js `22.12.0` or newer.
 3. Start the development server.
 
    ```bash
-   pnpm dev --force
+   pnpm dev
    ```
 
 4. Open the local URL printed by Astro, usually `http://localhost:4321`.
@@ -82,11 +86,13 @@ Requires Node.js `22.12.0` or newer.
    pnpm preview
    ```
 
+   Astro preview serves the static site. Use a configured Pages preview to test the chat API.
+
 Common commands:
 
 | Command | Purpose |
 | --- | --- |
-| `pnpm install` | Install locked dependencies |
+| `pnpm install --frozen-lockfile` | Install locked dependencies |
 | `pnpm prepare` | Install Lefthook Git hooks |
 | `pnpm dev` | Start local dev server |
 | `pnpm lint` | Run ESLint |
@@ -134,15 +140,15 @@ Most editable portfolio content lives in `src/config/portfolio/`, split by domai
 This website is automatically deployed to Cloudflare Pages via GitHub Actions CI/CD workflows on pushes to the `main` branch.
 
 - **Production:** [justanother.engineer](https://justanother.engineer)
-- **Previews:** Review deployments are posted automatically on active Pull Requests.
+- **Previews:** Successful review builds for branches in this repository post a preview URL on the pull request. Fork pull requests use CI without a release deployment.
 
 ## Chatbot
 
-The site includes a satirical clone chatbot that answers questions based on the public site content. While chat messages themselves are not persisted on the server, interaction events (such as messages sent and received) and session recordings/heatmaps are captured via PostHog and Google Analytics when the visitor grants cookie consent. Endpoint rate-limiting is handled server-side using Cloudflare KV.
+The satirical lui.z chatbot answers questions about the public site. The Pages Function sends prompts to a third-party inference service and uses Cloudflare KV for rate-limit counters. Google Analytics and PostHog initialize after analytics consent. PostHog receives chat interaction metadata, such as message lengths. PostHog and Sentry replay settings exclude the chat widget. See the [chatbot privacy rules](docs/chatbot.md#privacy-rules) for details.
 
 ## Media
 
-To avoid committing large binary files to the repository and keep static builds lightweight for deployment to Cloudflare Pages, large media assets (like the hero video) are stored in OCI Object Storage. They are served behind a Cloudflare Worker CDN and delivered via adaptive HLS (HTTP Live Streaming) to optimize bandwidth and performance.
+The hero video uses adaptive HLS (HTTP Live Streaming) served from `media.justanother.engineer`. Astro builds the local poster and landing-page images into optimized assets.
 
 ## Contributing
 

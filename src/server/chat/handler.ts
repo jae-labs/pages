@@ -1,7 +1,7 @@
 import { type RateLimitKv, checkRateLimit, probeRateLimit } from './rate-limit';
 import { parseMessage, getClientIdentity, hashClientIdentity } from './parse';
 import { verifyTurnstileToken } from './turnstile';
-import { buildChatResponse } from './inference';
+import { buildChatResponse, ChatInferenceError } from './inference';
 
 export interface ChatEnv {
   NVN_LLM_TOKEN?: string;
@@ -28,12 +28,19 @@ export const createChatHandler = (options: ChatHandlerOptions = {}) => async (
   request: Request,
   env: ChatEnv
 ) => {
+  const nowMs = options.now?.() ?? Date.now();
+
   if (request.method === 'GET') {
     const clientIdentity = getClientIdentity(request);
     if (!env.RATE_LIMIT_KV) {
       return json({ allowed: true, retryAfter: 0 });
     }
-    return json(await probeRateLimit(env.RATE_LIMIT_KV, await hashClientIdentity(clientIdentity), options.now?.()));
+    const status = await probeRateLimit(
+      env.RATE_LIMIT_KV,
+      await hashClientIdentity(clientIdentity),
+      nowMs
+    ).catch(() => null);
+    return status ? json(status) : json({ error: 'The clone is temporarily unavailable.' }, 503);
   }
 
   if (request.method !== 'POST') {
@@ -59,10 +66,9 @@ export const createChatHandler = (options: ChatHandlerOptions = {}) => async (
     if (parsed.clientSessionId && parsed.clientSessionSignature) {
       const parts = parsed.clientSessionId.split(':');
       const timestamp = Number(parts[0]);
-      const now = options.now ? options.now() * 1000 : Date.now();
       const twoHoursMs = 2 * 60 * 60 * 1000;
 
-      if (!isNaN(timestamp) && Math.abs(now - timestamp) < twoHoursMs) {
+      if (!isNaN(timestamp) && Math.abs(nowMs - timestamp) < twoHoursMs) {
         const expectedSignature = await hashClientIdentity(
           `${parsed.clientSessionId}:${env.TURNSTILE_SECRET_KEY}`
         );
@@ -92,8 +98,13 @@ export const createChatHandler = (options: ChatHandlerOptions = {}) => async (
   const limit = await checkRateLimit(
     env.RATE_LIMIT_KV,
     await hashClientIdentity(clientIdentity),
-    options.now?.()
-  );
+    nowMs
+  ).catch(() => null);
+  if (!limit) {
+    // eslint-disable-next-line no-console -- Pages Functions logs provide operational diagnostics.
+    console.warn('chat_rate_limit_storage_failed');
+    return json({ error: 'The clone is temporarily unavailable.' }, 503);
+  }
   if (!limit.allowed) {
     const m = Math.floor(limit.retryAfter / 60);
     const s = limit.retryAfter % 60;
@@ -112,6 +123,7 @@ export const createChatHandler = (options: ChatHandlerOptions = {}) => async (
     );
   }
 
+  const started = performance.now();
   try {
     const reply = await buildChatResponse(
       parsed.message,
@@ -124,7 +136,14 @@ export const createChatHandler = (options: ChatHandlerOptions = {}) => async (
       remaining: limit.remaining,
       ...(clientSessionSignature ? { clientSessionSignature } : {})
     });
-  } catch {
+  } catch (error) {
+    const failure = error instanceof ChatInferenceError ? error : undefined;
+    // eslint-disable-next-line no-console -- Pages Functions logs provide operational diagnostics.
+    console.warn('chat_inference_failed', {
+      kind: failure?.kind ?? 'unexpected',
+      upstreamStatus: failure?.upstreamStatus,
+      durationMs: Math.round(performance.now() - started)
+    });
     return json({ error: 'The clone is temporarily unavailable.' }, 502);
   }
 };

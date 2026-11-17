@@ -44,7 +44,7 @@ describe('chat public facts', () => {
     expect(prompt).toContain('limited artificial clone');
     expect(prompt).toContain('public-site facts');
     expect(prompt).toContain('satirical personal-branding page');
-    expect(prompt).toContain('Answer harmless general questions directly');
+    expect(prompt).toContain('If a question is outside the public-site facts, explain your scope');
     expect(prompt).toContain('Do not answer requests for private facts');
     expect(prompt).toContain('lui.z publishes public SRE and DevOps portfolio facts.');
   });
@@ -86,11 +86,11 @@ describe('chat rate limiting', () => {
 });
 
 describe('chat API handler', () => {
-  test('rejects invalid request bodies before calling upstream API', async () => {
+  test.each(['', null, 42, {}])('rejects invalid messages (%j) before calling upstream', async (message) => {
     const fetchUpstream = vi.fn();
     const handler = createChatHandler({ fetchUpstream });
 
-    const response = await handler(jsonRequest({ message: '' }), {
+    const response = await handler(jsonRequest({ message }), {
       NVN_LLM_TOKEN: 'token',
       RATE_LIMIT_KV: createKv()
     });
@@ -186,8 +186,26 @@ describe('chat API handler', () => {
     expect(fetchUpstream).not.toHaveBeenCalled();
   });
 
+  test('returns a controlled 503 when rate-limit storage cannot record a request', async () => {
+    using warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const fetchUpstream = vi.fn();
+    const handler = createChatHandler({ fetchUpstream });
+    const response = await handler(jsonRequest({ message: 'What does lui.z do?' }), {
+      NVN_LLM_TOKEN: 'token',
+      RATE_LIMIT_KV: {
+        get: vi.fn().mockResolvedValue(null),
+        put: vi.fn().mockRejectedValue(new Error('storage unavailable'))
+      }
+    });
+
+    expect(response.status).toBe(503);
+    expect(warn).toHaveBeenCalledWith('chat_rate_limit_storage_failed');
+    expect(fetchUpstream).not.toHaveBeenCalled();
+  });
+
   test('maps upstream API failures to a safe gateway error', async () => {
     const fetchUpstream = vi.fn().mockResolvedValue(Response.json({ error: 'bad upstream' }, { status: 500 }));
+    using warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const handler = createChatHandler({ fetchUpstream, now: () => 1_000 });
 
     const response = await handler(jsonRequest({ message: 'hello' }), {
@@ -197,6 +215,11 @@ describe('chat API handler', () => {
     const body = await readJson<{ error: string }>(response);
 
     expect(response.status).toBe(502);
+    expect(warn).toHaveBeenCalledWith('chat_inference_failed', {
+      kind: 'http',
+      upstreamStatus: 500,
+      durationMs: expect.any(Number)
+    });
     expect(body.error).toBe('The clone is temporarily unavailable.');
   });
 });
@@ -359,7 +382,7 @@ describe('Turnstile captcha verification', () => {
       })
     );
     const fetchTurnstile = vi.fn();
-    const handler = createChatHandler({ fetchUpstream, fetchTurnstile, now: () => 1_000 });
+    const handler = createChatHandler({ fetchUpstream, fetchTurnstile, now: () => 1_000_000 });
 
     const sessionId = `${1_000 * 1000}:some-uuid`;
     const signature = await hashClientIdentity(`${sessionId}:secret`);
@@ -388,7 +411,7 @@ describe('Turnstile captcha verification', () => {
   test('createChatHandler rejects request if the clientSessionSignature is invalid', async () => {
     const fetchUpstream = vi.fn();
     const fetchTurnstile = vi.fn();
-    const handler = createChatHandler({ fetchUpstream, fetchTurnstile, now: () => 1_000 });
+    const handler = createChatHandler({ fetchUpstream, fetchTurnstile, now: () => 1_000_000 });
 
     const sessionId = `${1_000 * 1000}:some-uuid`;
     const response = await handler(
@@ -415,7 +438,7 @@ describe('Turnstile captcha verification', () => {
     const fetchUpstream = vi.fn();
     const fetchTurnstile = vi.fn();
     // Server time is 1,000s, but session timestamp is from 2 hours and 1 minute ago
-    const handler = createChatHandler({ fetchUpstream, fetchTurnstile, now: () => 1_000 });
+    const handler = createChatHandler({ fetchUpstream, fetchTurnstile, now: () => 1_000_000 });
 
     const expiredTimestamp = (1_000 - 7260) * 1000;
     const sessionId = `${expiredTimestamp}:some-uuid`;

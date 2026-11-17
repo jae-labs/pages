@@ -29,40 +29,17 @@ interface CalendlyDocumentLike extends EventTarget {
 interface CalendlyRuntime {
   capture: (event: string, properties?: Record<string, string>) => void;
   isConsentAccepted: () => boolean;
-  loadCalendly: (callback: () => void) => void;
+  loadCalendly: () => void;
   calendlyWindow: CalendlyWindowLike;
 }
 
 const CALENDLY_REGISTERED_FLAG = '__calendlyRegistered';
 
-let calendlyLoading = false;
-let calendlyPolling: ReturnType<typeof setInterval> | undefined;
-let pendingCallbacks: Array<() => void> = [];
+const WIDGET_SCRIPT = 'https://assets.calendly.com/assets/external/widget.js';
+const WIDGET_STYLES = 'https://assets.calendly.com/assets/external/widget.css';
+const WIDGET_LOAD_TIMEOUT_MS = 5_000;
 
 const getDefaultCalendlyWindow = () => window as CalendlyWindowLike;
-
-const flushCalendlyCallbacks = () => {
-  const callbacks = pendingCallbacks;
-  pendingCallbacks = [];
-  callbacks.forEach((callback) => {
-    callback();
-  });
-};
-
-const startCalendlyPolling = (calendlyWindow: CalendlyWindowLike) => {
-  if (calendlyPolling) return;
-
-  calendlyPolling = setInterval(() => {
-    if (!calendlyWindow.Calendly?.initPopupWidget) return;
-
-    const activePolling = calendlyPolling;
-    if (activePolling) {
-      clearInterval(activePolling);
-    }
-    calendlyPolling = undefined;
-    flushCalendlyCallbacks();
-  }, 100);
-};
 
 const isCalendlyLinkLike = (value: unknown): value is CalendlyLinkLike => {
   if (!value || typeof value !== 'object') return false;
@@ -74,41 +51,29 @@ const isCalendlyLinkLike = (value: unknown): value is CalendlyLinkLike => {
 export const loadCalendly = (
   doc: Pick<CalendlyDocumentLike, 'createElement' | 'querySelector' | 'head'> = document,
   calendlyWindow: CalendlyWindowLike = getDefaultCalendlyWindow(),
-  callback: () => void,
 ) => {
-  if (calendlyWindow.Calendly?.initPopupWidget) {
-    callback();
-    return;
-  }
+  if (calendlyWindow.Calendly?.initPopupWidget || doc.querySelector(`script[src="${WIDGET_SCRIPT}"]`)) return;
 
-  pendingCallbacks.push(callback);
-
-  if (!doc.querySelector('link[href*="calendly.com"]')) {
+  if (!doc.querySelector(`link[href="${WIDGET_STYLES}"]`)) {
     const link = doc.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'https://assets.calendly.com/assets/external/widget.css';
+    link.href = WIDGET_STYLES;
     doc.head.appendChild(link);
   }
 
-  if (!doc.querySelector('script[src*="calendly.com"]') && !calendlyLoading) {
-    calendlyLoading = true;
-    const script = doc.createElement('script');
-    script.src = 'https://assets.calendly.com/assets/external/widget.js';
-    script.async = true;
-    script.onload = () => {
-      calendlyLoading = false;
-      const activePolling = calendlyPolling;
-      if (activePolling) {
-        clearInterval(activePolling);
-        calendlyPolling = undefined;
-      }
-      flushCalendlyCallbacks();
-    };
-    doc.head.appendChild(script);
-    return;
-  }
-
-  startCalendlyPolling(calendlyWindow);
+  const script = doc.createElement('script');
+  script.src = WIDGET_SCRIPT;
+  script.async = true;
+  const timeout = setTimeout(() => script.remove(), WIDGET_LOAD_TIMEOUT_MS);
+  script.onerror = () => {
+    clearTimeout(timeout);
+    script.remove();
+  };
+  script.onload = () => {
+    clearTimeout(timeout);
+    if (!calendlyWindow.Calendly?.initPopupWidget) script.remove();
+  };
+  doc.head.appendChild(script);
 };
 
 const createDefaultCalendlyRuntime = (): CalendlyRuntime => ({
@@ -116,7 +81,7 @@ const createDefaultCalendlyRuntime = (): CalendlyRuntime => ({
     capturePostHog(event, properties);
   },
   isConsentAccepted: () => isConsentAccepted(),
-  loadCalendly: (callback) => loadCalendly(document, getDefaultCalendlyWindow(), callback),
+  loadCalendly: () => loadCalendly(),
   calendlyWindow: getDefaultCalendlyWindow(),
 });
 
@@ -128,8 +93,6 @@ export const bindCalendlyButtons = (
     if (!isCalendlyLinkLike(link) || link.dataset.bound === 'true') return;
 
     link.addEventListener('click', (event) => {
-      event.preventDefault();
-
       const url = link.dataset.calendlyUrl;
       if (!url) return;
 
@@ -141,18 +104,20 @@ export const bindCalendlyButtons = (
         }
       }
 
-      runtime.loadCalendly(() => {
-        runtime.calendlyWindow.Calendly?.initPopupWidget({ url });
-      });
+      if (typeof MouseEvent !== 'undefined' && event instanceof MouseEvent && (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)) return;
+
+      const widget = runtime.calendlyWindow.Calendly;
+      if (!widget?.initPopupWidget) return;
+      try {
+        widget.initPopupWidget({ url });
+        event.preventDefault();
+      } catch {
+        // Let the anchor navigate if opening the widget fails.
+      }
     });
 
-    link.addEventListener(
-      'mouseenter',
-      () => {
-        runtime.loadCalendly(() => {});
-      },
-      { once: true },
-    );
+    link.addEventListener('mouseenter', runtime.loadCalendly, { once: true });
+    link.addEventListener('focus', runtime.loadCalendly, { once: true });
 
     link.dataset.bound = 'true';
   });

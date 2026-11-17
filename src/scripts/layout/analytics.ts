@@ -14,6 +14,7 @@ interface PostHogClient {
     autocapture: boolean;
     session_recording: {
       maskAllInputs: boolean;
+      blockSelector: string;
     };
   }) => void;
   capture: (event: string, properties?: Record<string, unknown>) => void;
@@ -85,6 +86,7 @@ export const loadPostHog = (
     autocapture: true,
     session_recording: {
       maskAllInputs: true,
+      blockSelector: '#lui-z-chat',
     },
   });
 

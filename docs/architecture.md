@@ -15,9 +15,12 @@ flowchart TD
   content --> portfolio["src/config/portfolio/*"]
   landing --> scripts["src/scripts/*"]
   index --> chatWidget["src/components/landing/ChatBot.astro"]
-  chatWidget --> chatApi["functions/api/chat.ts"]
+  chatWidget --> chatClient["src/scripts/landing/chat-bot.ts"]
+  chatClient --> chatApi["functions/api/chat.ts"]
   chatApi --> chatLogic["src/server/chat/*"]
-  chatApi --> rateLimitKv["Cloudflare KV RATE_LIMIT_KV"]
+  chatLogic --> rateLimitKv["Cloudflare KV RATE_LIMIT_KV"]
+  chatLogic --> verifier["Turnstile Siteverify"]
+  chatLogic --> inference["Hosted inference"]
   publicAssets["public/*"] --> pages["Cloudflare Pages"]
 ```
 
@@ -35,7 +38,8 @@ flowchart TD
 - `src/components/layout/`
   - own layout-scoped UI that belongs to the shell rather than a landing section
 - `src/config/portfolio/`
-  - single source of truth for portfolio content and structured public facts
+  - own shared portfolio data and copy
+  - the chatbot assembles public facts from selected exports and its own framing copy
 - `src/server/chat/`
   - own request parsing, facts, upstream inference calls, Turnstile, and rate limiting
 - `functions/`
@@ -45,7 +49,7 @@ flowchart TD
 
 - Tests are colocated with the code or artifact they protect.
 - Static site output is required; no SSR path should be introduced without an explicit request.
-- Client scripts live in `src/scripts/` and are imported from the relevant Astro component instead of large inline imperative blocks.
+- Shared browser modules live in `src/scripts/`. Existing search, navigation, and carousel scripts are colocated with their components. Move complex or shared behavior into a browser module when changing it.
 
 ## When To Restructure
 

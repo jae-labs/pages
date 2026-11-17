@@ -2,7 +2,7 @@
 
 ## Source Of Truth
 
-- Portfolio content lives in `src/config/portfolio/`.
+- Shared portfolio content lives in `src/config/portfolio/`. Some section-specific copy remains in the Astro templates.
 - `src/config/portfolio.ts` is the stable export surface consumed by components.
 - `src/types/portfolio.ts` defines shared content contracts.
 
@@ -28,6 +28,10 @@
   - FAQ content used by the page and chatbot
 - `src/config/portfolio/logos.ts`
   - trusted-by and logo data
+- `src/config/portfolio/plans.ts`
+  - public plan copy and feature lists
+- `src/config/portfolio/contact.ts`
+  - shared booking URL for Plans and Deployments
 
 ## Asset Rules
 
