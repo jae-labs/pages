@@ -23,7 +23,6 @@ const plans = [
     contactHref: calendlyPopupUrl,
     color: "border-neon-yellow",
     popular: true,
-    urgency: "ONLY 1 LICENSE LEFT",
     tenancy: "Single Tenant",
     tenancyColor: "bg-neon-yellow text-black"
   }
@@ -45,17 +44,6 @@ const plans = [
               {t.tenancy}
             </div>
           )}
-
-          <div class="h-6 mb-4">
-            {t.urgency && (
-              <div class="flex items-center gap-2">
-                <span class="flex h-2 w-2 rounded-full bg-[#ff8f8f] animate-pulse shadow-[0_0_8px_#ff8f8f]"></span>
-                <span class="text-[10px] font-black text-[#ff8f8f] tracking-widest">
-                  {t.urgency}
-                </span>
-              </div>
-            )}
-          </div>
           
           <div class="mb-8">
             <h3 class="text-2xl xl:text-2xl 2xl:text-3xl font-black text-white mb-2">{t.name}</h3>

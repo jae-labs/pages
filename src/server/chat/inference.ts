@@ -1,6 +1,6 @@
 import { buildSystemPrompt } from "./facts";
 
-export const CHAT_MODEL = "openai/gpt-oss-20b";
+export const CHAT_MODEL = "nvidia/nemotron-3.5-lightning-30b-a3b";
 export const UPSTREAM_CHAT_COMPLETIONS_URL =
   "https://integrate.api.nvidia.com/v1/chat/completions";
 
@@ -35,6 +35,7 @@ export const buildChatResponse = async (
         messages,
         max_tokens: 500,
         temperature: 0.3,
+        chat_template_kwargs: { enable_thinking: false },
       }),
       signal: controller.signal,
     });

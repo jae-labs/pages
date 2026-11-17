@@ -1,6 +1,5 @@
 import { describe, expect, test, vi } from 'vitest';
 import {
-  CHAT_MODEL,
   RATE_LIMIT_MAX_REQUESTS,
   buildChatResponse,
   buildPublicFacts,
@@ -117,6 +116,7 @@ describe('chat API handler', () => {
     const requestBody = JSON.parse(String(requestInit.body)) as {
       model: string;
       messages: Array<{ role: string; content: string }>;
+      chat_template_kwargs: { enable_thinking: boolean };
     };
 
     expect(response.status).toBe(200);
@@ -130,7 +130,8 @@ describe('chat API handler', () => {
         })
       })
     );
-    expect(requestBody.model).toBe(CHAT_MODEL);
+    expect(requestBody.model).toBe('nvidia/nemotron-3.5-lightning-30b-a3b');
+    expect(requestBody.chat_template_kwargs).toEqual({ enable_thinking: false });
     expect(requestBody.messages[0]?.content).toContain('public-site facts');
     expect(requestBody.messages[1]).toEqual({ role: 'user', content: 'What do you do?' });
   });
