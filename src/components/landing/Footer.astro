@@ -1,6 +1,7 @@
 ---
 import { Coffee } from '@lucide/astro';
 import GitHubIcon from '../icons/GitHubIcon.astro';
+import IncidentIoIcon from '../icons/IncidentIoIcon.astro';
 import LinkedInIcon from '../icons/LinkedInIcon.astro';
 import SlackIcon from '../icons/SlackIcon.astro';
 import PingdomIcon from '../icons/PingdomIcon.astro';
@@ -67,6 +68,16 @@ import PingdomIcon from '../icons/PingdomIcon.astro';
           <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center pointer-events-none z-[999]" role="tooltip">
             <div class="bg-[#0f0f0f] border border-white/10 rounded-md px-2 py-1 text-[10px] text-[#bbb] shadow-[0_4px_15px_rgba(0,0,0,0.5)] whitespace-nowrap">
               Pingdom Status
+            </div>
+            <div class="w-1.5 h-1.5 bg-[#0f0f0f] border-r border-b border-white/10 rotate-45 -mt-[3px]"></div>
+          </div>
+        </a>
+
+        <a href="https://status.justanother.engineer" class="relative group inline-flex items-center justify-center p-3 hover:text-[#f3eb2c] transition-colors" target="_blank" rel="noopener noreferrer" aria-label="System Status Page">
+          <IncidentIoIcon size="100%" class="w-[20px] h-[20px] xl:w-[22px] xl:h-[22px] 2xl:w-[24px] 2xl:h-[24px]" />
+          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center pointer-events-none z-[999]" role="tooltip">
+            <div class="bg-[#0f0f0f] border border-white/10 rounded-md px-2 py-1 text-[10px] text-[#bbb] shadow-[0_4px_15px_rgba(0,0,0,0.5)] whitespace-nowrap">
+              Status Page
             </div>
             <div class="w-1.5 h-1.5 bg-[#0f0f0f] border-r border-b border-white/10 rotate-45 -mt-[3px]"></div>
           </div>

@@ -2,6 +2,7 @@
 import { Coffee } from '@lucide/astro';
 import CyborgBrainLogo from '../branding/CyborgBrainLogo.astro';
 import GitHubIcon from '../icons/GitHubIcon.astro';
+import IncidentIoIcon from '../icons/IncidentIoIcon.astro';
 import PingdomIcon from '../icons/PingdomIcon.astro';
 import LinkedInIcon from '../icons/LinkedInIcon.astro';
 import SlackIcon from '../icons/SlackIcon.astro';
@@ -91,6 +92,16 @@ const mobileItems = menuItems;
           </div>
         </div>
       </a>
+
+      <a href="https://status.justanother.engineer" target="_blank" rel="noopener noreferrer" data-social="status" class="relative group hover:text-neon-yellow transition-colors flex items-center justify-center" aria-label="System Status">
+        <IncidentIoIcon size="100%" class="w-[18px] h-[18px] xl:w-[20px] xl:h-[20px] 2xl:w-[22px] 2xl:h-[22px]" />
+        <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center pointer-events-none z-[999]" role="tooltip">
+          <div class="w-1.5 h-1.5 bg-[#0f0f0f] border-l border-t border-white/10 rotate-45 -mb-[3px] z-10"></div>
+          <div class="bg-[#0f0f0f] border border-white/10 rounded-md px-2 py-1 text-[10px] text-[#bbb] shadow-[0_4px_15px_rgba(0,0,0,0.5)] whitespace-nowrap">
+            Status Page
+          </div>
+        </div>
+      </a>
     </div>
 
     {/* Mobile Search Button */}
@@ -138,7 +149,7 @@ const mobileItems = menuItems;
     </nav>
  
     <div class="absolute bottom-8 left-0 right-0 w-full text-center flex flex-col items-center z-10">
-       <div class="flex gap-10 text-[#444]">
+       <div class="flex gap-7 sm:gap-10 text-[#444]">
           <a href="https://github.com/luiz1361" target="_blank" rel="noopener noreferrer" class="hover:text-neon-yellow transition-colors" aria-label="GitHub profile" title="GitHub">
             <GitHubIcon size={24} />
           </a>
@@ -153,6 +164,9 @@ const mobileItems = menuItems;
           </a>
           <a href="https://stats.pingdom.com/ieq3v42yov76/4989186" target="_blank" rel="noopener noreferrer" class="hover:text-neon-yellow transition-colors" aria-label="Pingdom Status" title="Pingdom Status">
             <PingdomIcon size={24} />
+          </a>
+          <a href="https://status.justanother.engineer" target="_blank" rel="noopener noreferrer" class="hover:text-neon-yellow transition-colors" aria-label="System Status" title="Status Page">
+            <IncidentIoIcon size={24} />
           </a>
        </div>
     </div>

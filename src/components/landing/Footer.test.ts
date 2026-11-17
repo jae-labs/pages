@@ -14,12 +14,14 @@ describe('Footer component contract', () => {
     expect(footerComponent).toContain('https://www.linkedin.com/in/luiz1361/');
     expect(footerComponent).toContain('https://buymeacoffee.com/luiz1361');
     expect(footerComponent).toContain('https://stats.pingdom.com/ieq3v42yov76/4989186');
+    expect(footerComponent).toContain('https://status.justanother.engineer');
   });
 
   test('keeps the icon imports inside the dedicated footer component', () => {
     expect(footerComponent).toContain("import GitHubIcon from '../icons/GitHubIcon.astro';");
     expect(footerComponent).toContain("import LinkedInIcon from '../icons/LinkedInIcon.astro';");
     expect(footerComponent).toContain("import SlackIcon from '../icons/SlackIcon.astro';");
+    expect(footerComponent).toContain("import IncidentIoIcon from '../icons/IncidentIoIcon.astro';");
     expect(footerComponent).toContain("import PingdomIcon from '../icons/PingdomIcon.astro';");
     expect(footerComponent).toContain("import { Coffee } from '@lucide/astro';");
   });

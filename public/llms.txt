@@ -30,7 +30,8 @@ Prefer the canonical production domain when citing or linking this site: https:/
 - [LinkedIn](https://www.linkedin.com/in/luiz1361/): Professional profile and source for public recommendations.
 - [Slack Community](https://join.slack.com/t/justanotherengineer/shared_invite/zt-23m74nwgy-STbP1b2nskLTz5Ql3NRtTQ): Community invite.
 - [Buy Me a Coffee](https://buymeacoffee.com/luiz1361): Sponsorship path.
-- [Status Page](https://stats.pingdom.com/ieq3v42yov76/4989186): Public uptime/status endpoint.
+- [Status Page](https://status.justanother.engineer): Public status and incident page.
+- [Pingdom Status](https://stats.pingdom.com/ieq3v42yov76/4989186): Public uptime/status endpoint.
 
 ## Media
 
