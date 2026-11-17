@@ -36,8 +36,8 @@ Under the joke: career history, public recommendations, operating style, sponsor
 - Sentry for browser and Pages Functions error monitoring and tracing
 - Honeycomb Buildevents for GitHub Actions telemetry
 - PostHog and Google Analytics for consent-based site analytics
-- [Pingdom](https://stats.pingdom.com/ieq3v42yov76/4989186) for uptime monitoring
-- [incident.io](https://status.justanother.engineer) for the public status page and incident updates
+- Pingdom for uptime monitoring
+- incident.io for the public status page and incident updates
 
 ## Quick Start
 
