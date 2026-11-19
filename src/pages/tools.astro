@@ -13,12 +13,12 @@ import Footer from '../components/landing/Footer.astro';
   <div class="min-h-screen flex flex-col">
     <Navbar />
 
-    <main class="relative flex-1 pt-16 flex flex-col">
+    <main class="relative pt-16">
       <iframe
         id="tools-embed-frame"
         src="https://cg5l6gtazzu04lvpkz4ycr8t.fra.prisma.build/"
         title="lui.z Network Tools"
-        class="w-full flex-1 min-h-[calc(100dvh-10rem)] border-0 bg-transparent block"
+        class="w-full min-h-[calc(100dvh-4rem)] border-0 bg-transparent block"
         allow="clipboard-write"
         loading="eager"
       ></iframe>
@@ -44,7 +44,8 @@ import Footer from '../components/landing/Footer.astro';
       if (event.origin !== 'https://cg5l6gtazzu04lvpkz4ycr8t.fra.prisma.build') return;
       const data = event.data as { type?: unknown; height?: unknown } | null;
       if (data?.type === 'jae-tools-resize' && typeof data.height === 'number' && Number.isFinite(data.height)) {
-        frame.style.height = `${Math.max(640, Math.ceil(data.height))}px`;
+        const minHeight = Math.max(640, window.innerHeight - 64);
+        frame.style.height = `${Math.max(minHeight, Math.ceil(data.height))}px`;
       }
     };
 

@@ -48,6 +48,44 @@
     let isOpen = false;
     let highlights: HTMLElement[] = [];
     let activeIndex = -1;
+    let embedTotal = 0;
+    let embedActiveIndex = -1;
+
+    const embedOrigins = new Set([
+      'https://cg5l6gtazzu04lvpkz4ycr8t.fra.prisma.build',
+      'https://tools.justanother.engineer',
+    ]);
+
+    const getEmbedFrame = (): { frame: HTMLIFrameElement; origin: string } | null => {
+      const frame = document.getElementById('tools-embed-frame') as HTMLIFrameElement | null;
+      if (!frame) return null;
+      try {
+        const origin = new URL(frame.src).origin;
+        if (!embedOrigins.has(origin)) return null;
+        return { frame, origin };
+      } catch {
+        return null;
+      }
+    };
+
+    const postToEmbed = (payload: Record<string, unknown>) => {
+      const target = getEmbedFrame();
+      if (!target || !target.frame.contentWindow) return;
+      target.frame.contentWindow.postMessage(payload, target.origin);
+    };
+
+    const updateCounterDisplay = () => {
+      if (highlights.length > 0) {
+        counter.textContent = `${activeIndex + 1} / ${highlights.length}`;
+        counter.classList.remove('hidden');
+      } else if (embedTotal > 0 && embedActiveIndex >= 0) {
+        counter.textContent = `${embedActiveIndex + 1} / ${embedTotal}`;
+        counter.classList.remove('hidden');
+      } else {
+        counter.classList.add('hidden');
+        counter.textContent = '0 / 0';
+      }
+    };
 
     const clearHighlights = () => {
       const marks = document.querySelectorAll('.search-highlight');
@@ -68,8 +106,10 @@
 
       highlights = [];
       activeIndex = -1;
-      counter.classList.add('hidden');
-      counter.textContent = '0 / 0';
+      embedTotal = 0;
+      embedActiveIndex = -1;
+      postToEmbed({ type: 'jae-search-clear' });
+      updateCounterDisplay();
     };
 
     const openSearchWidget = () => {
@@ -111,12 +151,41 @@
       }
     };
 
+    const onWindowMessage = (e: MessageEvent) => {
+      if (!embedOrigins.has(e.origin)) return;
+      const data = e.data as {
+        type?: unknown;
+        total?: unknown;
+        activeIndex?: unknown;
+        top?: unknown;
+      } | null;
+      if (!data || typeof data.type !== 'string') return;
+
+      if (data.type === 'jae-search-results') {
+        embedTotal = typeof data.total === 'number' ? data.total : 0;
+        embedActiveIndex = typeof data.activeIndex === 'number' ? data.activeIndex : -1;
+        updateCounterDisplay();
+      } else if (data.type === 'jae-search-scroll' && typeof data.top === 'number') {
+        const embed = getEmbedFrame();
+        if (!embed) return;
+        const frameTop = embed.frame.getBoundingClientRect().top + window.scrollY;
+        const targetY = Math.max(0, frameTop + data.top - window.innerHeight / 2);
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      } else if (data.type === 'jae-search-toggle') {
+        toggleSearchWidget();
+      } else if (data.type === 'jae-search-close' && isOpen) {
+        closeSearchWidget();
+      }
+    };
+
     window.addEventListener('click', onWindowClick);
     window.addEventListener('keydown', onWindowKeydown);
+    window.addEventListener('message', onWindowMessage);
 
     win.__cleanupSearchWidget = () => {
       window.removeEventListener('click', onWindowClick);
       window.removeEventListener('keydown', onWindowKeydown);
+      window.removeEventListener('message', onWindowMessage);
     };
 
     // Close when clicking overlay backdrop
@@ -217,6 +286,8 @@
 
       if (!regex) return;
 
+      postToEmbed({ type: 'jae-search-query', query });
+
       const mainContent = document.querySelector('main') || document.body;
       const walker = document.createTreeWalker(
         mainContent,
@@ -259,9 +330,8 @@
       if (highlights.length > 0) {
         activeIndex = 0;
         updateActiveHighlight();
-        counter.classList.remove('hidden');
       } else {
-        counter.classList.add('hidden');
+        updateCounterDisplay();
       }
     };
 
@@ -270,16 +340,18 @@
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        if (highlights.length === 0) return;
-
-        if (e.shiftKey) {
-          // Go to previous match
-          activeIndex = (activeIndex - 1 + highlights.length) % highlights.length;
-        } else {
-          // Go to next match
-          activeIndex = (activeIndex + 1) % highlights.length;
+        if (highlights.length > 0) {
+          if (e.shiftKey) {
+            // Go to previous match
+            activeIndex = (activeIndex - 1 + highlights.length) % highlights.length;
+          } else {
+            // Go to next match
+            activeIndex = (activeIndex + 1) % highlights.length;
+          }
+          updateActiveHighlight();
+        } else if (embedTotal > 0) {
+          postToEmbed({ type: 'jae-search-step', delta: e.shiftKey ? -1 : 1 });
         }
-        updateActiveHighlight();
       }
     });
   };
