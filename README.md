@@ -162,8 +162,6 @@ See [AGENTS.md](AGENTS.md).
 
 See [LICENSE](LICENSE).
 
-## Stars
-
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=jae-labs/pages&type=date&legend=top-left)](https://www.star-history.com/#jae-labs/pages&type=date&legend=top-left)
