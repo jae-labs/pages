@@ -30,77 +30,24 @@
 </div>
 
 <script>
-  let isOpen = false;
-  let highlights: HTMLElement[] = [];
-  let activeIndex = -1;
+  type SearchWindow = Window & typeof globalThis & {
+    __cleanupSearchWidget?: () => void;
+  };
 
-  const widget = document.getElementById('search-widget');
-  const input = document.getElementById('search-input') as HTMLInputElement;
-  const counter = document.getElementById('search-counter');
+  const initSearchWidget = () => {
+    const widget = document.getElementById('search-widget');
+    const input = document.getElementById('search-input') as HTMLInputElement | null;
+    const counter = document.getElementById('search-counter');
 
-  if (widget && input && counter) {
-    const toggleSearchWidget = () => {
-      if (isOpen) {
-        closeSearchWidget();
-      } else {
-        openSearchWidget();
-      }
-    };
+    if (!widget || !input || !counter || widget.dataset.bound === 'true') return;
+    widget.dataset.bound = 'true';
 
-    // Listen for click events on search trigger elements
-    window.addEventListener('click', (e) => {
-      const trigger = (e.target as HTMLElement).closest('[data-search-trigger]');
-      if (trigger) {
-        e.preventDefault();
-        toggleSearchWidget();
-      }
-    });
+    const win = window as SearchWindow;
+    win.__cleanupSearchWidget?.();
 
-    const openSearchWidget = () => {
-      widget.classList.remove('hidden');
-      input.focus();
-      isOpen = true;
-    };
-
-    const closeSearchWidget = () => {
-      widget.classList.add('hidden');
-      input.value = '';
-      clearHighlights();
-      isOpen = false;
-    };
-
-    // Close when clicking overlay backdrop
-    widget.addEventListener('click', (e) => {
-      if (e.target === widget) {
-        closeSearchWidget();
-      }
-    });
-
-    // Toggle search on Cmd+K or Ctrl+K
-    window.addEventListener('keydown', (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        toggleSearchWidget();
-      }
-    });
-
-    // Close search on Escape key
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        closeSearchWidget();
-      }
-    });
-
-    const getRegexForQuery = (query: string): RegExp | null => {
-      if (!query.trim()) return null;
-      try {
-        return new RegExp(query, 'gi');
-      } catch {
-        // Fallback: escape special regex chars to treat as literal search
-        const escaped = query.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
-        return new RegExp(escaped, 'gi');
-      }
-    };
+    let isOpen = false;
+    let highlights: HTMLElement[] = [];
+    let activeIndex = -1;
 
     const clearHighlights = () => {
       const marks = document.querySelectorAll('.search-highlight');
@@ -123,6 +70,71 @@
       activeIndex = -1;
       counter.classList.add('hidden');
       counter.textContent = '0 / 0';
+    };
+
+    const openSearchWidget = () => {
+      widget.classList.remove('hidden');
+      input.focus();
+      isOpen = true;
+    };
+
+    const closeSearchWidget = () => {
+      widget.classList.add('hidden');
+      input.value = '';
+      clearHighlights();
+      isOpen = false;
+    };
+
+    const toggleSearchWidget = () => {
+      if (isOpen) {
+        closeSearchWidget();
+      } else {
+        openSearchWidget();
+      }
+    };
+
+    const onWindowClick = (e: MouseEvent) => {
+      const target = e.target instanceof Element ? e.target : null;
+      const trigger = target?.closest('[data-search-trigger]');
+      if (trigger) {
+        e.preventDefault();
+        toggleSearchWidget();
+      }
+    };
+
+    const onWindowKeydown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        toggleSearchWidget();
+      } else if (e.key === 'Escape' && isOpen) {
+        closeSearchWidget();
+      }
+    };
+
+    window.addEventListener('click', onWindowClick);
+    window.addEventListener('keydown', onWindowKeydown);
+
+    win.__cleanupSearchWidget = () => {
+      window.removeEventListener('click', onWindowClick);
+      window.removeEventListener('keydown', onWindowKeydown);
+    };
+
+    // Close when clicking overlay backdrop
+    widget.addEventListener('click', (e) => {
+      if (e.target === widget) {
+        closeSearchWidget();
+      }
+    });
+
+    const getRegexForQuery = (query: string): RegExp | null => {
+      if (!query.trim()) return null;
+      try {
+        return new RegExp(query, 'gi');
+      } catch {
+        // Fallback: escape special regex chars to treat as literal search
+        const escaped = query.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+        return new RegExp(escaped, 'gi');
+      }
     };
 
     const highlightTextNode = (node: Text, regex: RegExp): HTMLElement[] => {
@@ -171,6 +183,31 @@
 
       parent.replaceChild(fragment, node);
       return newMarks;
+    };
+
+    const updateActiveHighlight = () => {
+      if (highlights.length === 0) return;
+
+      // Reset previous active highlight styles
+      highlights.forEach((h) => {
+        h.classList.remove('search-highlight-active', 'bg-neon-cyan/40', 'border-neon-cyan', 'shadow-[0_0_10px_rgba(0,255,255,0.4)]');
+        h.classList.add('bg-neon-yellow/20', 'border-neon-yellow/60');
+      });
+
+      const activeMark = highlights[activeIndex];
+      if (activeMark) {
+        activeMark.classList.remove('bg-neon-yellow/20', 'border-neon-yellow/60');
+        activeMark.classList.add(
+          'search-highlight-active',
+          'bg-neon-cyan/40',
+          'border-neon-cyan',
+          'shadow-[0_0_10px_rgba(0,255,255,0.4)]'
+        );
+
+        activeMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      counter.textContent = `${activeIndex + 1} / ${highlights.length}`;
     };
 
     const performSearch = () => {
@@ -228,31 +265,6 @@
       }
     };
 
-    const updateActiveHighlight = () => {
-      if (highlights.length === 0) return;
-
-      // Reset previous active highlight styles
-      highlights.forEach((h) => {
-        h.classList.remove('search-highlight-active', 'bg-neon-cyan/40', 'border-neon-cyan', 'shadow-[0_0_10px_rgba(0,255,255,0.4)]');
-        h.classList.add('bg-neon-yellow/20', 'border-neon-yellow/60');
-      });
-
-      const activeMark = highlights[activeIndex];
-      if (activeMark) {
-        activeMark.classList.remove('bg-neon-yellow/20', 'border-neon-yellow/60');
-        activeMark.classList.add(
-          'search-highlight-active',
-          'bg-neon-cyan/40',
-          'border-neon-cyan',
-          'shadow-[0_0_10px_rgba(0,255,255,0.4)]'
-        );
-
-        activeMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-
-      counter.textContent = `${activeIndex + 1} / ${highlights.length}`;
-    };
-
     input.addEventListener('input', performSearch);
 
     input.addEventListener('keydown', (e) => {
@@ -270,7 +282,19 @@
         updateActiveHighlight();
       }
     });
+  };
+
+  if (document.readyState !== 'loading') {
+    initSearchWidget();
+  } else {
+    document.addEventListener('DOMContentLoaded', initSearchWidget, { once: true });
   }
+
+  document.addEventListener('astro:page-load', initSearchWidget);
+  document.addEventListener('astro:before-preparation', () => {
+    const win = window as SearchWindow;
+    win.__cleanupSearchWidget?.();
+  });
 </script>
 
 <style is:global>
