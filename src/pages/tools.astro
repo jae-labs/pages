@@ -1,0 +1,70 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/landing/Navbar.astro';
+import ChatBot from '../components/landing/ChatBot.astro';
+import SearchWidget from '../components/landing/SearchWidget.astro';
+import Footer from '../components/landing/Footer.astro';
+---
+
+<Layout
+  title="lui.z | TOOLS"
+  description="Network diagnostics & utility suite: What Is My IP, Online Ping, Traceroute, DNS Lookup, WHOIS, Port Check, Reverse DNS, Proxy Checker, Country/IP Lookup, Multi-Region Speed Test, Subnet Calculator, and Unit Converter."
+>
+  <div class="min-h-screen flex flex-col">
+    <Navbar />
+
+    <main class="relative flex-1 pt-16 flex flex-col">
+      <iframe
+        id="tools-embed-frame"
+        src="https://cg5l6gtazzu04lvpkz4ycr8t.fra.prisma.build/?embed=1"
+        title="lui.z Network Tools"
+        class="w-full flex-1 min-h-[calc(100dvh-10rem)] border-0 bg-transparent block"
+        allow="clipboard-write"
+        loading="eager"
+      ></iframe>
+    </main>
+
+    <Footer />
+  </div>
+  <ChatBot />
+  <SearchWidget />
+</Layout>
+
+<script>
+  type ToolsEmbedWindow = Window & typeof globalThis & {
+    __cleanupToolsEmbed?: () => void;
+  };
+
+  const initToolsEmbed = () => {
+    const frame = document.getElementById('tools-embed-frame') as HTMLIFrameElement | null;
+    if (!frame || frame.dataset.bound === 'true') return;
+    frame.dataset.bound = 'true';
+
+    const onMessage = (event: MessageEvent) => {
+      if (event.origin !== 'https://cg5l6gtazzu04lvpkz4ycr8t.fra.prisma.build') return;
+      const data = event.data as { type?: unknown; height?: unknown } | null;
+      if (data?.type === 'jae-tools-resize' && typeof data.height === 'number' && Number.isFinite(data.height)) {
+        frame.style.height = `${Math.max(640, Math.ceil(data.height))}px`;
+      }
+    };
+
+    window.addEventListener('message', onMessage);
+    (window as ToolsEmbedWindow).__cleanupToolsEmbed = () => {
+      window.removeEventListener('message', onMessage);
+    };
+  };
+
+  if (document.readyState !== 'loading') {
+    initToolsEmbed();
+  } else {
+    document.addEventListener('DOMContentLoaded', initToolsEmbed, { once: true });
+  }
+
+  document.addEventListener('astro:page-load', initToolsEmbed);
+  document.addEventListener('astro:before-preparation', () => {
+    const win = window as ToolsEmbedWindow;
+    if (typeof win.__cleanupToolsEmbed === 'function') {
+      win.__cleanupToolsEmbed();
+    }
+  });
+</script>

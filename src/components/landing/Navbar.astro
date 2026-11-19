@@ -1,5 +1,5 @@
 ---
-import { Coffee } from '@lucide/astro';
+import { Coffee, Wrench } from '@lucide/astro';
 import CyborgBrainLogo from '../branding/CyborgBrainLogo.astro';
 import GitHubIcon from '../icons/GitHubIcon.astro';
 import IncidentIoIcon from '../icons/IncidentIoIcon.astro';
@@ -25,7 +25,7 @@ const mobileItems = menuItems;
       <div class="flex items-center gap-2 lg:gap-3 text-[11px] xl:text-xs 2xl:text-[13px] font-black uppercase tracking-[0.12em] text-[#858585]">
          {menuItems.map((item) => (
             <div class="flex items-center gap-2 lg:gap-3">
-               <a href={`#${item.id}`} data-nav-item={item.name} class="hover:text-white transition-all py-1 border-b border-transparent hover:border-neon-yellow whitespace-nowrap">
+               <a href={`/#${item.id}`} data-nav-item={item.name} class="hover:text-white transition-all py-1 border-b border-transparent hover:border-neon-yellow whitespace-nowrap">
                  {item.name}
                 </a>
               <span class="text-[#444] opacity-50" aria-hidden="true">|</span>
@@ -102,7 +102,28 @@ const mobileItems = menuItems;
           </div>
         </div>
       </a>
+
+      <a href="/tools" data-social="tools" class="relative group hover:text-neon-yellow transition-colors flex items-center justify-center" aria-label="Network Tools">
+        <Wrench size="100%" class="w-[18px] h-[18px] xl:w-[20px] xl:h-[20px] 2xl:w-[22px] 2xl:h-[22px]" stroke-width={1.75} />
+        <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center pointer-events-none z-[999]" role="tooltip">
+          <div class="w-1.5 h-1.5 bg-[#0f0f0f] border-l border-t border-white/10 rotate-45 -mb-[3px] z-10"></div>
+          <div class="bg-[#0f0f0f] border border-white/10 rounded-md px-2 py-1 text-[10px] text-[#bbb] shadow-[0_4px_15px_rgba(0,0,0,0.5)] whitespace-nowrap">
+            Tools
+          </div>
+        </div>
+      </a>
     </div>
+
+    {/* Mobile Tools Button */}
+    <a
+      href="/tools"
+      data-tools-mobile
+      class="2xl:hidden absolute right-24 w-10 h-10 flex items-center justify-center text-[#858585] hover:text-neon-yellow transition-colors z-[700]"
+      aria-label="Network Tools"
+      title="Tools"
+    >
+      <Wrench size={18} stroke-width={2} />
+    </a>
 
     {/* Mobile Search Button */}
     <button
@@ -142,10 +163,13 @@ const mobileItems = menuItems;
   <div class="flex flex-col items-center justify-center min-h-screen py-16 px-6">
     <nav class="flex flex-col items-center w-full relative z-10">
       {mobileItems.map((item) => (
-        <a href={`#${item.id}`} class="nav-link w-full py-3.5 border-b border-white/5 flex flex-col items-center group hover:bg-white/[0.02] transition-all first:border-t">
+        <a href={`/#${item.id}`} class="nav-link w-full py-3.5 border-b border-white/5 flex flex-col items-center group hover:bg-white/[0.02] transition-all first:border-t">
            <span class="text-xl font-black uppercase tracking-[0.2em] text-[#858585] group-hover:text-white transition-colors">{item.name}</span>
         </a>
       ))}
+      <a href="/tools" class="nav-link w-full py-3.5 border-b border-white/5 flex flex-col items-center group hover:bg-white/[0.02] transition-all">
+         <span class="text-xl font-black uppercase tracking-[0.2em] text-neon-yellow group-hover:text-white transition-colors">Tools</span>
+      </a>
     </nav>
  
     <div class="absolute bottom-8 left-0 right-0 w-full text-center flex flex-col items-center z-10">
@@ -318,7 +342,8 @@ const mobileItems = menuItems;
     pointer-events: none;
   }
 
-  #main-nav.menu-open [data-search-trigger] {
+  #main-nav.menu-open [data-search-trigger],
+  #main-nav.menu-open [data-tools-mobile] {
     opacity: 0;
     pointer-events: none;
   }
